@@ -16,7 +16,7 @@ function Layout() {
   // the link to the page you're on is disabled: re-clicking it would reset the view (and drop ?month=)
   const path = useLocation({ select: (l) => l.pathname })
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <header className="sticky top-0 z-10 border-b bg-background/90 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl flex-wrap items-center gap-4 p-4">
           <Link to="/" disabled={path === '/'} className="flex items-center gap-2 text-lg font-bold tracking-tight aria-disabled:cursor-default"><LogoMark className="size-6" />spendlook<span className="-ml-2 text-primary">.</span></Link>
@@ -32,10 +32,11 @@ function Layout() {
           </div>
         </nav>
       </header>
-      <p className="kicker border-b px-4 py-2 text-center text-[0.65rem] text-muted-foreground"><span className="text-primary">&gt; </span>
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8"><Outlet /></main>
+      {/* read once, then out of the way; Settings repeats it next to the backup buttons where it's actionable */}
+      <footer className="kicker border-t px-4 py-2 text-center text-[0.65rem] text-muted-foreground bg-card"><span className="text-primary">&gt; </span>
         <Trans>Your data stays in this browser only. Clearing site data deletes it, so export a backup in Settings.</Trans>
-      </p>
-      <main className="mx-auto max-w-6xl px-4 py-8"><Outlet /></main>
+      </footer>
     </div>
   )
 }

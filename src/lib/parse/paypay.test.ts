@@ -30,6 +30,7 @@ test('maps every PayPay type', () => {
     ['a6', '2026-09-06', 'income', 3, 'マルエツ', 'cashback_points'],
     ['a7', '2026-10-01', 'transfer', 5000, 'PAYPAY', undefined],
   ])
+  expect(rows[0].time).toBe('16:39')
   expect(rows[0].rawMerchant).toBe('マルエツ - マルエツ所沢御幸町店')
   expect(rows[0].method).toBe('クレジット VISA 7949')
 })

@@ -1,5 +1,5 @@
 import { beforeEach, expect, test } from 'bun:test'
-import { type AiResult, type Generate, applyResult, categorizePending } from './categorize'
+import { type AiResult, type Generate, applyResult, categorizePending, recategorizeAll } from './categorize'
 import { db } from './db'
 import type { Merchant } from './types'
 
@@ -70,4 +70,28 @@ test('orphan merchants (their transactions were deleted) are never sent to the A
   const sent: string[] = []
   await categorizePending(async (items) => { sent.push(...items.map((i) => i.id)); return [] })
   expect(sent).toEqual(['expense|LIVE'])
+})
+
+test('recategorizeAll re-runs AI-owned merchants, never user-picked ones, and sends the user rename', async () => {
+  await seed([merchant('A'), merchant('B'), merchant('C')])
+  await db.merchants.update('expense|A', { aiCategory: 'other' })
+  await db.merchants.update('expense|B', { aiCategory: 'other', overrideCategory: 'rent' })
+  await db.merchants.update('expense|C', { aiCategory: 'other', overrideName: 'My gym' })
+  const sent: string[] = []
+  const r = await recategorizeAll(async (items) => {
+    sent.push(...items.map((i) => i.name))
+    return items.map((i) => ok(i.id, 'insurance'))
+  })
+  expect(r).toEqual({ done: 2, failed: 0 })
+  expect(sent).toEqual(['a', 'My gym'])
+  expect((await db.merchants.get('expense|A'))?.aiCategory).toBe('insurance')
+  expect(await db.merchants.get('expense|B')).toMatchObject({ aiCategory: 'other', overrideCategory: 'rent' })
+  expect((await db.merchants.get('expense|C'))?.overrideName).toBe('My gym')
+})
+
+test('recategorizeAll keeps the previous category when a batch fails', async () => {
+  await seed([merchant('A')])
+  await db.merchants.update('expense|A', { aiCategory: 'dining' })
+  expect(await recategorizeAll(async () => { throw new Error('429') })).toEqual({ done: 0, failed: 1 })
+  expect(await db.merchants.get('expense|A')).toMatchObject({ aiCategory: 'dining', needsReview: true })
 })

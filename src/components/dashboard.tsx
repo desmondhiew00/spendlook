@@ -18,7 +18,7 @@ import { byCategoryMonth, categoryTotals, merchantTotals, monthOptions, monthlyT
 import { db } from '@/lib/db'
 import { formatMoney, formatMonth } from '@/lib/format'
 import { sortRows } from '@/lib/sort'
-import { type Category, type Flow, INCOME, SPENDING, type Txn, merchantId, merchantName } from '@/lib/types'
+import { type Category, type Flow, INCOME, SPENDING, type Txn, counts, merchantId, merchantName } from '@/lib/types'
 
 export function Dashboard({ accountId, currency, flow, month: wantedMonth, onMonthChange: setPickedMonth, hasMethod }: { accountId: string; currency: string; flow: Flow; month?: string; onMonthChange: (month: string) => void; hasMethod: boolean }) {
   const { t, i18n } = useLingui()
@@ -30,8 +30,8 @@ export function Dashboard({ accountId, currency, flow, month: wantedMonth, onMon
   const resolve = (tx: Txn) => resolveCategory(tx, merchants)
 
   const txns = useMemo(() => (allTxns ?? []).filter((x) => x.kind === flow), [allTxns, flow])
-  // excluded rows stay in the transaction table (so they can be un-excluded) but never count
-  const counted = useMemo(() => txns.filter((x) => resolveCategory(x, merchants) !== 'excluded'), [txns, merchants])
+  // uncounted rows (excluded, card payments, cash withdrawals) stay in the table so they can be re-categorized, but never count
+  const counted = useMemo(() => txns.filter((x) => counts(resolveCategory(x, merchants))), [txns, merchants])
   const months = useMemo(() => monthOptions(txns), [txns])
   const totalByMonth = useMemo(() => new Map(monthlyTotals(counted).map((x) => [x.month, x.total])), [counted])
   // a URL month with no data in this tab (or a stale link) falls back to the latest month
@@ -56,7 +56,7 @@ export function Dashboard({ accountId, currency, flow, month: wantedMonth, onMon
   const current = totalByMonth.get(month!) ?? 0
   // the other tab's total for the same month, so income and spending can be compared at a glance
   const otherFlow: Flow = flow === 'expense' ? 'income' : 'expense'
-  const otherTotal = allTxns.filter((x) => x.kind === otherFlow && x.month === month && resolve(x) !== 'excluded').reduce((sum, x) => sum + x.amount, 0)
+  const otherTotal = allTxns.filter((x) => x.kind === otherFlow && x.month === month && counts(resolve(x))).reduce((sum, x) => sum + x.amount, 0)
   const monthIdx = months.indexOf(month!)
   // calendar month before; undefined only before the first month with data
   const prev = previousMonth(month!)
@@ -87,7 +87,7 @@ export function Dashboard({ accountId, currency, flow, month: wantedMonth, onMon
   // fixed-category rows have no merchant record, so nothing to rename; blank clears back to the AI name
   // a rename means the user looked at this merchant, so it also clears the review flag
   const renamer = (id: string) => (merchants.has(id) ? (name: string) => db.merchants.update(id, { overrideName: name || undefined, needsReview: false }) : undefined)
-  const txKey = { date: (x: Txn) => x.date, merchant: nameOf, method: (x: Txn) => x.method ?? '', amount: (x: Txn) => x.amount, category: (x: Txn) => i18n._(CATEGORY_LABEL[resolve(x)]) }[txSort.key]
+  const txKey = { date: (x: Txn) => `${x.date} ${x.time ?? ''}`, merchant: nameOf, method: (x: Txn) => x.method ?? '', amount: (x: Txn) => x.amount, category: (x: Txn) => i18n._(CATEGORY_LABEL[resolve(x)]) }[txSort.key]
   const merchantCategory = (id: string) => {
     const rec = merchants.get(id)
     return rec ? (rec.overrideCategory ?? rec.aiCategory ?? fold) : undefined
@@ -100,13 +100,13 @@ export function Dashboard({ accountId, currency, flow, month: wantedMonth, onMon
     .filter((x) => !method || x.method === method)
     .filter((x) => !reviewOnly || needsReview(x))
     .filter((x) => !q || x.rawMerchant.toLowerCase().includes(q) || nameOf(x).toLowerCase().includes(q))
-    .sort((a, b) => b.date.localeCompare(a.date))
+    .sort((a, b) => `${b.date} ${b.time ?? ''}`.localeCompare(`${a.date} ${a.time ?? ''}`))
   const sortedRows = sortRows(rows, txKey, txSort.desc, locale)
   const reviewCount = monthTxns.filter(needsReview).length
-  const shownCounted = rows.filter((x) => resolve(x) !== 'excluded')
+  const shownCounted = rows.filter((x) => counts(resolve(x)))
   const shownTotal = shownCounted.reduce((sum, x) => sum + x.amount, 0)
   const shownExcluded = rows.length - shownCounted.length
-  const summary = <><Plural value={rows.length} one="# transaction" other="# transactions" />{shownExcluded > 0 && <> · <Trans>{shownExcluded} excluded from total</Trans></>}</>
+  const summary = <><Plural value={rows.length} one="# transaction" other="# transactions" />{shownExcluded > 0 && <> · <Trans>{shownExcluded} not counted in total</Trans></>}</>
 
   return (
     <div className="space-y-6">
@@ -185,7 +185,7 @@ export function Dashboard({ accountId, currency, flow, month: wantedMonth, onMon
         <Card className="pb-0">
           <CardHeader><CardTitle><Trans>Top merchants — {formatMonth(month!, locale)}</Trans></CardTitle></CardHeader>
           <CardContent className="px-0">
-            <Table className="[&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
+            <Table className="border-t [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
               <TableHeader>
                 <TableRow>
                   <SortHead k="name" sort={mSort} onSort={onMSort}><Trans>Merchant</Trans></SortHead>
@@ -203,7 +203,7 @@ export function Dashboard({ accountId, currency, flow, month: wantedMonth, onMon
                       <TableCell className="max-w-48"><MerchantName name={m.name} raw={m.raw} onRename={renamer(m.id)} /></TableCell>
                       <TableCell>
                         {rec && c ? (
-                          <CategorySelect flow={flow} label={t`Category for ${m.name}`} value={c} onChange={(c) => db.merchants.update(m.id, { overrideCategory: c, needsReview: false })} />
+                          <CategorySelect colorOf={colorOf} flow={flow} label={t`Category for ${m.name}`} value={c} onChange={(c) => db.merchants.update(m.id, { overrideCategory: c, needsReview: false })} />
                         ) : (
                           <span className="text-sm text-muted-foreground"><Trans>Fixed</Trans></span>
                         )}
@@ -224,7 +224,7 @@ export function Dashboard({ accountId, currency, flow, month: wantedMonth, onMon
         <CardContent className="space-y-3 px-0">
           <div className="flex flex-wrap items-center gap-2 px-4">
             <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t`Search merchant`} className="max-w-xs" />
-            <Picker<Category | ''> label={t`Category filter`} value={category} onChange={setCategory} className="h-9" options={[{ value: '', label: t`All categories` }, ...(flow === 'expense' ? SPENDING : INCOME).map((c) => ({ value: c, label: i18n._(CATEGORY_LABEL[c]) }))]} />
+            <Picker<Category | ''> label={t`Category filter`} value={category} onChange={setCategory} className="h-9" options={[{ value: '', label: t`All categories` }, ...(flow === 'expense' ? SPENDING : INCOME).map((c) => ({ value: c, label: i18n._(CATEGORY_LABEL[c]), color: colorOf(c) }))]} />
             {hasMethod && (
               <Picker label={t`Payment method`} value={method} onChange={setMethod} className="h-9" options={[{ value: '', label: t`All methods` }, ...methods.map((m) => ({ value: m, label: m }))]} />
             )}
@@ -252,12 +252,12 @@ export function Dashboard({ accountId, currency, flow, month: wantedMonth, onMon
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
                     <MerchantName name={nameOf(x)} raw={x.rawMerchant.normalize('NFKC')} onRename={renamer(merchantId(flow, x.merchantKey))} />
-                    <div className="mt-0.5 text-xs text-muted-foreground tabular-nums">{x.date}{hasMethod && x.method ? ` · ${x.method}` : ''}</div>
+                    <div className="mt-0.5 text-xs text-muted-foreground tabular-nums">{x.date}{x.time ? ` ${x.time}` : ''}{hasMethod && x.method ? ` · ${x.method}` : ''}</div>
                   </div>
                   <div className="shrink-0 font-semibold tabular-nums">{yen(x.amount)}</div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CategorySelect flow={flow} label={t`Category for this transaction`} value={resolve(x)} onChange={(c) => db.txns.update(x.id, { overrideCategory: c })} />
+                  <CategorySelect colorOf={colorOf} flow={flow} label={t`Category for this transaction`} value={resolve(x)} onChange={(c) => db.txns.update(x.id, { overrideCategory: c })} />
                   {needsReview(x) && <ReviewBadge />}
                 </div>
               </li>
@@ -268,7 +268,7 @@ export function Dashboard({ accountId, currency, flow, month: wantedMonth, onMon
             <span className="font-semibold tabular-nums">{yen(shownTotal)}</span>
           </div>
           <div className="hidden sm:block">
-            <Table className="[&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
+            <Table className="border-t [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
               <TableHeader>
                 <TableRow>
                   <SortHead k="date" sort={txSort} onSort={onTxSort} firstDesc><Trans>Date</Trans></SortHead>
@@ -281,14 +281,14 @@ export function Dashboard({ accountId, currency, flow, month: wantedMonth, onMon
               <TableBody>
                 {sortedRows.map((x) => (
                   <TableRow key={x.id} className={needsReview(x) ? 'bg-amber-500/5 shadow-[inset_2px_0_0_var(--color-amber-500)] hover:bg-amber-500/10' : undefined}>
-                    <TableCell className="tabular-nums">{x.date}</TableCell>
+                    <TableCell className="tabular-nums">{x.date}{x.time && <span className="ml-1.5 text-muted-foreground">{x.time}</span>}</TableCell>
                     <TableCell className="max-w-72">
                       <MerchantName name={nameOf(x)} raw={x.rawMerchant.normalize('NFKC')} onRename={renamer(merchantId(flow, x.merchantKey))}>
                         {needsReview(x) && <ReviewBadge />}
                       </MerchantName>
                     </TableCell>
                     {hasMethod && <TableCell className="text-sm text-muted-foreground">{x.method}</TableCell>}
-                    <TableCell><CategorySelect flow={flow} label={t`Category for this transaction`} value={resolve(x)} onChange={(c) => db.txns.update(x.id, { overrideCategory: c })} /></TableCell>
+                    <TableCell><CategorySelect colorOf={colorOf} flow={flow} label={t`Category for this transaction`} value={resolve(x)} onChange={(c) => db.txns.update(x.id, { overrideCategory: c })} /></TableCell>
                     <TableCell className="text-right tabular-nums">{yen(x.amount)}</TableCell>
                   </TableRow>
                 ))}

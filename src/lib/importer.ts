@@ -9,6 +9,9 @@ export async function importRows(account: Account, fileName: string, rows: Parse
     const existing = await db.txns.bulkGet(txns.map((t) => t.id))
     const seen = new Set<string>()
     const fresh: Txn[] = []
+    // rows imported before times were parsed pick them up when the same file is uploaded again
+    const backfill = txns.filter((t, i) => t.time && existing[i] && !existing[i]!.time)
+    await db.txns.bulkUpdate(backfill.map((t) => ({ key: t.id, changes: { time: t.time } })))
     txns.forEach((t, i) => {
       if (existing[i] || seen.has(t.id)) return
       seen.add(t.id)

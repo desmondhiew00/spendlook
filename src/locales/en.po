@@ -34,9 +34,28 @@ msgstr "{0} CSV"
 msgid "{0} merchants could not be categorized. Retry below."
 msgstr "{0} merchants could not be categorized. Retry below."
 
+#. placeholder {0}: r.done
+#: src/routes/settings.tsx:136
+msgid "{0} merchants re-categorized."
+msgstr "{0} merchants re-categorized."
+
+#. placeholder {0}: r.done
+#. placeholder {1}: r.failed
+#: src/routes/settings.tsx:136
+msgid "{0} re-categorized. {1} failed and kept their previous category, flagged for review."
+msgstr "{0} re-categorized. {1} failed and kept their previous category, flagged for review."
+
+#: src/routes/settings.tsx:164
+msgid "{count} merchant names will be sent to {providerLabel}"
+msgstr "{count} merchant names will be sent to {providerLabel}"
+
+#: src/routes/settings.tsx:164
+msgid "{requests, plural, one {about # request} other {about # requests}}"
+msgstr "{requests, plural, one {about # request} other {about # requests}}"
+
 #: src/components/dashboard.tsx:109
-msgid "{shownExcluded} excluded from total"
-msgstr "{shownExcluded} excluded from total"
+msgid "{shownExcluded} not counted in total"
+msgstr "{shownExcluded} not counted in total"
 
 #: src/routes/accounts.tsx:109
 msgid "1. Where is the CSV from?"
@@ -59,7 +78,7 @@ msgstr "Accounts"
 msgid "Add account"
 msgstr "Add account"
 
-#: src/routes/settings.tsx:65
+#: src/routes/settings.tsx:75
 msgid "AI categorization"
 msgstr "AI categorization"
 
@@ -67,7 +86,7 @@ msgstr "AI categorization"
 msgid "AI is categorizing new merchants — you can keep browsing."
 msgstr "AI is categorizing new merchants — you can keep browsing."
 
-#: src/components/dashboard.tsx:226
+#: src/components/dashboard.tsx:227
 msgid "All categories"
 msgstr "All categories"
 
@@ -75,23 +94,27 @@ msgstr "All categories"
 msgid "All merchants categorized."
 msgstr "All merchants categorized."
 
-#: src/components/dashboard.tsx:228
+#: src/components/dashboard.tsx:229
 msgid "All methods"
 msgstr "All methods"
 
-#: src/components/dashboard.tsx:276
+#: src/components/dashboard.tsx:278
 msgid "Amount"
 msgstr "Amount"
 
-#: src/routes/settings.tsx:72
+#: src/routes/settings.tsx:164
+msgid "Amounts and dates are never sent. Categories you picked yourself won't change."
+msgstr "Amounts and dates are never sent. Categories you picked yourself won't change."
+
+#: src/routes/settings.tsx:82
 msgid "API key"
 msgstr "API key"
 
-#: src/routes/settings.tsx:86
+#: src/routes/settings.tsx:98
 msgid "Backup"
 msgstr "Backup"
 
-#: src/routes/settings.tsx:55
+#: src/routes/settings.tsx:65
 msgid "Backup restored."
 msgstr "Backup restored."
 
@@ -99,16 +122,33 @@ msgstr "Backup restored."
 msgid "Bank account · 入出金明細 CSV"
 msgstr "Bank account · 入出金明細 CSV"
 
+#: src/components/category-label.ts:31
+msgid "Bonus"
+msgstr "Bonus"
+
 #: src/components/dashboard.tsx:153
 msgid "By category per month"
 msgstr "By category per month"
 
 #: src/components/confirm-delete.tsx:48
 #: src/routes/accounts.tsx:106
+#: src/routes/settings.tsx:168
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/components/category-label.ts:22
+#: src/components/category-label.ts:10
+msgid "Car"
+msgstr "Car"
+
+#: src/components/category-label.ts:26
+msgid "Card payment"
+msgstr "Card payment"
+
+#: src/components/category-label.ts:27
+msgid "Cash withdrawal"
+msgstr "Cash withdrawal"
+
+#: src/components/category-label.ts:35
 msgid "Cashback & points"
 msgstr "Cashback & points"
 
@@ -127,34 +167,46 @@ msgstr "Categorizing {0}/{1}…"
 msgid "Categorizing failed. Check your AI key in Settings, then retry."
 msgstr "Categorizing failed. Check your AI key in Settings, then retry."
 
-#: src/components/dashboard.tsx:193
+#: src/components/dashboard.tsx:192
 #: src/components/dashboard.tsx:277
 msgid "Category"
 msgstr "Category"
 
-#: src/components/dashboard.tsx:226
+#: src/components/dashboard.tsx:227
 msgid "Category filter"
 msgstr "Category filter"
 
 #. placeholder {0}: m.name
-#: src/components/dashboard.tsx:207
+#: src/components/dashboard.tsx:206
 msgid "Category for {0}"
 msgstr "Category for {0}"
 
-#: src/components/dashboard.tsx:259
+#: src/components/dashboard.tsx:260
 #: src/components/dashboard.tsx:291
 msgid "Category for this transaction"
 msgstr "Category for this transaction"
 
-#: src/components/dashboard.tsx:191
+#: src/components/category-label.ts:15
+msgid "Clothing & beauty"
+msgstr "Clothing & beauty"
+
+#: src/components/dashboard.tsx:193
 msgid "Count"
 msgstr "Count"
+
+#: src/routes/settings.tsx:162
+msgid "Counting merchants…"
+msgstr "Counting merchants…"
 
 #: src/routes/accounts.tsx:127
 msgid "Create and upload CSV"
 msgstr "Create and upload CSV"
 
-#: src/components/dashboard.tsx:273
+#: src/components/category-label.ts:8
+msgid "Daily goods"
+msgstr "Daily goods"
+
+#: src/components/dashboard.tsx:274
 msgid "Date"
 msgstr "Date"
 
@@ -195,31 +247,39 @@ msgstr "Dining"
 msgid "Drop to upload to {0}"
 msgstr "Drop to upload to {0}"
 
-#: src/components/category-label.ts:14
+#: src/components/category-label.ts:18
+msgid "Education"
+msgstr "Education"
+
+#: src/components/category-label.ts:19
 msgid "Entertainment"
 msgstr "Entertainment"
 
-#: src/components/category-label.ts:20
+#: src/components/category-label.ts:29
 msgid "Excluded"
 msgstr "Excluded"
 
-#: src/routes/settings.tsx:88
+#: src/routes/settings.tsx:102
 msgid "Export backup"
 msgstr "Export backup"
 
-#: src/components/dashboard.tsx:209
+#: src/components/dashboard.tsx:208
 msgid "Fixed"
 msgstr "Fixed"
+
+#: src/components/category-label.ts:22
+msgid "Gifts & social"
+msgstr "Gifts & social"
 
 #: src/components/category-label.ts:6
 msgid "Groceries"
 msgstr "Groceries"
 
-#: src/components/category-label.ts:13
+#: src/components/category-label.ts:16
 msgid "Health"
 msgstr "Health"
 
-#: src/components/dashboard.tsx:242
+#: src/components/dashboard.tsx:243
 msgid "Highest amount"
 msgstr "Highest amount"
 
@@ -228,7 +288,7 @@ msgstr "Highest amount"
 msgid "History ({0})"
 msgstr "History ({0})"
 
-#: src/routes/settings.tsx:90
+#: src/routes/settings.tsx:104
 msgid "Import backup"
 msgstr "Import backup"
 
@@ -241,15 +301,23 @@ msgstr "Importing…"
 msgid "Income"
 msgstr "Income"
 
-#: src/components/category-label.ts:24
+#: src/components/category-label.ts:17
+msgid "Insurance"
+msgstr "Insurance"
+
+#: src/components/category-label.ts:37
 msgid "Interest"
 msgstr "Interest"
 
-#: src/routes/settings.tsx:81
+#: src/components/category-label.ts:33
+msgid "Investment"
+msgstr "Investment"
+
+#: src/routes/settings.tsx:91
 msgid "Key test failed: {error}"
 msgstr "Key test failed: {error}"
 
-#: src/routes/settings.tsx:80
+#: src/routes/settings.tsx:90
 msgid "Key works."
 msgstr "Key works."
 
@@ -257,16 +325,16 @@ msgstr "Key works."
 msgid "Last upload"
 msgstr "Last upload"
 
-#: src/components/dashboard.tsx:243
+#: src/components/dashboard.tsx:244
 msgid "Lowest amount"
 msgstr "Lowest amount"
 
-#: src/components/dashboard.tsx:190
-#: src/components/dashboard.tsx:274
+#: src/components/dashboard.tsx:191
+#: src/components/dashboard.tsx:275
 msgid "Merchant"
 msgstr "Merchant"
 
-#: src/components/dashboard.tsx:244
+#: src/components/dashboard.tsx:245
 msgid "Merchant A→Z"
 msgstr "Merchant A→Z"
 
@@ -274,11 +342,11 @@ msgstr "Merchant A→Z"
 msgid "Merchant name"
 msgstr "Merchant name"
 
-#: src/components/dashboard.tsx:275
+#: src/components/dashboard.tsx:276
 msgid "Method"
 msgstr "Method"
 
-#: src/routes/settings.tsx:71
+#: src/routes/settings.tsx:81
 msgid "Model"
 msgstr "Model"
 
@@ -286,11 +354,11 @@ msgstr "Model"
 msgid "Month"
 msgstr "Month"
 
-#: src/components/dashboard.tsx:230
+#: src/components/dashboard.tsx:231
 msgid "Needs review only"
 msgstr "Needs review only"
 
-#: src/components/dashboard.tsx:240
+#: src/components/dashboard.tsx:241
 msgid "Newest first"
 msgstr "Newest first"
 
@@ -302,27 +370,31 @@ msgstr "Next month"
 msgid "No transactions yet. Upload a CSV above."
 msgstr "No transactions yet. Upload a CSV above."
 
-#: src/components/dashboard.tsx:241
+#: src/routes/settings.tsx:163
+msgid "Nothing to re-categorize yet. Upload a CSV first."
+msgstr "Nothing to re-categorize yet. Upload a CSV first."
+
+#: src/components/dashboard.tsx:242
 msgid "Oldest first"
 msgstr "Oldest first"
 
-#: src/components/category-label.ts:19
+#: src/components/category-label.ts:28
 msgid "Other"
 msgstr "Other"
 
-#: src/components/category-label.ts:25
+#: src/components/category-label.ts:38
 msgid "Other income"
 msgstr "Other income"
 
-#: src/components/dashboard.tsx:228
+#: src/components/dashboard.tsx:229
 msgid "Payment method"
 msgstr "Payment method"
 
-#: src/components/category-label.ts:17
+#: src/components/category-label.ts:24
 msgid "PayPay"
 msgstr "PayPay"
 
-#: src/components/category-label.ts:11
+#: src/components/category-label.ts:13
 msgid "Phone & Internet"
 msgstr "Phone & Internet"
 
@@ -331,14 +403,37 @@ msgstr "Phone & Internet"
 msgid "Previous month"
 msgstr "Previous month"
 
-#: src/routes/settings.tsx:68
-#: src/routes/settings.tsx:69
+#: src/routes/settings.tsx:78
+#: src/routes/settings.tsx:79
 msgid "Provider"
 msgstr "Provider"
 
-#: src/components/category-label.ts:23
+#: src/routes/settings.tsx:147
+#: src/routes/settings.tsx:169
+msgid "Re-categorize"
+msgstr "Re-categorize"
+
+#: src/routes/settings.tsx:152
+msgid "Re-categorize all"
+msgstr "Re-categorize all"
+
+#: src/routes/settings.tsx:160
+msgid "Re-categorize all merchants?"
+msgstr "Re-categorize all merchants?"
+
+#. placeholder {0}: progress.done
+#. placeholder {1}: progress.total
+#: src/routes/settings.tsx:152
+msgid "Re-categorizing {0}/{1}…"
+msgstr "Re-categorizing {0}/{1}…"
+
+#: src/components/category-label.ts:36
 msgid "Received from others"
 msgstr "Received from others"
+
+#: src/components/category-label.ts:34
+msgid "Refunds"
+msgstr "Refunds"
 
 #: src/components/dashboard.tsx:339
 msgid "Rename (applies to all its transactions)"
@@ -348,7 +443,7 @@ msgstr "Rename (applies to all its transactions)"
 msgid "Rename {name}"
 msgstr "Rename {name}"
 
-#: src/components/category-label.ts:9
+#: src/components/category-label.ts:11
 msgid "Rent"
 msgstr "Rent"
 
@@ -360,19 +455,27 @@ msgstr "Retry categorize ({pending})"
 msgid "Review"
 msgstr "Review"
 
-#: src/components/category-label.ts:21
+#: src/routes/settings.tsx:148
+msgid "Run the AI again on every merchant, for example after new categories are added. Categories you picked yourself are never changed."
+msgstr "Run the AI again on every merchant, for example after new categories are added. Categories you picked yourself are never changed."
+
+#: src/components/category-label.ts:30
 msgid "Salary"
 msgstr "Salary"
 
-#: src/routes/settings.tsx:78
+#: src/routes/settings.tsx:88
 msgid "Save & test key"
 msgstr "Save & test key"
 
-#: src/components/dashboard.tsx:225
+#: src/routes/settings.tsx:154
+msgid "Save and test a key first."
+msgstr "Save and test a key first."
+
+#: src/components/dashboard.tsx:226
 msgid "Search merchant"
 msgstr "Search merchant"
 
-#: src/components/category-label.ts:18
+#: src/components/category-label.ts:25
 msgid "Sent to others"
 msgstr "Sent to others"
 
@@ -384,12 +487,12 @@ msgstr "Set and test your AI key in <0>Settings</0> to upload."
 msgid "Set your AI provider key in <0>Settings</0> before uploading."
 msgstr "Set your AI provider key in <0>Settings</0> before uploading."
 
-#: src/router.tsx:28
-#: src/routes/settings.tsx:63
+#: src/router.tsx:29
+#: src/routes/settings.tsx:73
 msgid "Settings"
 msgstr "Settings"
 
-#: src/components/category-label.ts:12
+#: src/components/category-label.ts:14
 msgid "Shopping"
 msgstr "Shopping"
 
@@ -397,7 +500,11 @@ msgstr "Shopping"
 msgid "Show all"
 msgstr "Show all"
 
-#: src/components/dashboard.tsx:235
+#: src/components/category-label.ts:32
+msgid "Side income"
+msgstr "Side income"
+
+#: src/components/dashboard.tsx:236
 msgid "Sort by"
 msgstr "Sort by"
 
@@ -407,15 +514,19 @@ msgid "Spending"
 msgstr "Spending"
 
 #. placeholder {0}: PROVIDER_LABEL[provider]
-#: src/routes/settings.tsx:74
+#: src/routes/settings.tsx:84
 msgid "Stored only in this browser and sent only to {0}. Only merchant names are sent, never amounts or dates."
 msgstr "Stored only in this browser and sent only to {0}. Only merchant names are sent, never amounts or dates."
 
-#: src/components/category-label.ts:16
+#: src/components/category-label.ts:21
 msgid "Subscriptions"
 msgstr "Subscriptions"
 
-#: src/routes/settings.tsx:78
+#: src/components/category-label.ts:23
+msgid "Taxes & social insurance"
+msgstr "Taxes & social insurance"
+
+#: src/routes/settings.tsx:88
 msgid "Testing…"
 msgstr "Testing…"
 
@@ -463,12 +574,12 @@ msgid "This permanently removes the account and its {0} transactions from this b
 msgstr "This permanently removes the account and its {0} transactions from this browser. Export a backup in Settings first if you might need them."
 
 #. placeholder {0}: formatMonth(month!, locale)
-#: src/components/dashboard.tsx:185
+#: src/components/dashboard.tsx:186
 msgid "Top merchants — {0}"
 msgstr "Top merchants — {0}"
 
 #: src/components/dashboard.tsx:162
-#: src/components/dashboard.tsx:192
+#: src/components/dashboard.tsx:194
 msgid "Total"
 msgstr "Total"
 
@@ -477,15 +588,15 @@ msgid "Transactions"
 msgstr "Transactions"
 
 #. placeholder {0}: formatMonth(month!, locale)
-#: src/components/dashboard.tsx:222
+#: src/components/dashboard.tsx:223
 msgid "Transactions — {0}"
 msgstr "Transactions — {0}"
 
-#: src/components/category-label.ts:8
+#: src/components/category-label.ts:9
 msgid "Transport"
 msgstr "Transport"
 
-#: src/components/category-label.ts:15
+#: src/components/category-label.ts:20
 msgid "Travel"
 msgstr "Travel"
 
@@ -506,7 +617,7 @@ msgstr "Upload CSV"
 msgid "Upload history"
 msgstr "Upload history"
 
-#: src/components/category-label.ts:10
+#: src/components/category-label.ts:12
 msgid "Utilities"
 msgstr "Utilities"
 
@@ -518,6 +629,10 @@ msgstr "View dashboard"
 msgid "Wallet · payment history CSV"
 msgstr "Wallet · payment history CSV"
 
-#: src/router.tsx:35
+#: src/routes/settings.tsx:99
+msgid "Your data lives only in this browser. Clearing site data or switching devices loses it, so export a backup regularly."
+msgstr "Your data lives only in this browser. Clearing site data or switching devices loses it, so export a backup regularly."
+
+#: src/router.tsx:38
 msgid "Your data stays in this browser only. Clearing site data deletes it, so export a backup in Settings."
 msgstr "Your data stays in this browser only. Clearing site data deletes it, so export a backup in Settings."

@@ -35,6 +35,13 @@ test('re-importing overlapping rows skips duplicates, including duplicates withi
   expect(await db.txns.count()).toBe(3)
 })
 
+test('re-import backfills time onto rows imported without one', async () => {
+  await importRows(acct, 'a.csv', [row('1')])
+  const u = await importRows(acct, 'a.csv', [row('1', { time: '21:43' })])
+  expect(u.added).toBe(0)
+  expect((await db.txns.get('A:1'))?.time).toBe('21:43')
+})
+
 test('existing merchant (with AI category) is not reset by a new import', async () => {
   await importRows(acct, 'a.csv', [row('1')])
   await db.merchants.update('expense|SHOP', { aiCategory: 'groceries' })

@@ -16,6 +16,7 @@ export function parsePaypay(rows: string[][]): ParsedRow[] {
     const base = {
       key: `${col(r, '取引番号')}|${col(r, '取引内容')}`, // points rows reuse the payment's 取引番号
       date: col(r, '取引日').slice(0, 10).replaceAll('/', '-'),
+      time: col(r, '取引日').slice(11, 16) || undefined,
       rawMerchant: party,
       merchantKey: normalizeMerchant(party.split(' - ')[0]), // chain, not branch
       method: col(r, '取引方法'),

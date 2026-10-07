@@ -1,18 +1,30 @@
+// Order is display order and fixes each category's chart colour slot; keys are stored, so never rename one
 export const SPENDING = [
-  'groceries', 'dining', 'transport', 'rent', 'utilities', 'phone_internet', 'shopping',
-  'health', 'entertainment', 'travel', 'subscriptions', 'paypay', 'transfer_out', 'other', 'excluded',
+  'groceries', 'dining', 'daily_goods', 'transport', 'car', 'rent', 'utilities', 'phone_internet',
+  'shopping', 'clothing_beauty', 'health', 'insurance', 'education', 'entertainment', 'travel',
+  'subscriptions', 'gifts_social', 'taxes_social', 'paypay', 'transfer_out', 'card_payment', 'cash_withdrawal',
+  'other', 'excluded',
 ] as const
-export const INCOME = ['salary', 'cashback_points', 'transfer_in', 'interest', 'other_income', 'excluded'] as const
+export const INCOME = [
+  'salary', 'bonus', 'side_income', 'investment', 'refund', 'cashback_points', 'transfer_in', 'interest',
+  'other_income', 'excluded',
+] as const
 // AI may not assign rule-only or user-only categories (paypay, transfer_out, excluded)
 export const AI_SPENDING = [
-  'groceries', 'dining', 'transport', 'rent', 'utilities', 'phone_internet', 'shopping',
-  'health', 'entertainment', 'travel', 'subscriptions', 'other',
+  'groceries', 'dining', 'daily_goods', 'transport', 'car', 'rent', 'utilities', 'phone_internet',
+  'shopping', 'clothing_beauty', 'health', 'insurance', 'education', 'entertainment', 'travel',
+  'subscriptions', 'gifts_social', 'taxes_social', 'card_payment', 'cash_withdrawal', 'other',
 ] as const
-export const AI_INCOME = ['salary', 'cashback_points', 'transfer_in', 'interest', 'other_income'] as const
+export const AI_INCOME = ['salary', 'bonus', 'side_income', 'investment', 'refund', 'cashback_points', 'transfer_in', 'interest', 'other_income'] as const
 
 export type SpendingCategory = (typeof SPENDING)[number]
 export type IncomeCategory = (typeof INCOME)[number]
 export type Category = SpendingCategory | IncomeCategory
+
+// Money moving between your own pots (card bill, cash out) or hidden by you: listed, never totalled.
+// Counting a card bill would double-count the purchases already tracked on the card itself.
+export const UNCOUNTED: readonly Category[] = ['excluded', 'card_payment', 'cash_withdrawal']
+export const counts = (c: Category) => !UNCOUNTED.includes(c)
 
 export type AccountType = 'mufg' | 'paypay'
 export type Kind = 'expense' | 'income' | 'transfer'
@@ -23,6 +35,7 @@ export interface Account { id: string; type: AccountType; name: string; currency
 export interface ParsedRow {
   key: string // dedupe key within an account
   date: string // YYYY-MM-DD
+  time?: string // HH:MM, only when the source has it (PayPay; MUFG is date-only)
   kind: Kind
   amount: number // integer minor units of account currency (JPY = yen); negative = refund
   rawMerchant: string
