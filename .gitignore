@@ -1,0 +1,7 @@
+data/
+*.csv
+!src/lib/parse/fixtures/*.csv
+.wrangler/
+.superpowers/
+node_modules/
+dist/
