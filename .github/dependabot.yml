@@ -4,3 +4,12 @@ updates:
     directory: /
     schedule:
       interval: weekly
+  # app and build dependencies (bun.lock); security fixes come as separate PRs as soon as an advisory lands
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    open-pull-requests-limit: 10
