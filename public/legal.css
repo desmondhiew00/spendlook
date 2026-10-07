@@ -1,0 +1,17 @@
+/* Shared by terms.html and privacy.html: static pages, no scripts. Colours mirror src/index.css. */
+:root { --bg: #f5f6f6; --fg: #0d1111; --muted: #586160; --border: #e1e4e4; --accent: oklch(0.52 0.12 75); color-scheme: light dark; }
+@media (prefers-color-scheme: dark) { :root { --bg: #0d1111; --fg: #ededec; --muted: #8d9493; --border: #1e2427; --accent: oklch(0.88 0.18 96); } }
+:root.dark { --bg: #0d1111; --fg: #ededec; --muted: #8d9493; --border: #1e2427; --accent: oklch(0.88 0.18 96); }
+:root:not(.dark) { --bg: #f5f6f6; --fg: #0d1111; --muted: #586160; --border: #e1e4e4; --accent: oklch(0.52 0.12 75); }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.65 system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; }
+main { max-width: 44rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+nav { display: flex; gap: 1rem; flex-wrap: wrap; align-items: baseline; border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 2rem; font-family: ui-monospace, monospace; font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; }
+nav a { color: var(--muted); } nav a.home { color: var(--fg); font-weight: 700; text-transform: none; letter-spacing: 0; font-size: 1.1rem; margin-right: auto; text-decoration: none; }
+a { color: var(--accent); }
+h1 { font-size: 2.2rem; letter-spacing: -.03em; line-height: 1.15; margin: 0 0 .25rem; }
+h2 { font-size: 1.15rem; margin: 2rem 0 .5rem; }
+.meta { color: var(--muted); font-size: .9rem; }
+.summary { border: 1px solid var(--border); padding: 1rem 1.25rem; margin: 1.5rem 0; }
+section + section { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+li { margin: .25rem 0; }

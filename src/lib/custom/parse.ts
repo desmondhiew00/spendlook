@@ -1,4 +1,4 @@
-import { normalizeMerchant } from '../normalize'
+import { isPersonTransfer, normalizeMerchant } from '../normalize'
 import type { CustomMapping, ParsedRow } from '../types'
 import { parseDate, parseMinor, parseTime } from './values'
 
@@ -82,5 +82,6 @@ function parseRow(r: string[], m: CustomMapping, digits: number): Omit<ParsedRow
     else return undefined
   }
   const time = parseTime(clean(r[m.timeCol ?? m.dateCol]))
-  return { date, time, kind, amount, rawMerchant, merchantKey: customMerchantKey(rawMerchant) }
+  const fixedCategory = isPersonTransfer(rawMerchant) ? (kind === 'expense' ? 'transfer_out' : 'transfer_in') : undefined
+  return { date, time, kind, amount, rawMerchant, merchantKey: customMerchantKey(rawMerchant), fixedCategory }
 }

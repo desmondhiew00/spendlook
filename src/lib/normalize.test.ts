@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test'
-import { normalizeMerchant } from './normalize'
+import { isPersonTransfer, normalizeMerchant } from './normalize'
 
 test('full-width → half-width, strips MUFG debit auth prefix', () => {
   expect(normalizeMerchant('５５３７９９　ＪＲＣ　ＳＨＩＮ')).toBe('JRC SHIN')
@@ -16,4 +16,14 @@ test('half-width katakana and spacing', () => {
 
 test('keeps numbers that are not a 6-digit prefix', () => {
   expect(normalizeMerchant('7-ELEVEN 123')).toBe('7-ELEVEN 123')
+})
+
+test('person transfers are recognised; company payers and purchases are not', () => {
+  expect(isPersonTransfer('振込 ヤマダ タロウ')).toBe(true)
+  expect(isPersonTransfer('DUITNOW TRSF DR AHMAD BIN ALI')).toBe(true)
+  expect(isPersonTransfer('FUND TRANSFER TO JOHN TAN')).toBe(true)
+  expect(isPersonTransfer('振込 アスカル (カ')).toBe(false)
+  expect(isPersonTransfer('IBG TRANSFER ACME SDN BHD')).toBe(false)
+  expect(isPersonTransfer('AMAZON.CO.JP')).toBe(false)
+  expect(isPersonTransfer('POS PURCHASE TESCO')).toBe(false)
 })

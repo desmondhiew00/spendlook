@@ -24,7 +24,7 @@ test('imports rows and creates pending merchants only for AI-categorized rows', 
   expect(t?.month).toBe('2026-09')
   expect(t?.uploadId).toBe(u.id)
   expect(await db.merchants.toArray()).toEqual([
-    { id: 'expense|SHOP', kind: 'expense', merchantKey: 'SHOP', displayName: 'Shop - 1', needsReview: false },
+    { id: 'expense|SHOP', kind: 'expense', merchantKey: 'SHOP', displayName: 'Shop - 1', needsReview: true },
   ])
 })
 

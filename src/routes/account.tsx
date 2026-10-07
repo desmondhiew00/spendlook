@@ -1,8 +1,12 @@
-import { Trans } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
+import { Pencil } from 'lucide-react'
+import { useState } from 'react'
 import { useNavigate, useParams, useSearch } from '@tanstack/react-router'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { AccountLogo } from '@/components/account-logo'
 import { Dashboard } from '@/components/dashboard'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { UploadPanel } from '@/components/upload-panel'
 import { db } from '@/lib/db'
@@ -23,7 +27,7 @@ export function AccountPage() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex min-w-0 items-center gap-3">
           <AccountLogo type={account.type} />
-          <h1 className="truncate text-4xl font-bold tracking-[-0.04em]">{account.name}</h1>
+          <AccountName id={account.id} name={account.name} />
         </div>
         <UploadPanel key={account.id} account={account} />
       </div>
@@ -34,6 +38,42 @@ export function AccountPage() {
         </TabsList>
       </Tabs>
       <Dashboard key={`${account.id}-${flow}`} accountId={account.id} currency={account.currency} flow={flow} month={search.month} onMonthChange={(month) => setView({ month })} hasMethod={account.type === 'paypay'} />
+    </div>
+  )
+}
+
+// Click the pencil (or the name) to rename; Enter saves, Escape cancels, an empty name is ignored
+function AccountName({ id, name }: { id: string; name: string }) {
+  const { t } = useLingui()
+  const [editing, setEditing] = useState(false)
+  const heading = 'text-4xl font-bold tracking-[-0.04em]'
+  if (editing) {
+    return (
+      <Input
+        autoFocus
+        defaultValue={name}
+        aria-label={t`Account name`}
+        maxLength={60}
+        className={`h-12 w-[min(28rem,70vw)] ${heading} md:text-4xl`}
+        onFocus={(e) => e.currentTarget.select()}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') e.currentTarget.blur()
+          if (e.key === 'Escape') { e.currentTarget.value = name; e.currentTarget.blur() }
+        }}
+        onBlur={(e) => {
+          setEditing(false)
+          const next = e.currentTarget.value.trim()
+          if (next && next !== name) db.accounts.update(id, { name: next })
+        }}
+      />
+    )
+  }
+  return (
+    <div className="group/name flex min-w-0 items-center gap-1">
+      <h1 className={`truncate ${heading}`} onDoubleClick={() => setEditing(true)}>{name}</h1>
+      <Button variant="ghost" size="icon-sm" aria-label={t`Rename account`} title={t`Rename account`} onClick={() => setEditing(true)} className="text-muted-foreground opacity-60 group-hover/name:opacity-100 hover:opacity-100 focus-visible:opacity-100">
+        <Pencil />
+      </Button>
     </div>
   )
 }

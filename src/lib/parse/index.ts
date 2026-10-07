@@ -26,8 +26,8 @@ export function parseFile(bytes: ArrayBuffer, type: AccountType): ParsedRow[] {
 function rowsOrBadRow(parse: () => ParsedRow[]): ParsedRow[] {
   try {
     return parse()
-  } catch (e) {
-    console.error('bad row', e)
+  } catch {
+    console.error('bad row') // not the error: its message quotes the cell
     throw new ImportError('bad_row')
   }
 }

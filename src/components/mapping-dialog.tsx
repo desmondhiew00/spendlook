@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
-import { guessToMapping, localGuess, type MappingBase, sampleForAi } from '@/lib/custom/ai'
+import { checkDateFormat, guessToMapping, localGuess, type MappingBase, sampleForAi } from '@/lib/custom/ai'
 import { clean, parseCustom, validateMapping } from '@/lib/custom/parse'
 import { DELIMITERS, type Delimiter, ENCODINGS, type Encoding, readRows } from '@/lib/custom/sniff'
 import { DATE_FORMATS, type DateFormat, fractionDigits } from '@/lib/custom/values'
@@ -59,7 +59,8 @@ export function MappingDialog({ account, fileName, bytes, initial, initialMappin
     setAi('running')
     try {
       const { header, samples } = sampleForAi(rows, headerRow)
-      setMapping(guessToMapping(await aiMappingFor(settings)(header, samples), base))
+      const m = guessToMapping(await aiMappingFor(settings)(header, samples), base)
+      setMapping({ ...m, dateFormat: checkDateFormat(m.dateFormat, rows.slice(headerRow + 1, headerRow + 51).map((r) => r[m.dateCol] ?? '')) })
       setAi('idle')
     } catch (e) {
       console.error(e)

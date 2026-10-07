@@ -13,6 +13,6 @@ export function LocaleToggle() {
     if (path === '/' || path === '/ja') navigate({ to: l === 'ja' ? '/ja' : '/' })
   }
   return (
-    <Picker<Locale> size="sm" label="Language" value={i18n.locale as Locale} onChange={change} className="kicker" options={[{ value: 'en', label: 'EN' }, { value: 'ja', label: '日本語' }]} />
+    <Picker<Locale> size="sm" label="Language" value={i18n.locale as Locale} onChange={change} className="kicker" options={[{ value: 'en', label: 'EN' }, { value: 'ja', label: '日本語' }, { value: 'zh', label: '中文' }]} />
   )
 }

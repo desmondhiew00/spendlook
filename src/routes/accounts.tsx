@@ -26,8 +26,8 @@ export function AccountsPage() {
     <div className="space-y-6">
       {accounts.length ? <h1 className="text-4xl font-bold tracking-[-0.04em]"><Trans>Accounts</Trans></h1> : <Intro />}
       {!verified && (
-        <p className="border border-amber-500/50 bg-amber-500/10 p-3 text-sm">
-          <Trans>Set your AI provider key in <Link to="/settings" className="underline">Settings</Link> before uploading.</Trans>
+        <p className="border p-3 text-sm text-muted-foreground">
+          <Trans>Optional: add an AI key in <Link to="/settings" className="underline">Settings</Link> to auto-categorize merchants. Without one, nothing leaves this browser and you pick categories yourself.</Trans>
         </p>
       )}
       {!!accounts.length && (
@@ -57,7 +57,7 @@ function Intro() {
       <ul className="list-inside list-disc space-y-1 text-sm">
         <li><Trans>Private: transactions stay in this browser. No sign-up, no server.</Trans></li>
         <li><Trans>MUFG and PayPay built in. Any other bank or e-wallet CSV works with a column mapping.</Trans></li>
-        <li><Trans>AI categorization with your own Anthropic, Gemini or OpenAI key. Only merchant names are sent.</Trans></li>
+        <li><Trans>Optional AI categorization with your own Anthropic, Gemini or OpenAI key. Only merchant names are sent, never amounts or dates. Optional passphrase encryption.</Trans></li>
       </ul>
     </section>
   )

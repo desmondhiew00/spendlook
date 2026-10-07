@@ -42,3 +42,12 @@ test('empty 摘要内容 falls back to 摘要 as merchant', () => {
   const [row] = parseMufg([H, r('2026/9/1', 'カ−ド', '', '20,000', '', '1')])
   expect(row.merchantKey).toBe('カード')
 })
+
+test('transfers to and from people get a fixed category, so their names never reach the AI', () => {
+  const rows = parseMufg([
+    H,
+    r('2026/7/5', '振込１', 'ヤマダ　タロウ', '', '20,000', '100,000'),
+    r('2026/7/6', '振込２', 'スズキ　ハナコ', '5,000', '', '95,000'),
+  ])
+  expect(rows.map((x) => [x.kind, x.fixedCategory])).toEqual([['income', 'transfer_in'], ['expense', 'transfer_out']])
+})

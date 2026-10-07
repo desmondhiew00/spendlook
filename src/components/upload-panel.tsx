@@ -1,5 +1,4 @@
 import { Trans, useLingui } from '@lingui/react/macro'
-import { Link } from '@tanstack/react-router'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { cn } from 'cn'
 import { Columns3, FileUp, History, Loader2, RefreshCw, Trash2, Upload } from 'lucide-react'
@@ -23,6 +22,7 @@ import { aiFor } from '@/lib/usage'
 export function UploadPanel({ account }: { account: Account }) {
   const { t, i18n } = useLingui()
   const settings = loadSettings()
+  const ai = !!settings?.verified // AI is opt-in: without a key, merchants import uncategorized for the user to sort
   const uploads = useLiveQuery(() => db.uploads.where('accountId').equals(account.id).reverse().sortBy('createdAt'), [account.id])
   const pending = useLiveQuery(() => pendingMerchants().then((p) => p.length), [])
   // what's running right now; drives the spinner label and blocks a second import mid-flight
@@ -71,6 +71,7 @@ export function UploadPanel({ account }: { account: Account }) {
 
   // never throws: import results must stay visible even when the AI step fails
   async function categorize() {
+    if (!ai) return t`New merchants are marked for review: pick their categories below.`
     try {
       const r = await categorizePending(aiFor(settings!, 'categorize'), undefined, (done, total) => setWork({ step: 'categorize', done, total }))
       return r.failed ? t`${r.failed} merchants could not be categorized. Retry below.` : ''
@@ -115,8 +116,8 @@ export function UploadPanel({ account }: { account: Account }) {
   function parseCustomOrBadRow(rows: string[][], m: CustomMapping) {
     try {
       return parseCustom(rows, m, fractionDigits(account.currency))
-    } catch (e) {
-      console.error('bad row', e)
+    } catch {
+      console.error('bad row') // not the error: its message quotes the cell
       throw new ImportError('bad_row')
     }
   }
@@ -156,15 +157,11 @@ export function UploadPanel({ account }: { account: Account }) {
     }
   }
 
-  if (!settings?.verified) {
-    return <p className="text-sm text-muted-foreground"><Trans>Set and test your AI key in <Link to="/settings" className="underline">Settings</Link> to upload.</Trans></p>
-  }
-
   // compact toolbar for the page header; history lives in a modal so it never pushes the dashboard down
   return (
     <div className="flex flex-col items-end gap-1.5">
       <div className="flex flex-wrap items-center justify-end gap-2">
-        {!!pending && !busy && (
+        {ai && !!pending && !busy && (
           <Button variant="outline" size="lg" onClick={retry}><RefreshCw data-icon="inline-start" /><Trans>Retry categorize ({pending})</Trans></Button>
         )}
         {account.type === 'custom' && account.mapping && !busy && (

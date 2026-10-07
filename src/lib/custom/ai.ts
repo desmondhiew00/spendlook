@@ -23,7 +23,12 @@ const schema = z.object({
 export type MappingGuess = z.infer<typeof schema>
 export type MappingBase = { encoding: Encoding; delimiter: Delimiter; headerRow: number; header: string[] }
 
-// Privacy bound from the spec: the header and at most 3 data rows ever leave the browser
+// Privacy bound from the spec: the header and at most 3 data rows ever leave the browser, and those rows only as
+// their shape: digits become 0 and words become x, so "2026/09/03", "-1,234.50 DR" reach the AI as
+// "0000/00/00", "-0,000.00 DR". Markers the mapping depends on (DR/CR, AM/PM) stay.
+export const redact = (cell: string) =>
+  cell.replace(/\d/g, '0').replace(/\p{L}+/gu, (w) => (/^(DR|CR|AM|PM|午前|午後)$/i.test(w) ? w : 'x'.repeat(w.length)))
+
 export function sampleForAi(rows: string[][], headerRow: number) {
   return {
     header: (rows[headerRow] ?? []).map(clean),
@@ -31,7 +36,8 @@ export function sampleForAi(rows: string[][], headerRow: number) {
   }
 }
 
-const SYSTEM = `You map the columns of a bank or e-wallet CSV export (any country, any language) to transaction fields.
+const SYSTEM = `Sample cells are redacted to their shape: every digit is 0 and every word is x.
+You map the columns of a bank or e-wallet CSV export (any country, any language) to transaction fields.
 Columns are 0-based indexes into the header. Return:
 - timeCol: a separate time-of-day column, else null (a time inside the date cell needs no column)
 - dateCol and dateFormat: YMD (2026-09-03, 2026/9/3), DMY (03/09/2026, 03-09-2026), MDY (09/03/2026), YYYYMMDD, or "D MMM Y" (3 Sep 2026)
@@ -50,7 +56,7 @@ export function aiDetectMapping(model: LanguageModel, onUsage?: (usage: TokenUsa
       const { output, usage } = await generateText({
         model,
         system: SYSTEM,
-        prompt: JSON.stringify({ header: header.map((name, index) => ({ index, name })), samples }),
+        prompt: JSON.stringify({ header: header.map((name, index) => ({ index, name })), samples: samples.map((r) => r.map(redact)) }),
         output: Output.object({ schema }),
         providerOptions: { openai: { store: false } },
       })
@@ -79,10 +85,15 @@ export function guessToMapping(g: MappingGuess, base: MappingBase): CustomMappin
   }
 }
 
+const fits = (f: DateFormat, values: string[]) => values.length > 0 && values.every((v) => { try { parseDate(v, f); return true } catch { return false } })
+
 export function detectDateFormat(cells: string[]): DateFormat {
   const values = cells.map(clean).filter(Boolean)
-  return DATE_FORMATS.find((f) => values.length && values.every((v) => { try { parseDate(v, f); return true } catch { return false } })) ?? 'YMD'
+  return DATE_FORMATS.find((f) => fits(f, values)) ?? 'YMD'
 }
+
+// The AI saw redacted dates (0000/00/00), so check its pick against the real cells locally
+export const checkDateFormat = (guess: DateFormat, cells: string[]) => (fits(guess, cells.map(clean).filter(Boolean)) ? guess : detectDateFormat(cells))
 
 // No-AI starting point for "Map manually": common header names in en/ja/zh/ms/ko
 export function localGuess(base: MappingBase, samples: string[][] = []): CustomMapping {

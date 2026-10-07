@@ -1,8 +1,12 @@
 import { useLingui } from '@lingui/react'
+import { useLingui as useT } from '@lingui/react/macro'
+import { cn } from 'cn'
+import { Settings } from 'lucide-react'
 import { Trans } from '@lingui/react/macro'
 import { Link, Outlet, createRootRoute, createRoute, createRouter, useLocation } from '@tanstack/react-router'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { AccountLogo } from '@/components/account-logo'
+import { buttonVariants } from '@/components/ui/button'
 import { LocaleToggle } from '@/components/locale-toggle'
 import { LogoMark } from '@/components/logo-mark'
 import { ThemeToggle } from '@/components/theme-toggle'
@@ -17,6 +21,7 @@ function Layout() {
   // the link to the page you're on is disabled: re-clicking it would reset the view (and drop ?month=)
   const path = useLocation({ select: (l) => l.pathname })
   const home = useLingui().i18n.locale === 'ja' ? '/ja' : '/'
+  const { t } = useT()
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <header className="sticky top-0 z-10 border-b bg-background/90 backdrop-blur">
@@ -28,7 +33,7 @@ function Layout() {
             </Link>
           ))}
           <div className="ml-auto flex items-center gap-3">
-            <Link to="/settings" disabled={path === '/settings'} className="kicker text-muted-foreground hover:text-foreground aria-disabled:cursor-default" activeProps={{ className: 'text-primary!' }}><Trans>Settings</Trans></Link>
+            <Link to="/settings" disabled={path === '/settings'} aria-label={t`Settings`} title={t`Settings`} className={cn(buttonVariants({ variant: 'ghost', size: 'icon-sm' }), 'text-muted-foreground hover:text-foreground aria-disabled:cursor-default')} activeProps={{ className: 'text-primary!' }}><Settings /></Link>
             <ThemeToggle />
             <LocaleToggle />
           </div>
@@ -38,6 +43,8 @@ function Layout() {
       {/* read once, then out of the way; Settings repeats it next to the backup buttons where it's actionable */}
       <footer className="kicker border-t px-4 py-2 text-center text-[0.65rem] text-muted-foreground bg-card"><span className="text-primary">&gt; </span>
         <Trans>Your data stays in this browser only. Clearing site data deletes it, so export a backup in Settings.</Trans>
+        {/* static pages outside the SPA: plain links, full page load */}
+        <span className="ml-3 inline-flex gap-3"><a href="/privacy" className="underline hover:text-foreground"><Trans>Privacy</Trans></a><a href="/terms" className="underline hover:text-foreground"><Trans>Terms</Trans></a></span>
       </footer>
     </div>
   )

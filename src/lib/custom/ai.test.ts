@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test'
-import { type MappingGuess, carryOver, detectDateFormat, guessToMapping, localGuess, sampleForAi } from './ai'
+import { type MappingGuess, carryOver, checkDateFormat, detectDateFormat, guessToMapping, localGuess, redact, sampleForAi } from './ai'
 
 const base = { encoding: 'utf-8' as const, delimiter: ',' as const, headerRow: 2, header: ['Date', 'Description', 'Debit', 'Credit', 'Ref 1', 'Balance'] }
 const guess: MappingGuess = {
@@ -52,4 +52,14 @@ test('time column: local guess by name, AI guess, and carried over by name', () 
   expect(guessToMapping({ ...guess, timeCol: 1 }, b).timeCol).toBe(1)
   const moved = carryOver({ ...localGuess(b), timeCol: 1 }, { ...b, header: ['Time', 'Date', 'Description', 'Amount'] })
   expect(moved?.timeCol).toBe(0)
+})
+
+test('sample rows reach the AI only as their shape', () => {
+  expect(['2026/09/03', '-1,234.50 DR', 'DUITNOW TRSF AHMAD 0123456789', 'セブン-イレブン', '2:05 PM'].map(redact))
+    .toEqual(['0000/00/00', '-0,000.00 DR', 'xxxxxxx xxxx xxxxx 0000000000', 'xxx-xxxx', '0:00 PM'])
+})
+
+test('a date format the AI guessed blind is checked against the real cells', () => {
+  expect(checkDateFormat('MDY', ['25/12/2026', '03/01/2026'])).toBe('DMY')
+  expect(checkDateFormat('MDY', ['12/25/2026'])).toBe('MDY')
 })
