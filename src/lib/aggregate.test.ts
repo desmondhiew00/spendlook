@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test'
-import { byCategoryMonth, categoryTotals, merchantTotals, monthlyTotals, resolveCategory, topCategories } from './aggregate'
+import { byCategoryMonth, categoryTotals, merchantTotals, monthlyTotals, monthOptions, previousMonth, resolveCategory, topCategories } from './aggregate'
 import type { Category, Merchant, Txn } from './types'
 
 const tx = (id: string, month: string, amount: number, extra: Partial<Txn> = {}): Txn => ({
@@ -53,4 +53,14 @@ test('topCategories: largest n by total, fold bucket never takes a slot, returne
 test('merchantTotals falls back to a half-width display name for merchants without a record', () => {
   const [row] = merchantTotals([tx('1', '2026-08', 100, { merchantKey: 'RTK ペイペイ', rawMerchant: 'ＲＴＫ　ペイペイ' })], merchants)
   expect(row.name).toBe('RTK ペイペイ')
+})
+
+test('monthOptions lists every month that has rows, even fully excluded ones, ascending', () => {
+  const all = [tx('1', '2026-09', 10), tx('2', '2026-07', 5), tx('3', '2026-09', 1)]
+  expect(monthOptions(all)).toEqual(['2026-07', '2026-09'])
+})
+
+test('previousMonth is the calendar month before, across year boundaries', () => {
+  expect(previousMonth('2026-03')).toBe('2026-02')
+  expect(previousMonth('2026-01')).toBe('2025-12')
 })

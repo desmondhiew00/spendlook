@@ -56,3 +56,13 @@ export function topCategories(txns: Txn[], resolve: Resolve, n: number, fold: Ca
   const top = categoryTotals(txns, resolve).filter((c) => c.category !== fold && c.total > 0).slice(0, n).map((c) => c.category)
   return top.sort((a, b) => order.indexOf(a) - order.indexOf(b))
 }
+
+// Every month with rows (excluded ones too, so they stay reachable in the table)
+export function monthOptions(txns: Txn[]): string[] {
+  return [...new Set(txns.map((t) => t.month))].sort()
+}
+
+export function previousMonth(month: string): string {
+  const [y, m] = month.split('-').map(Number)
+  return m === 1 ? `${y - 1}-12` : `${y}-${String(m - 1).padStart(2, '0')}`
+}

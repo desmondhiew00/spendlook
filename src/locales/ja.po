@@ -9,18 +9,18 @@ msgstr ""
 
 #. placeholder {0}: u.added
 #. placeholder {1}: u.skipped
-#: src/components/upload-panel.tsx:84
+#: src/components/upload-panel.tsx:94
 msgid "{0} added, {1} skipped"
 msgstr "{0} 件追加、{1} 件スキップ"
 
 #. placeholder {0}: u.added
 #. placeholder {1}: u.skipped
-#: src/components/upload-panel.tsx:43
+#: src/components/upload-panel.tsx:50
 msgid "{0} added, {1} skipped."
 msgstr "{0} 件追加、{1} 件スキップしました。"
 
 #. placeholder {0}: r.failed
-#: src/components/upload-panel.tsx:31
+#: src/components/upload-panel.tsx:34
 msgid "{0} merchants could not be categorized. Retry below."
 msgstr "{0} 件の店舗を分類できませんでした。下のボタンで再試行してください。"
 
@@ -48,19 +48,19 @@ msgstr "口座を追加"
 msgid "AI categorization"
 msgstr "AI 分類"
 
-#: src/components/dashboard.tsx:150
+#: src/components/dashboard.tsx:152
 msgid "All categories"
 msgstr "すべてのカテゴリ"
 
-#: src/components/upload-panel.tsx:55
+#: src/components/upload-panel.tsx:63
 msgid "All merchants categorized."
 msgstr "すべての店舗を分類しました。"
 
-#: src/components/dashboard.tsx:155
+#: src/components/dashboard.tsx:157
 msgid "All methods"
 msgstr "すべての支払方法"
 
-#: src/components/dashboard.tsx:162
+#: src/components/dashboard.tsx:164
 msgid "Amount"
 msgstr "金額"
 
@@ -76,7 +76,7 @@ msgstr "バックアップ"
 msgid "Backup restored."
 msgstr "バックアップを復元しました。"
 
-#: src/components/dashboard.tsx:83
+#: src/components/dashboard.tsx:85
 msgid "By category per month"
 msgstr "月別カテゴリ"
 
@@ -85,50 +85,54 @@ msgid "Cashback & points"
 msgstr "キャッシュバック・ポイント"
 
 #. placeholder {0}: formatMonth(month!, locale)
-#: src/components/dashboard.tsx:100
+#: src/components/dashboard.tsx:102
 msgid "Categories — {0}"
 msgstr "カテゴリ — {0}"
 
-#: src/components/upload-panel.tsx:44
+#: src/components/upload-panel.tsx:37
+msgid "Categorizing failed. Check your AI key in Settings, then retry."
+msgstr "分類に失敗しました。設定で AI キーを確認してから再試行してください。"
+
+#: src/components/upload-panel.tsx:51
 msgid "Categorizing…"
 msgstr "分類中…"
 
-#: src/components/dashboard.tsx:119
-#: src/components/dashboard.tsx:162
+#: src/components/dashboard.tsx:121
+#: src/components/dashboard.tsx:164
 msgid "Category"
 msgstr "カテゴリ"
 
-#: src/components/dashboard.tsx:149
+#: src/components/dashboard.tsx:151
 msgid "Category filter"
 msgstr "カテゴリで絞り込み"
 
 #. placeholder {0}: m.name
-#: src/components/dashboard.tsx:130
+#: src/components/dashboard.tsx:132
 msgid "Category for {0}"
 msgstr "{0} のカテゴリ"
 
-#: src/components/dashboard.tsx:173
+#: src/components/dashboard.tsx:175
 msgid "Category for this transaction"
 msgstr "この取引のカテゴリ"
 
-#: src/components/dashboard.tsx:79
+#: src/components/dashboard.tsx:81
 msgid "Change"
 msgstr "前月比"
 
-#: src/components/dashboard.tsx:119
+#: src/components/dashboard.tsx:121
 msgid "Count"
 msgstr "件数"
 
-#: src/components/dashboard.tsx:162
+#: src/components/dashboard.tsx:164
 msgid "Date"
 msgstr "日付"
 
-#: src/components/upload-panel.tsx:85
+#: src/components/upload-panel.tsx:95
 #: src/routes/accounts.tsx:46
 msgid "Delete"
 msgstr "削除"
 
-#: src/components/upload-panel.tsx:85
+#: src/components/upload-panel.tsx:95
 msgid "Delete the transactions from this upload?"
 msgstr "このアップロードの取引を削除しますか？"
 
@@ -152,7 +156,7 @@ msgstr "除外"
 msgid "Export backup"
 msgstr "バックアップをエクスポート"
 
-#: src/components/dashboard.tsx:132
+#: src/components/dashboard.tsx:134
 msgid "Fixed"
 msgstr "固定"
 
@@ -184,12 +188,12 @@ msgstr "キーのテストに失敗しました: {error}"
 msgid "Key works."
 msgstr "キーは有効です。"
 
-#: src/components/dashboard.tsx:119
-#: src/components/dashboard.tsx:162
+#: src/components/dashboard.tsx:121
+#: src/components/dashboard.tsx:164
 msgid "Merchant"
 msgstr "店舗"
 
-#: src/components/dashboard.tsx:162
+#: src/components/dashboard.tsx:164
 msgid "Method"
 msgstr "支払方法"
 
@@ -197,15 +201,15 @@ msgstr "支払方法"
 msgid "Model"
 msgstr "モデル"
 
-#: src/components/dashboard.tsx:71
+#: src/components/dashboard.tsx:73
 msgid "Month"
 msgstr "月"
 
-#: src/components/dashboard.tsx:159
+#: src/components/dashboard.tsx:161
 msgid "Needs review only"
 msgstr "要確認のみ"
 
-#: src/components/dashboard.tsx:37
+#: src/components/dashboard.tsx:38
 msgid "No transactions yet. Upload a CSV above."
 msgstr "取引がまだありません。上から CSV をアップロードしてください。"
 
@@ -217,7 +221,7 @@ msgstr "その他"
 msgid "Other income"
 msgstr "その他収入"
 
-#: src/components/dashboard.tsx:154
+#: src/components/dashboard.tsx:156
 msgid "Payment method"
 msgstr "支払方法"
 
@@ -229,7 +233,7 @@ msgstr "PayPay"
 msgid "Phone & Internet"
 msgstr "通信費"
 
-#: src/components/dashboard.tsx:78
+#: src/components/dashboard.tsx:80
 msgid "Previous month"
 msgstr "前月"
 
@@ -245,11 +249,11 @@ msgstr "受け取り"
 msgid "Rent"
 msgstr "家賃"
 
-#: src/components/upload-panel.tsx:72
+#: src/components/upload-panel.tsx:82
 msgid "Retry categorize ({pending})"
 msgstr "分類を再試行 ({pending})"
 
-#: src/components/dashboard.tsx:169
+#: src/components/dashboard.tsx:171
 msgid "Review"
 msgstr "要確認"
 
@@ -261,7 +265,7 @@ msgstr "給与"
 msgid "Save & test key"
 msgstr "保存してキーをテスト"
 
-#: src/components/dashboard.tsx:148
+#: src/components/dashboard.tsx:150
 msgid "Search merchant"
 msgstr "店舗を検索"
 
@@ -269,7 +273,7 @@ msgstr "店舗を検索"
 msgid "Sent to others"
 msgstr "送金"
 
-#: src/components/upload-panel.tsx:60
+#: src/components/upload-panel.tsx:70
 msgid "Set and test your AI key in <0>Settings</0> to upload."
 msgstr "アップロードするには<0>設定</0>で AI キーを設定・テストしてください。"
 
@@ -303,6 +307,10 @@ msgstr "サブスク"
 msgid "Testing…"
 msgstr "テスト中…"
 
+#: src/components/upload-panel.tsx:27
+msgid "The file has a row that could not be read. Re-export the CSV and try again."
+msgstr "読み取れない行があります。CSV を再エクスポートしてもう一度お試しください。"
+
 #: src/components/upload-panel.tsx:25
 msgid "This looks like a MUFG file, not PayPay."
 msgstr "これは PayPay ではなく MUFG のファイルのようです。"
@@ -311,21 +319,21 @@ msgstr "これは PayPay ではなく MUFG のファイルのようです。"
 msgid "This looks like a PayPay file, not MUFG."
 msgstr "これは MUFG ではなく PayPay のファイルのようです。"
 
-#: src/components/dashboard.tsx:77
+#: src/components/dashboard.tsx:79
 msgid "This month"
 msgstr "今月"
 
 #. placeholder {0}: formatMonth(month!, locale)
-#: src/components/dashboard.tsx:116
+#: src/components/dashboard.tsx:118
 msgid "Top merchants — {0}"
 msgstr "上位の店舗 — {0}"
 
-#: src/components/dashboard.tsx:119
+#: src/components/dashboard.tsx:121
 msgid "Total"
 msgstr "合計"
 
 #. placeholder {0}: formatMonth(month!, locale)
-#: src/components/dashboard.tsx:145
+#: src/components/dashboard.tsx:147
 msgid "Transactions — {0}"
 msgstr "取引 — {0}"
 
@@ -342,12 +350,12 @@ msgid "Unrecognized file. Upload the CSV exported from MUFG or PayPay."
 msgstr "認識できないファイルです。MUFG または PayPay からエクスポートした CSV をアップロードしてください。"
 
 #. placeholder {0}: account.type === 'mufg' ? 'MUFG' : 'PayPay'
-#: src/components/upload-panel.tsx:68
+#: src/components/upload-panel.tsx:78
 msgid "Upload {0} CSV"
 msgstr "{0} の CSV をアップロード"
 
 #. placeholder {0}: uploads.length
-#: src/components/upload-panel.tsx:78
+#: src/components/upload-panel.tsx:88
 msgid "Upload history ({0})"
 msgstr "アップロード履歴 ({0})"
 

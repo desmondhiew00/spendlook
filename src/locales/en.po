@@ -9,18 +9,18 @@ msgstr ""
 
 #. placeholder {0}: u.added
 #. placeholder {1}: u.skipped
-#: src/components/upload-panel.tsx:84
+#: src/components/upload-panel.tsx:94
 msgid "{0} added, {1} skipped"
 msgstr "{0} added, {1} skipped"
 
 #. placeholder {0}: u.added
 #. placeholder {1}: u.skipped
-#: src/components/upload-panel.tsx:43
+#: src/components/upload-panel.tsx:50
 msgid "{0} added, {1} skipped."
 msgstr "{0} added, {1} skipped."
 
 #. placeholder {0}: r.failed
-#: src/components/upload-panel.tsx:31
+#: src/components/upload-panel.tsx:34
 msgid "{0} merchants could not be categorized. Retry below."
 msgstr "{0} merchants could not be categorized. Retry below."
 
@@ -48,19 +48,19 @@ msgstr "Add account"
 msgid "AI categorization"
 msgstr "AI categorization"
 
-#: src/components/dashboard.tsx:150
+#: src/components/dashboard.tsx:152
 msgid "All categories"
 msgstr "All categories"
 
-#: src/components/upload-panel.tsx:55
+#: src/components/upload-panel.tsx:63
 msgid "All merchants categorized."
 msgstr "All merchants categorized."
 
-#: src/components/dashboard.tsx:155
+#: src/components/dashboard.tsx:157
 msgid "All methods"
 msgstr "All methods"
 
-#: src/components/dashboard.tsx:162
+#: src/components/dashboard.tsx:164
 msgid "Amount"
 msgstr "Amount"
 
@@ -76,7 +76,7 @@ msgstr "Backup"
 msgid "Backup restored."
 msgstr "Backup restored."
 
-#: src/components/dashboard.tsx:83
+#: src/components/dashboard.tsx:85
 msgid "By category per month"
 msgstr "By category per month"
 
@@ -85,50 +85,54 @@ msgid "Cashback & points"
 msgstr "Cashback & points"
 
 #. placeholder {0}: formatMonth(month!, locale)
-#: src/components/dashboard.tsx:100
+#: src/components/dashboard.tsx:102
 msgid "Categories — {0}"
 msgstr "Categories — {0}"
 
-#: src/components/upload-panel.tsx:44
+#: src/components/upload-panel.tsx:37
+msgid "Categorizing failed. Check your AI key in Settings, then retry."
+msgstr "Categorizing failed. Check your AI key in Settings, then retry."
+
+#: src/components/upload-panel.tsx:51
 msgid "Categorizing…"
 msgstr "Categorizing…"
 
-#: src/components/dashboard.tsx:119
-#: src/components/dashboard.tsx:162
+#: src/components/dashboard.tsx:121
+#: src/components/dashboard.tsx:164
 msgid "Category"
 msgstr "Category"
 
-#: src/components/dashboard.tsx:149
+#: src/components/dashboard.tsx:151
 msgid "Category filter"
 msgstr "Category filter"
 
 #. placeholder {0}: m.name
-#: src/components/dashboard.tsx:130
+#: src/components/dashboard.tsx:132
 msgid "Category for {0}"
 msgstr "Category for {0}"
 
-#: src/components/dashboard.tsx:173
+#: src/components/dashboard.tsx:175
 msgid "Category for this transaction"
 msgstr "Category for this transaction"
 
-#: src/components/dashboard.tsx:79
+#: src/components/dashboard.tsx:81
 msgid "Change"
 msgstr "Change"
 
-#: src/components/dashboard.tsx:119
+#: src/components/dashboard.tsx:121
 msgid "Count"
 msgstr "Count"
 
-#: src/components/dashboard.tsx:162
+#: src/components/dashboard.tsx:164
 msgid "Date"
 msgstr "Date"
 
-#: src/components/upload-panel.tsx:85
+#: src/components/upload-panel.tsx:95
 #: src/routes/accounts.tsx:46
 msgid "Delete"
 msgstr "Delete"
 
-#: src/components/upload-panel.tsx:85
+#: src/components/upload-panel.tsx:95
 msgid "Delete the transactions from this upload?"
 msgstr "Delete the transactions from this upload?"
 
@@ -152,7 +156,7 @@ msgstr "Excluded"
 msgid "Export backup"
 msgstr "Export backup"
 
-#: src/components/dashboard.tsx:132
+#: src/components/dashboard.tsx:134
 msgid "Fixed"
 msgstr "Fixed"
 
@@ -184,12 +188,12 @@ msgstr "Key test failed: {error}"
 msgid "Key works."
 msgstr "Key works."
 
-#: src/components/dashboard.tsx:119
-#: src/components/dashboard.tsx:162
+#: src/components/dashboard.tsx:121
+#: src/components/dashboard.tsx:164
 msgid "Merchant"
 msgstr "Merchant"
 
-#: src/components/dashboard.tsx:162
+#: src/components/dashboard.tsx:164
 msgid "Method"
 msgstr "Method"
 
@@ -197,15 +201,15 @@ msgstr "Method"
 msgid "Model"
 msgstr "Model"
 
-#: src/components/dashboard.tsx:71
+#: src/components/dashboard.tsx:73
 msgid "Month"
 msgstr "Month"
 
-#: src/components/dashboard.tsx:159
+#: src/components/dashboard.tsx:161
 msgid "Needs review only"
 msgstr "Needs review only"
 
-#: src/components/dashboard.tsx:37
+#: src/components/dashboard.tsx:38
 msgid "No transactions yet. Upload a CSV above."
 msgstr "No transactions yet. Upload a CSV above."
 
@@ -217,7 +221,7 @@ msgstr "Other"
 msgid "Other income"
 msgstr "Other income"
 
-#: src/components/dashboard.tsx:154
+#: src/components/dashboard.tsx:156
 msgid "Payment method"
 msgstr "Payment method"
 
@@ -229,7 +233,7 @@ msgstr "PayPay"
 msgid "Phone & Internet"
 msgstr "Phone & Internet"
 
-#: src/components/dashboard.tsx:78
+#: src/components/dashboard.tsx:80
 msgid "Previous month"
 msgstr "Previous month"
 
@@ -245,11 +249,11 @@ msgstr "Received from others"
 msgid "Rent"
 msgstr "Rent"
 
-#: src/components/upload-panel.tsx:72
+#: src/components/upload-panel.tsx:82
 msgid "Retry categorize ({pending})"
 msgstr "Retry categorize ({pending})"
 
-#: src/components/dashboard.tsx:169
+#: src/components/dashboard.tsx:171
 msgid "Review"
 msgstr "Review"
 
@@ -261,7 +265,7 @@ msgstr "Salary"
 msgid "Save & test key"
 msgstr "Save & test key"
 
-#: src/components/dashboard.tsx:148
+#: src/components/dashboard.tsx:150
 msgid "Search merchant"
 msgstr "Search merchant"
 
@@ -269,7 +273,7 @@ msgstr "Search merchant"
 msgid "Sent to others"
 msgstr "Sent to others"
 
-#: src/components/upload-panel.tsx:60
+#: src/components/upload-panel.tsx:70
 msgid "Set and test your AI key in <0>Settings</0> to upload."
 msgstr "Set and test your AI key in <0>Settings</0> to upload."
 
@@ -303,6 +307,10 @@ msgstr "Subscriptions"
 msgid "Testing…"
 msgstr "Testing…"
 
+#: src/components/upload-panel.tsx:27
+msgid "The file has a row that could not be read. Re-export the CSV and try again."
+msgstr "The file has a row that could not be read. Re-export the CSV and try again."
+
 #: src/components/upload-panel.tsx:25
 msgid "This looks like a MUFG file, not PayPay."
 msgstr "This looks like a MUFG file, not PayPay."
@@ -311,21 +319,21 @@ msgstr "This looks like a MUFG file, not PayPay."
 msgid "This looks like a PayPay file, not MUFG."
 msgstr "This looks like a PayPay file, not MUFG."
 
-#: src/components/dashboard.tsx:77
+#: src/components/dashboard.tsx:79
 msgid "This month"
 msgstr "This month"
 
 #. placeholder {0}: formatMonth(month!, locale)
-#: src/components/dashboard.tsx:116
+#: src/components/dashboard.tsx:118
 msgid "Top merchants — {0}"
 msgstr "Top merchants — {0}"
 
-#: src/components/dashboard.tsx:119
+#: src/components/dashboard.tsx:121
 msgid "Total"
 msgstr "Total"
 
 #. placeholder {0}: formatMonth(month!, locale)
-#: src/components/dashboard.tsx:145
+#: src/components/dashboard.tsx:147
 msgid "Transactions — {0}"
 msgstr "Transactions — {0}"
 
@@ -342,12 +350,12 @@ msgid "Unrecognized file. Upload the CSV exported from MUFG or PayPay."
 msgstr "Unrecognized file. Upload the CSV exported from MUFG or PayPay."
 
 #. placeholder {0}: account.type === 'mufg' ? 'MUFG' : 'PayPay'
-#: src/components/upload-panel.tsx:68
+#: src/components/upload-panel.tsx:78
 msgid "Upload {0} CSV"
 msgstr "Upload {0} CSV"
 
 #. placeholder {0}: uploads.length
-#: src/components/upload-panel.tsx:78
+#: src/components/upload-panel.tsx:88
 msgid "Upload history ({0})"
 msgstr "Upload history ({0})"
 

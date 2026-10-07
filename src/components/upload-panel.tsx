@@ -4,7 +4,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { type ChangeEvent, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { categorizePending, aiGenerate } from '@/lib/categorize'
+import { aiGenerate, categorizePending, pendingMerchants } from '@/lib/categorize'
 import { db } from '@/lib/db'
 import { deleteUpload, importRows } from '@/lib/importer'
 import { makeModel } from '@/lib/model'
@@ -16,7 +16,7 @@ export function UploadPanel({ account }: { account: Account }) {
   const { t, i18n } = useLingui()
   const settings = loadSettings()
   const uploads = useLiveQuery(() => db.uploads.where('accountId').equals(account.id).reverse().sortBy('createdAt'), [account.id])
-  const pending = useLiveQuery(() => db.merchants.filter((m) => !m.aiCategory).count(), [])
+  const pending = useLiveQuery(() => pendingMerchants().then((p) => p.length), [])
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
 
@@ -24,11 +24,18 @@ export function UploadPanel({ account }: { account: Account }) {
     wrong_type_paypay: t`This looks like a PayPay file, not MUFG.`,
     wrong_type_mufg: t`This looks like a MUFG file, not PayPay.`,
     unknown_format: t`Unrecognized file. Upload the CSV exported from MUFG or PayPay.`,
+    bad_row: t`The file has a row that could not be read. Re-export the CSV and try again.`,
   }
 
+  // never throws: import results must stay visible even when the AI step fails
   async function categorize() {
-    const r = await categorizePending(aiGenerate(makeModel(settings!)))
-    return r.failed ? t`${r.failed} merchants could not be categorized. Retry below.` : ''
+    try {
+      const r = await categorizePending(aiGenerate(makeModel(settings!)))
+      return r.failed ? t`${r.failed} merchants could not be categorized. Retry below.` : ''
+    } catch (err) {
+      console.error(err)
+      return t`Categorizing failed. Check your AI key in Settings, then retry.`
+    }
   }
 
   async function onFile(e: ChangeEvent<HTMLInputElement>) {
@@ -52,8 +59,11 @@ export function UploadPanel({ account }: { account: Account }) {
 
   async function retry() {
     setBusy(true)
-    setMessage((await categorize()) || t`All merchants categorized.`)
-    setBusy(false)
+    try {
+      setMessage((await categorize()) || t`All merchants categorized.`)
+    } finally {
+      setBusy(false)
+    }
   }
 
   if (!settings?.verified) {

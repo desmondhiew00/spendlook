@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { byCategoryMonth, categoryTotals, merchantTotals, monthlyTotals, resolveCategory, topCategories } from '@/lib/aggregate'
+import { byCategoryMonth, categoryTotals, merchantTotals, monthOptions, monthlyTotals, previousMonth, resolveCategory, topCategories } from '@/lib/aggregate'
 import { db } from '@/lib/db'
 import { formatMoney, formatMonth } from '@/lib/format'
 import { type Category, type Flow, INCOME, SPENDING, type Txn, merchantId } from '@/lib/types'
@@ -25,9 +25,10 @@ export function Dashboard({ accountId, currency, flow, hasMethod }: { accountId:
   const txns = useMemo(() => (allTxns ?? []).filter((x) => x.kind === flow), [allTxns, flow])
   // excluded rows stay in the transaction table (so they can be un-excluded) but never count
   const counted = useMemo(() => txns.filter((x) => resolveCategory(x, merchants) !== 'excluded'), [txns, merchants])
-  const totals = useMemo(() => monthlyTotals(counted), [counted])
+  const months = useMemo(() => monthOptions(txns), [txns])
+  const totalByMonth = useMemo(() => new Map(monthlyTotals(counted).map((x) => [x.month, x.total])), [counted])
   const [pickedMonth, setPickedMonth] = useState<string>()
-  const month = pickedMonth ?? totals.at(-1)?.month
+  const month = pickedMonth ?? months.at(-1)
   const [category, setCategory] = useState<Category | ''>('')
   const [search, setSearch] = useState('')
   const [method, setMethod] = useState('')
@@ -36,9 +37,10 @@ export function Dashboard({ accountId, currency, flow, hasMethod }: { accountId:
   if (!allTxns || !merchantList) return null
   if (!txns.length) return <p className="text-sm text-muted-foreground"><Trans>No transactions yet. Upload a CSV above.</Trans></p>
 
-  const idx = totals.findIndex((x) => x.month === month)
-  const current = totals[idx]?.total ?? 0
-  const previous = idx > 0 ? totals[idx - 1].total : undefined
+  const current = totalByMonth.get(month!) ?? 0
+  // calendar month before; undefined only before the first month with data
+  const prev = previousMonth(month!)
+  const previous = prev >= months[0] ? (totalByMonth.get(prev) ?? 0) : undefined
   const change = previous ? ((current - previous) / Math.abs(previous)) * 100 : undefined
   const monthTxns = txns.filter((x) => x.month === month)
   const monthCounted = counted.filter((x) => x.month === month)
@@ -69,7 +71,7 @@ export function Dashboard({ accountId, currency, flow, hasMethod }: { accountId:
     <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-3">
         <select aria-label={t`Month`} value={month} onChange={(e) => setPickedMonth(e.target.value)} className="h-9 rounded-md border bg-background px-2 text-sm">
-          {[...totals].reverse().map((x) => <option key={x.month} value={x.month}>{formatMonth(x.month, locale)}</option>)}
+          {[...months].reverse().map((m) => <option key={m} value={m}>{formatMonth(m, locale)}</option>)}
         </select>
       </div>
 

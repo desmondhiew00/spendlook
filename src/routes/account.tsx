@@ -17,7 +17,7 @@ export function AccountPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-4xl font-bold tracking-[-0.04em]">{account.name}</h1>
-      <UploadPanel account={account} />
+      <UploadPanel key={account.id} account={account} />
       <Tabs value={flow} onValueChange={(v) => setFlow(v as Flow)}>
         <TabsList>
           <TabsTrigger value="expense"><Trans>Spending</Trans></TabsTrigger>

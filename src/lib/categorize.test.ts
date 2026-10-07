@@ -8,6 +8,12 @@ const merchant = (key: string, kind: Merchant['kind'] = 'expense'): Merchant => 
 })
 const ok = (id: string, category: AiResult['category'], confidence = 0.9): AiResult => ({ id, display_name: `Nice ${id}`, category, confidence })
 
+// merchants plus one transaction each, so they are not orphans
+async function seed(ms: Merchant[]) {
+  await db.merchants.bulkAdd(ms)
+  await db.txns.bulkAdd(ms.map((m, i) => ({ id: `A:${i}`, key: String(i), accountId: 'A', uploadId: 'u', date: '2026-09-01', month: '2026-09', kind: m.kind, amount: 1, rawMerchant: m.displayName, merchantKey: m.merchantKey })))
+}
+
 beforeEach(async () => {
   await db.delete()
   await db.open()
@@ -24,7 +30,7 @@ test('applyResult: valid, invalid-for-kind, low confidence, missing', () => {
 })
 
 test('categorizePending sends only uncategorized merchants, in batches, names not keys', async () => {
-  await db.merchants.bulkAdd([merchant('A'), merchant('B'), merchant('C'), { ...merchant('D'), aiCategory: 'rent' }])
+  await seed([merchant('A'), merchant('B'), merchant('C'), { ...merchant('D'), aiCategory: 'rent' }])
   const calls: string[][] = []
   const gen: Generate = async (items) => {
     calls.push(items.map((i) => i.name))
@@ -36,7 +42,7 @@ test('categorizePending sends only uncategorized merchants, in batches, names no
 })
 
 test('a failing batch is flagged and retried on the next run', async () => {
-  await db.merchants.bulkAdd([merchant('A'), merchant('B')])
+  await seed([merchant('A'), merchant('B')])
   let fail = true
   const gen: Generate = async (items) => {
     if (fail) throw new Error('401')
@@ -50,8 +56,16 @@ test('a failing batch is flagged and retried on the next run', async () => {
 })
 
 test('merchant missing from the AI response stays pending', async () => {
-  await db.merchants.bulkAdd([merchant('A'), merchant('B')])
+  await seed([merchant('A'), merchant('B')])
   await categorizePending(async () => [ok('expense|A', 'dining')])
   expect((await db.merchants.get('expense|B'))?.aiCategory).toBeUndefined()
   expect((await db.merchants.get('expense|B'))?.needsReview).toBe(true)
+})
+
+test('orphan merchants (their transactions were deleted) are never sent to the AI', async () => {
+  await db.merchants.bulkAdd([merchant('LIVE'), merchant('GONE')])
+  await db.txns.add({ id: 'A:1', key: '1', accountId: 'A', uploadId: 'u', date: '2026-09-01', month: '2026-09', kind: 'expense', amount: 1, rawMerchant: 'live', merchantKey: 'LIVE' })
+  const sent: string[] = []
+  await categorizePending(async (items) => { sent.push(...items.map((i) => i.id)); return [] })
+  expect(sent).toEqual(['expense|LIVE'])
 })

@@ -1,7 +1,7 @@
 import { type LanguageModel, Output, generateText } from 'ai'
 import { z } from 'zod'
 import { db } from './db'
-import { AI_INCOME, AI_SPENDING, type Flow, type Merchant } from './types'
+import { AI_INCOME, AI_SPENDING, type Flow, type Merchant, merchantId } from './types'
 
 const schema = z.object({
   results: z.array(
@@ -54,8 +54,14 @@ export function applyResult(m: Merchant, r?: AiResult): Merchant {
   }
 }
 
+// Uncategorized merchants that still have transactions (deleted uploads must not leak names to the AI)
+export async function pendingMerchants(): Promise<Merchant[]> {
+  const live = new Set((await db.txns.toArray()).filter((t) => t.kind !== 'transfer').map((t) => merchantId(t.kind as Flow, t.merchantKey)))
+  return db.merchants.filter((m) => !m.aiCategory && live.has(m.id)).toArray()
+}
+
 export async function categorizePending(generate: Generate, batchSize = 50) {
-  const pending = await db.merchants.filter((m) => !m.aiCategory).toArray()
+  const pending = await pendingMerchants()
   let done = 0
   let failed = 0
   for (let i = 0; i < pending.length; i += batchSize) {

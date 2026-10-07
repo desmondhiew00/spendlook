@@ -26,3 +26,9 @@ test('random CSV is unknown_format', () => {
   const bytes = new TextEncoder().encode('a,b\n1,2\n').buffer as ArrayBuffer
   expect(() => parseFile(bytes, 'paypay')).toThrow('unknown_format')
 })
+
+test('a known header with a malformed row is a bad_row ImportError, not a raw TypeError', () => {
+  const H = '取引日,出金金額（円）,入金金額（円）,海外出金金額,通貨,変換レート（円）,利用国,取引内容,取引先,取引方法,支払い区分,利用者,取引番号\n'
+  const bytes = new TextEncoder().encode(H + '2026/10/01 00:00:00,abc,-,-,-,-,-,支払い,X,Y,-,-,1\n').buffer as ArrayBuffer
+  expect(() => parseFile(bytes, 'paypay')).toThrow('bad_row')
+})
