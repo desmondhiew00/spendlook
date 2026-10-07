@@ -131,6 +131,9 @@ export function MappingDialog({ account, fileName, bytes, initial, initialMappin
             <legend className="kicker mb-2 text-muted-foreground"><Trans>Columns</Trans></legend>
             <Field label={t`Date`} error={err('dateCol')}><Picker label={t`Date column`} value={String(current.dateCol)} onChange={(v) => set({ dateCol: Number(v) })} options={columns} /></Field>
             <Field label={t`Date format`}><Picker label={t`Date format`} value={current.dateFormat} onChange={(v) => set({ dateFormat: v })} options={DATE_FORMATS.map((f) => ({ value: f, label: dateLabels[f] }))} /></Field>
+            <Field label={t`Time (optional)`} error={err('timeCol')}>
+              <Picker label={t`Time column`} value={current.timeCol === undefined ? NONE : String(current.timeCol)} onChange={(v) => set({ timeCol: toCol(v) })} options={[{ value: NONE, label: t`None, or inside the date` }, ...columns]} />
+            </Field>
             <Field label={t`Amount`} error={err('amount')}>
               <Picker
                 label={t`Amount layout`}
@@ -193,7 +196,7 @@ export function MappingDialog({ account, fileName, bytes, initial, initialMappin
                   <tbody>
                     {preview.map((r) => (
                       <tr key={r.key} className="border-t">
-                        <td className="px-3 py-1.5 whitespace-nowrap tabular-nums">{r.date}</td>
+                        <td className="px-3 py-1.5 whitespace-nowrap tabular-nums">{r.date}{r.time && <span className="ml-1.5 text-muted-foreground">{r.time}</span>}</td>
                         <td className="max-w-72 truncate px-3 py-1.5" title={r.rawMerchant}>{r.rawMerchant}</td>
                         <td className={`px-3 py-1.5 text-right whitespace-nowrap tabular-nums ${r.kind === 'income' ? 'text-emerald-600 dark:text-emerald-400' : ''}`}>
                           {r.kind === 'income' ? '+' : '−'}{formatMoney(r.amount, account.currency, i18n.locale)}

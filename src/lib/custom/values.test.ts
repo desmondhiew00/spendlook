@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test'
-import { fractionDigits, parseDate, parseMinor } from './values'
+import { fractionDigits, parseDate, parseMinor, parseTime } from './values'
 
 test('parseMinor gives exact integer minor units', () => {
   expect(parseMinor('1,234.50', 2)).toBe(123450)
@@ -60,4 +60,14 @@ test('DR/CR suffixes, trailing minus, unicode minus, plus sign', () => {
 test('zero-decimal currencies accept zero-padded fractions only', () => {
   expect(parseMinor('1200.00', 0)).toBe(1200)
   expect(() => parseMinor('1200.50', 0)).toThrow('Bad amount')
+})
+
+test('parseTime finds HH:MM in a date or time cell, 12h and 24h', () => {
+  expect(parseTime('2026/9/3 10:22')).toBe('10:22')
+  expect(parseTime('03/09/2026 14:05:33')).toBe('14:05')
+  expect(parseTime('3 Sep 2026 2:05 PM')).toBe('14:05')
+  expect(parseTime('12:30 am')).toBe('00:30')
+  expect(parseTime('9:07')).toBe('09:07')
+  expect(parseTime('2026-09-03')).toBeUndefined()
+  expect(parseTime('25:99')).toBeUndefined()
 })

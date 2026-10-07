@@ -49,3 +49,17 @@ export function parseDate(s: string, fmt: DateFormat): string {
   if (y < 1900 || m < 1 || m > 12 || d < 1 || d > daysInMonth) throw new Error(`Bad date: ${s}`)
   return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`
 }
+
+// HH:MM from a date or time cell: "2026/9/3 10:22", "14:05:33", "2:05 PM"
+export function parseTime(s: string): string | undefined {
+  const m = s.match(/(?:^|\D)(\d{1,2}):(\d{2})(?::\d{2})?\s*([AaPp])?\.?[Mm]?/)
+  if (!m) return undefined
+  let h = Number(m[1])
+  const min = Number(m[2])
+  if (m[3]) {
+    if (h < 1 || h > 12) return undefined
+    h = (h % 12) + (m[3].toLowerCase() === 'p' ? 12 : 0)
+  }
+  if (h > 23 || min > 59) return undefined
+  return `${String(h).padStart(2, '0')}:${String(min).padStart(2, '0')}`
+}

@@ -3,7 +3,7 @@ import { type MappingGuess, carryOver, detectDateFormat, guessToMapping, localGu
 
 const base = { encoding: 'utf-8' as const, delimiter: ',' as const, headerRow: 2, header: ['Date', 'Description', 'Debit', 'Credit', 'Ref 1', 'Balance'] }
 const guess: MappingGuess = {
-  dateCol: 0, dateFormat: 'DMY', descriptionCols: [1, 4, 9], amountMode: 'split',
+  dateCol: 0, dateFormat: 'DMY', descriptionCols: [1, 4, 9], timeCol: null, amountMode: 'split',
   amountCol: null, negativeIs: null, outCol: 2, inCol: 3, idCol: 12, balanceCol: 5,
 }
 
@@ -44,4 +44,12 @@ test('carryOver remaps a saved mapping onto a changed header by column name', ()
   const next = { ...base, header: ['Date', 'Ref 1', 'Description', 'Debit', 'Credit', 'Balance', 'New'] }
   expect(carryOver(old, next)).toMatchObject({ dateCol: 0, descriptionCols: [2, 1], amount: { mode: 'split', outCol: 3, inCol: 4 }, balanceCol: 5, header: next.header })
   expect(carryOver(old, { ...base, header: ['When', 'What', 'How much'] })).toBeNull()
+})
+
+test('time column: local guess by name, AI guess, and carried over by name', () => {
+  const b = { ...base, header: ['Date', 'Time', 'Description', 'Amount'] }
+  expect(localGuess(b).timeCol).toBe(1)
+  expect(guessToMapping({ ...guess, timeCol: 1 }, b).timeCol).toBe(1)
+  const moved = carryOver({ ...localGuess(b), timeCol: 1 }, { ...b, header: ['Time', 'Date', 'Description', 'Amount'] })
+  expect(moved?.timeCol).toBe(0)
 })

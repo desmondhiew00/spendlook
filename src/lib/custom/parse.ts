@@ -1,6 +1,6 @@
 import { normalizeMerchant } from '../normalize'
 import type { CustomMapping, ParsedRow } from '../types'
-import { parseDate, parseMinor } from './values'
+import { parseDate, parseMinor, parseTime } from './values'
 
 // Bank exports pad cells with spaces and wrap refs in '…' so spreadsheets keep them as text
 export const clean = (c: string | undefined) => (c ?? '').trim().replace(/^'(.*)'$/, '$1').trim()
@@ -30,6 +30,7 @@ export function validateMapping(m: CustomMapping, columnCount: number): string[]
     errors.push('descriptionCols')
   }
   if (m.idCol !== undefined && !ok(m.idCol)) errors.push('idCol')
+  if (m.timeCol !== undefined && !ok(m.timeCol)) errors.push('timeCol')
   if (m.balanceCol !== undefined && !ok(m.balanceCol)) errors.push('balanceCol')
   return errors
 }
@@ -80,5 +81,6 @@ function parseRow(r: string[], m: CustomMapping, digits: number): Omit<ParsedRow
     else if (credit) [kind, amount] = ['income', credit]
     else return undefined
   }
-  return { date, kind, amount, rawMerchant, merchantKey: customMerchantKey(rawMerchant) }
+  const time = parseTime(clean(r[m.timeCol ?? m.dateCol]))
+  return { date, time, kind, amount, rawMerchant, merchantKey: customMerchantKey(rawMerchant) }
 }

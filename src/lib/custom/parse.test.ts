@@ -102,3 +102,12 @@ test('trailing summary rows that fail to parse are ignored; a bad row mid-table 
   expect(parseCustom(rows(ok, ['Total 2026-09', '', '-1', '', '']), base, 2)).toHaveLength(1)
   expect(() => parseCustom(rows(['33/09/2026', 'BAD', '-1', '', ''], ok), base, 2)).toThrow('Bad date')
 })
+
+test('time comes from the date cell, or from a mapped time column', () => {
+  const [a] = parseCustom(rows(['03/09/2026 14:05', 'SHOP', '-1', '', '']), base, 2)
+  expect([a.date, a.time]).toEqual(['2026-09-03', '14:05'])
+  const [b] = parseCustom(rows(['03/09/2026', 'SHOP', '-1', '', '9:07 PM']), { ...base, timeCol: 4 }, 2)
+  expect(b.time).toBe('21:07')
+  const [c] = parseCustom(rows(['03/09/2026', 'SHOP', '-1', '', '']), base, 2)
+  expect(c.time).toBeUndefined()
+})

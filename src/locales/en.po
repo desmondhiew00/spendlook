@@ -8,7 +8,7 @@ msgstr ""
 "Language: en\n"
 
 #. placeholder {0}: all.length
-#: src/components/mapping-dialog.tsx:182
+#: src/components/mapping-dialog.tsx:185
 msgid "· {0} transactions"
 msgstr "· {0} transactions"
 
@@ -69,7 +69,7 @@ msgstr "1. Where is the CSV from?"
 msgid "2. Name it (optional)"
 msgstr "2. Name it (optional)"
 
-#: src/components/mapping-dialog.tsx:184
+#: src/components/mapping-dialog.tsx:187
 msgid "A row could not be read with these settings: {parseError}"
 msgstr "A row could not be read with these settings: {parseError}"
 
@@ -119,17 +119,17 @@ msgid "All time"
 msgstr "All time"
 
 #: src/components/dashboard.tsx:278
-#: src/components/mapping-dialog.tsx:134
-#: src/components/mapping-dialog.tsx:192
+#: src/components/mapping-dialog.tsx:137
+#: src/components/mapping-dialog.tsx:195
 msgid "Amount"
 msgstr "Amount"
 
-#: src/components/mapping-dialog.tsx:149
-#: src/components/mapping-dialog.tsx:149
+#: src/components/mapping-dialog.tsx:152
+#: src/components/mapping-dialog.tsx:152
 msgid "Amount column"
 msgstr "Amount column"
 
-#: src/components/mapping-dialog.tsx:136
+#: src/components/mapping-dialog.tsx:139
 msgid "Amount layout"
 msgstr "Amount layout"
 
@@ -153,11 +153,11 @@ msgstr "Backup"
 msgid "Backup restored."
 msgstr "Backup restored."
 
-#: src/components/mapping-dialog.tsx:160
+#: src/components/mapping-dialog.tsx:163
 msgid "Balance (optional)"
 msgstr "Balance (optional)"
 
-#: src/components/mapping-dialog.tsx:160
+#: src/components/mapping-dialog.tsx:163
 msgid "Balance column"
 msgstr "Balance column"
 
@@ -174,7 +174,7 @@ msgid "By category per month"
 msgstr "By category per month"
 
 #: src/components/confirm-delete.tsx:48
-#: src/components/mapping-dialog.tsx:211
+#: src/components/mapping-dialog.tsx:214
 #: src/routes/accounts.tsx:111
 #: src/routes/settings.tsx:178
 msgid "Cancel"
@@ -283,7 +283,7 @@ msgstr "Daily goods"
 
 #: src/components/dashboard.tsx:274
 #: src/components/mapping-dialog.tsx:132
-#: src/components/mapping-dialog.tsx:192
+#: src/components/mapping-dialog.tsx:195
 msgid "Date"
 msgstr "Date"
 
@@ -375,7 +375,7 @@ msgstr "File"
 msgid "First choose which row holds the column names below; nothing is sent until then."
 msgstr "First choose which row holds the column names below; nothing is sent until then."
 
-#: src/components/mapping-dialog.tsx:186
+#: src/components/mapping-dialog.tsx:189
 msgid "Fix the highlighted columns to see a preview."
 msgstr "Fix the highlighted columns to see a preview."
 
@@ -469,11 +469,11 @@ msgstr "Map the columns"
 
 #: src/components/dashboard.tsx:191
 #: src/components/dashboard.tsx:275
-#: src/components/mapping-dialog.tsx:192
+#: src/components/mapping-dialog.tsx:195
 msgid "Merchant"
 msgstr "Merchant"
 
-#: src/components/mapping-dialog.tsx:165
+#: src/components/mapping-dialog.tsx:168
 msgid "Merchant / description"
 msgstr "Merchant / description"
 
@@ -493,27 +493,27 @@ msgstr "Method"
 msgid "Model"
 msgstr "Model"
 
-#: src/components/mapping-dialog.tsx:155
+#: src/components/mapping-dialog.tsx:158
 msgid "Money in (card statements)"
 msgstr "Money in (card statements)"
 
-#: src/components/mapping-dialog.tsx:145
+#: src/components/mapping-dialog.tsx:148
 msgid "Money in (credit)"
 msgstr "Money in (credit)"
 
-#: src/components/mapping-dialog.tsx:145
+#: src/components/mapping-dialog.tsx:148
 msgid "Money in column"
 msgstr "Money in column"
 
-#: src/components/mapping-dialog.tsx:155
+#: src/components/mapping-dialog.tsx:158
 msgid "Money out"
 msgstr "Money out"
 
-#: src/components/mapping-dialog.tsx:144
+#: src/components/mapping-dialog.tsx:147
 msgid "Money out (debit)"
 msgstr "Money out (debit)"
 
-#: src/components/mapping-dialog.tsx:144
+#: src/components/mapping-dialog.tsx:147
 msgid "Money out column"
 msgstr "Money out column"
 
@@ -529,8 +529,8 @@ msgstr "My account"
 msgid "Needs review only"
 msgstr "Needs review only"
 
-#: src/components/mapping-dialog.tsx:150
-#: src/components/mapping-dialog.tsx:152
+#: src/components/mapping-dialog.tsx:153
+#: src/components/mapping-dialog.tsx:155
 msgid "Negative amounts are"
 msgstr "Negative amounts are"
 
@@ -542,7 +542,7 @@ msgstr "Newest first"
 msgid "Next month"
 msgstr "Next month"
 
-#: src/components/mapping-dialog.tsx:188
+#: src/components/mapping-dialog.tsx:191
 msgid "No transactions found below the header row."
 msgstr "No transactions found below the header row."
 
@@ -554,6 +554,10 @@ msgstr "No transactions yet. Upload a CSV above."
 msgid "None"
 msgstr "None"
 
+#: src/components/mapping-dialog.tsx:135
+msgid "None, or inside the date"
+msgstr "None, or inside the date"
+
 #: src/routes/settings.tsx:173
 msgid "Nothing to re-categorize yet. Upload a CSV first."
 msgstr "Nothing to re-categorize yet. Upload a CSV first."
@@ -562,7 +566,7 @@ msgstr "Nothing to re-categorize yet. Upload a CSV first."
 msgid "Oldest first"
 msgstr "Oldest first"
 
-#: src/components/mapping-dialog.tsx:139
+#: src/components/mapping-dialog.tsx:142
 msgid "One column with + / −"
 msgstr "One column with + / −"
 
@@ -598,7 +602,7 @@ msgstr "PayPay"
 msgid "Phone & Internet"
 msgstr "Phone & Internet"
 
-#: src/components/mapping-dialog.tsx:166
+#: src/components/mapping-dialog.tsx:169
 msgid "Pick every column that names the shop or person. Banks often put it in a reference column."
 msgstr "Pick every column that names the shop or person. Banks often put it in a reference column."
 
@@ -606,7 +610,7 @@ msgstr "Pick every column that names the shop or person. Banks often put it in a
 msgid "Pick or type a model ID"
 msgstr "Pick or type a model ID"
 
-#: src/components/mapping-dialog.tsx:182
+#: src/components/mapping-dialog.tsx:185
 msgid "Preview"
 msgstr "Preview"
 
@@ -647,11 +651,11 @@ msgstr "Re-categorizing {0}/{1}…"
 msgid "Received from others"
 msgstr "Received from others"
 
-#: src/components/mapping-dialog.tsx:161
+#: src/components/mapping-dialog.tsx:164
 msgid "Reference column"
 msgstr "Reference column"
 
-#: src/components/mapping-dialog.tsx:161
+#: src/components/mapping-dialog.tsx:164
 msgid "Reference no. (optional)"
 msgstr "Reference no. (optional)"
 
@@ -709,7 +713,7 @@ msgid "Save and test a key first."
 msgstr "Save and test a key first."
 
 #. placeholder {0}: all.length
-#: src/components/mapping-dialog.tsx:212
+#: src/components/mapping-dialog.tsx:215
 msgid "Save mapping and import {0}"
 msgstr "Save mapping and import {0}"
 
@@ -725,7 +729,7 @@ msgstr "Semicolon"
 msgid "Sent to others"
 msgstr "Sent to others"
 
-#: src/components/mapping-dialog.tsx:139
+#: src/components/mapping-dialog.tsx:142
 msgid "Separate money out / in columns"
 msgstr "Separate money out / in columns"
 
@@ -850,6 +854,14 @@ msgstr "This month"
 #: src/routes/accounts.tsx:77
 msgid "This permanently removes the account and its {0} transactions from this browser. Export a backup in Settings first if you might need them."
 msgstr "This permanently removes the account and its {0} transactions from this browser. Export a backup in Settings first if you might need them."
+
+#: src/components/mapping-dialog.tsx:134
+msgid "Time (optional)"
+msgstr "Time (optional)"
+
+#: src/components/mapping-dialog.tsx:135
+msgid "Time column"
+msgstr "Time column"
 
 #: src/routes/settings.tsx:213
 msgid "Token counts are reported by the provider. Cost is an estimate from the prices below; your provider's billing page is the source of truth."

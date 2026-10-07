@@ -43,6 +43,7 @@ export interface CustomMapping {
   header: string[] // saved to detect when the bank changes its export
   dateCol: number
   dateFormat: DateFormat
+  timeCol?: number // only when time has its own column; a time inside the date cell is read automatically
   descriptionCols: number[] // joined with a space; banks often put the real merchant in a reference column
   amount: AmountMapping
   idCol?: number // part of the dedupe key, not the whole key: bank refs are often not unique

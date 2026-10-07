@@ -10,6 +10,7 @@ const col = z.number().int()
 const schema = z.object({
   dateCol: col,
   dateFormat: z.enum(DATE_FORMATS),
+  timeCol: col.nullable(),
   descriptionCols: z.array(col),
   amountMode: z.enum(['signed', 'split']),
   amountCol: col.nullable(),
@@ -32,6 +33,7 @@ export function sampleForAi(rows: string[][], headerRow: number) {
 
 const SYSTEM = `You map the columns of a bank or e-wallet CSV export (any country, any language) to transaction fields.
 Columns are 0-based indexes into the header. Return:
+- timeCol: a separate time-of-day column, else null (a time inside the date cell needs no column)
 - dateCol and dateFormat: YMD (2026-09-03, 2026/9/3), DMY (03/09/2026, 03-09-2026), MDY (09/03/2026), YYYYMMDD, or "D MMM Y" (3 Sep 2026)
 - descriptionCols: the column(s) that identify the merchant or counterparty, best first. Include a reference/detail column
   when the description is a generic transaction type (e.g. "DEBIT CARD", "DUITNOW TRSF DR", "POS PURCHASE")
@@ -67,6 +69,7 @@ export function guessToMapping(g: MappingGuess, base: MappingBase): CustomMappin
     ...base,
     dateCol: g.dateCol,
     dateFormat: g.dateFormat,
+    timeCol: inRange(g.timeCol),
     descriptionCols: g.descriptionCols.filter((c) => inRange(c) !== undefined),
     amount: g.amountMode === 'signed'
       ? { mode: 'signed', col: g.amountCol ?? 0, negativeIs: g.negativeIs ?? 'expense' }
@@ -103,6 +106,7 @@ export function localGuess(base: MappingBase, samples: string[][] = []): CustomM
     descriptionCols: [description ?? base.header.findIndex((_, i) => !used.includes(i))].filter((c) => c >= 0),
     amount,
     idCol: undefined,
+    timeCol: find(/time|時刻|時間|时间|masa|시간|시각/i, [dateCol, ...used]),
     balanceCol: find(/balance|残高|余额|餘額|baki|잔액/i, used),
   }
 }
@@ -117,5 +121,5 @@ export function carryOver(old: CustomMapping, base: MappingBase): CustomMapping 
     ? at(old.amount.col) < 0 ? null : { ...old.amount, col: at(old.amount.col) }
     : at(old.amount.outCol) < 0 || at(old.amount.inCol) < 0 ? null : { mode: 'split', outCol: at(old.amount.outCol), inCol: at(old.amount.inCol) }
   if (dateCol < 0 || !descriptionCols.length || !amount) return null
-  return { ...base, dateCol, dateFormat: old.dateFormat, descriptionCols, amount, idCol: opt(old.idCol), balanceCol: opt(old.balanceCol) }
+  return { ...base, dateCol, dateFormat: old.dateFormat, timeCol: opt(old.timeCol), descriptionCols, amount, idCol: opt(old.idCol), balanceCol: opt(old.balanceCol) }
 }
