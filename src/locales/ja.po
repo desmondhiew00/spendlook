@@ -7,9 +7,49 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 "Language: ja\n"
 
+#: src/routes/accounts.tsx:58
+msgid "Account name"
+msgstr "口座名"
+
+#: src/routes/accounts.tsx:54
+msgid "Account type"
+msgstr "口座の種類"
+
+#: src/routes/accounts.tsx:30
+msgid "Accounts"
+msgstr "口座"
+
+#: src/routes/accounts.tsx:59
+msgid "Add account"
+msgstr "口座を追加"
+
+#: src/routes/settings.tsx:62
+msgid "AI categorization"
+msgstr "AI 分類"
+
+#: src/routes/settings.tsx:71
+msgid "API key"
+msgstr "API キー"
+
+#: src/routes/settings.tsx:85
+msgid "Backup"
+msgstr "バックアップ"
+
+#: src/routes/settings.tsx:52
+msgid "Backup restored."
+msgstr "バックアップを復元しました。"
+
 #: src/components/category-label.ts:22
 msgid "Cashback & points"
 msgstr "キャッシュバック・ポイント"
+
+#: src/routes/accounts.tsx:46
+msgid "Delete"
+msgstr "削除"
+
+#: src/routes/accounts.tsx:45
+msgid "Delete this account and all its transactions?"
+msgstr "この口座とすべての取引を削除しますか？"
 
 #: src/components/category-label.ts:7
 msgid "Dining"
@@ -23,6 +63,10 @@ msgstr "娯楽"
 msgid "Excluded"
 msgstr "除外"
 
+#: src/routes/settings.tsx:87
+msgid "Export backup"
+msgstr "バックアップをエクスポート"
+
 #: src/components/category-label.ts:6
 msgid "Groceries"
 msgstr "食料品"
@@ -31,9 +75,25 @@ msgstr "食料品"
 msgid "Health"
 msgstr "医療・健康"
 
+#: src/routes/settings.tsx:89
+msgid "Import backup"
+msgstr "バックアップをインポート"
+
 #: src/components/category-label.ts:24
 msgid "Interest"
 msgstr "利息"
+
+#: src/routes/settings.tsx:80
+msgid "Key test failed: {error}"
+msgstr "キーのテストに失敗しました: {error}"
+
+#: src/routes/settings.tsx:79
+msgid "Key works."
+msgstr "キーは有効です。"
+
+#: src/routes/settings.tsx:70
+msgid "Model"
+msgstr "モデル"
 
 #: src/components/category-label.ts:19
 msgid "Other"
@@ -51,6 +111,10 @@ msgstr "PayPay"
 msgid "Phone & Internet"
 msgstr "通信費"
 
+#: src/routes/settings.tsx:65
+msgid "Provider"
+msgstr "プロバイダー"
+
 #: src/components/category-label.ts:23
 msgid "Received from others"
 msgstr "受け取り"
@@ -63,11 +127,20 @@ msgstr "家賃"
 msgid "Salary"
 msgstr "給与"
 
+#: src/routes/settings.tsx:77
+msgid "Save & test key"
+msgstr "保存してキーをテスト"
+
 #: src/components/category-label.ts:18
 msgid "Sent to others"
 msgstr "送金"
 
+#: src/routes/accounts.tsx:33
+msgid "Set your AI provider key in <0>Settings</0> before uploading."
+msgstr "アップロードする前に<0>設定</0>で AI プロバイダーのキーを設定してください。"
+
 #: src/router.tsx:23
+#: src/routes/settings.tsx:60
 msgid "Settings"
 msgstr "設定"
 
@@ -75,9 +148,18 @@ msgstr "設定"
 msgid "Shopping"
 msgstr "買い物"
 
+#. placeholder {0}: PROVIDER_LABEL[provider]
+#: src/routes/settings.tsx:73
+msgid "Stored only in this browser and sent only to {0}. Only merchant names are sent, never amounts or dates."
+msgstr "このブラウザにのみ保存され、{0} にのみ送信されます。送信されるのは店舗名のみで、金額や日付は送信されません。"
+
 #: src/components/category-label.ts:16
 msgid "Subscriptions"
 msgstr "サブスク"
+
+#: src/routes/settings.tsx:77
+msgid "Testing…"
+msgstr "テスト中…"
 
 #: src/components/category-label.ts:8
 msgid "Transport"
