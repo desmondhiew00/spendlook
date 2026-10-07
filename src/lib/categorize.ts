@@ -1,4 +1,4 @@
-import { type LanguageModel, NoObjectGeneratedError, Output, generateText } from 'ai'
+import type { LanguageModel } from 'ai'
 import { z } from 'zod'
 import { db } from './db'
 import { AI_INCOME, AI_SPENDING, type Flow, type Merchant, merchantId } from './types'
@@ -43,13 +43,14 @@ Return one result per input item.`
 export type TokenUsage = { inputTokens: number; outputTokens: number }
 
 // onUsage fires for every billed response, including ones whose output failed to parse
-export function aiGenerate(model: LanguageModel, onUsage?: (usage: TokenUsage, items: number, ok: boolean) => void): Generate {
+export function aiGenerate(model: LanguageModel | Promise<LanguageModel>, onUsage?: (usage: TokenUsage, items: number, ok: boolean) => void): Generate {
   const report = (u: { inputTokens?: number; outputTokens?: number } | undefined, items: number, ok: boolean) =>
     u && onUsage?.({ inputTokens: u.inputTokens ?? 0, outputTokens: u.outputTokens ?? 0 }, items, ok)
   return async (items) => {
+    const { NoObjectGeneratedError, Output, generateText } = await import('ai')
     try {
       const { output, usage } = await generateText({
-        model,
+        model: await model,
         system: SYSTEM,
         prompt: JSON.stringify(items),
         output: Output.object({ schema }),

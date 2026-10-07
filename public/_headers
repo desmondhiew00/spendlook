@@ -13,3 +13,7 @@
   X-Robots-Tag: noindex
 /settings
   X-Robots-Tag: noindex
+
+# content-hashed build output: a new deploy gets new filenames
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

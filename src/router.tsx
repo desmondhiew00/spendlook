@@ -3,7 +3,7 @@ import { useLingui as useT } from '@lingui/react/macro'
 import { cn } from 'cn'
 import { Settings } from 'lucide-react'
 import { Trans } from '@lingui/react/macro'
-import { Link, Outlet, createRootRoute, createRoute, createRouter, useLocation } from '@tanstack/react-router'
+import { Link, Outlet, createRootRoute, createRoute, createRouter, lazyRouteComponent, useLocation } from '@tanstack/react-router'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { AccountLogo } from '@/components/account-logo'
 import { buttonVariants } from '@/components/ui/button'
@@ -12,9 +12,7 @@ import { LogoMark } from '@/components/logo-mark'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { db } from '@/lib/db'
 import type { Flow } from '@/lib/types'
-import { AccountPage } from '@/routes/account'
 import { AccountsPage } from '@/routes/accounts'
-import { SettingsPage } from '@/routes/settings'
 
 function Layout() {
   const accounts = useLiveQuery(() => db.accounts.toArray().then((a) => a.sort((x, y) => x.createdAt - y.createdAt)), [])
@@ -58,14 +56,15 @@ const routeTree = rootRoute.addChildren([
   createRoute({
     getParentRoute: () => rootRoute,
     path: '/accounts/$accountId',
-    component: AccountPage,
+    // split out: the dashboard pulls in echarts
+    component: lazyRouteComponent(() => import('@/routes/account'), 'AccountPage'),
     // month + tab live in the URL so a refresh or shared link reopens the same view; defaults stay out of the URL
     validateSearch: (s: Record<string, unknown>): { month?: string; flow?: Flow } => ({
       month: typeof s.month === 'string' && /^\d{4}-\d{2}$/.test(s.month) ? s.month : undefined,
       flow: s.flow === 'income' ? 'income' : undefined,
     }),
   }),
-  createRoute({ getParentRoute: () => rootRoute, path: '/settings', component: SettingsPage }),
+  createRoute({ getParentRoute: () => rootRoute, path: '/settings', component: lazyRouteComponent(() => import('@/routes/settings'), 'SettingsPage') }),
 ])
 
 export const router = createRouter({ routeTree })

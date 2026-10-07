@@ -1,4 +1,4 @@
-import { type LanguageModel, NoObjectGeneratedError, Output, generateText } from 'ai'
+import type { LanguageModel } from 'ai'
 import { z } from 'zod'
 import type { TokenUsage } from '../categorize'
 import type { CustomMapping } from '../types'
@@ -48,13 +48,14 @@ Columns are 0-based indexes into the header. Return:
 - idCol: a transaction id/reference column if one exists, else null. balanceCol: running balance if present, else null
 Use null for fields that do not apply.`
 
-export function aiDetectMapping(model: LanguageModel, onUsage?: (usage: TokenUsage, ok: boolean) => void) {
+export function aiDetectMapping(model: LanguageModel | Promise<LanguageModel>, onUsage?: (usage: TokenUsage, ok: boolean) => void) {
   const report = (u: { inputTokens?: number; outputTokens?: number } | undefined, ok: boolean) =>
     u && onUsage?.({ inputTokens: u.inputTokens ?? 0, outputTokens: u.outputTokens ?? 0 }, ok)
   return async (header: string[], samples: string[][]): Promise<MappingGuess> => {
+    const { NoObjectGeneratedError, Output, generateText } = await import('ai')
     try {
       const { output, usage } = await generateText({
-        model,
+        model: await model,
         system: SYSTEM,
         prompt: JSON.stringify({ header: header.map((name, index) => ({ index, name })), samples: samples.map((r) => r.map(redact)) }),
         output: Output.object({ schema }),
