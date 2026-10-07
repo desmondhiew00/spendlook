@@ -85,7 +85,7 @@ export function SettingsPage() {
         <CardHeader><CardTitle><Trans>Backup</Trans></CardTitle></CardHeader>
         <CardContent className="flex flex-wrap items-center gap-3">
           <Button variant="outline" onClick={download}><Trans>Export backup</Trans></Button>
-          <label className="cursor-pointer rounded-md border px-3 py-2 text-sm">
+          <label className="kicker cursor-pointer border px-3 py-2 hover:bg-muted">
             <Trans>Import backup</Trans>
             <input type="file" accept="application/json,.json" className="sr-only" onChange={restore} />
           </label>
