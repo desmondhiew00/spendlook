@@ -3,6 +3,7 @@ import { Link, Outlet, createRootRoute, createRoute, createRouter, useLocation }
 import { useLiveQuery } from 'dexie-react-hooks'
 import { AccountLogo } from '@/components/account-logo'
 import { LocaleToggle } from '@/components/locale-toggle'
+import { LogoMark } from '@/components/logo-mark'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { db } from '@/lib/db'
 import type { Flow } from '@/lib/types'
@@ -18,7 +19,7 @@ function Layout() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-10 border-b bg-background/90 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl flex-wrap items-center gap-4 p-4">
-          <Link to="/" disabled={path === '/'} className="text-lg font-bold tracking-tight aria-disabled:cursor-default">spendlook<span className="text-primary">.</span></Link>
+          <Link to="/" disabled={path === '/'} className="flex items-center gap-2 text-lg font-bold tracking-tight aria-disabled:cursor-default"><LogoMark className="size-6" />spendlook<span className="-ml-2 text-primary">.</span></Link>
           {accounts?.map((a) => (
             <Link key={a.id} to="/accounts/$accountId" params={{ accountId: a.id }} disabled={path === `/accounts/${a.id}`} className="kicker flex items-center gap-2 text-muted-foreground hover:text-foreground aria-disabled:cursor-default" activeProps={{ className: 'text-primary!' }}>
               <AccountLogo type={a.type} className="size-5" />{a.name}
