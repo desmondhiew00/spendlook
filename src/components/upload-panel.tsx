@@ -7,13 +7,13 @@ import { type ChangeEvent, useEffect, useRef, useState } from 'react'
 import { ConfirmDelete } from '@/components/confirm-delete'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { aiGenerate, categorizePending, pendingMerchants } from '@/lib/categorize'
+import { categorizePending, pendingMerchants } from '@/lib/categorize'
 import { db } from '@/lib/db'
 import { deleteUpload, importRows } from '@/lib/importer'
-import { makeModel } from '@/lib/model'
 import { ImportError, parseFile } from '@/lib/parse'
 import { loadSettings } from '@/lib/settings'
 import type { Account } from '@/lib/types'
+import { aiFor } from '@/lib/usage'
 
 export function UploadPanel({ account }: { account: Account }) {
   const { t, i18n } = useLingui()
@@ -64,7 +64,7 @@ export function UploadPanel({ account }: { account: Account }) {
   // never throws: import results must stay visible even when the AI step fails
   async function categorize() {
     try {
-      const r = await categorizePending(aiGenerate(makeModel(settings!)), undefined, (done, total) => setWork({ step: 'categorize', done, total }))
+      const r = await categorizePending(aiFor(settings!, 'categorize'), undefined, (done, total) => setWork({ step: 'categorize', done, total }))
       return r.failed ? t`${r.failed} merchants could not be categorized. Retry below.` : ''
     } catch (err) {
       console.error(err)

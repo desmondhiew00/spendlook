@@ -17,9 +17,12 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Picker } from '@/components/picker'
 import { exportBackup, importBackup } from '@/lib/backup'
-import { BATCH_SIZE, aiGenerate, recategorizableMerchants, recategorizeAll } from '@/lib/categorize'
-import { makeModel } from '@/lib/model'
+import { BATCH_SIZE, recategorizableMerchants, recategorizeAll } from '@/lib/categorize'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { db } from '@/lib/db'
 import { type AiSettings, DEFAULT_MODEL, PROVIDER_LABEL, type Provider, loadSettings, saveSettings } from '@/lib/settings'
+import { aiFor, estimate, loadPrices, savePrice, summarize } from '@/lib/usage'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 export function SettingsPage() {
   const { t } = useLingui()
@@ -37,7 +40,7 @@ export function SettingsPage() {
     setStatus('testing')
     setError('')
     try {
-      const r = await aiGenerate(makeModel(s))([{ id: 'test', name: 'セブン-イレブン', kind: 'expense' }])
+      const r = await aiFor(s, 'test')([{ id: 'test', name: 'セブン-イレブン', kind: 'expense' }])
       if (!r.length) throw new Error('Empty response')
       saveSettings({ ...s, verified: true })
       setStatus('ok')
@@ -92,7 +95,8 @@ export function SettingsPage() {
           </div>
         </CardContent>
       </Card>
-      <RecategorizeCard enabled={status === 'ok'} providerLabel={PROVIDER_LABEL[provider]} />
+      <RecategorizeCard enabled={status === 'ok'} providerLabel={PROVIDER_LABEL[provider]} model={model.trim()} />
+      <UsageCard model={model.trim()} />
       <Card>
         <CardHeader>
           <CardTitle><Trans>Backup</Trans></CardTitle>
@@ -113,13 +117,15 @@ export function SettingsPage() {
 
 // Re-runs the AI over every merchant it owns (e.g. after new categories ship). Counts first so the user
 // sees what will be sent and roughly how many requests it costs before anything leaves the browser.
-function RecategorizeCard({ enabled, providerLabel }: { enabled: boolean; providerLabel: string }) {
-  const { t } = useLingui()
+function RecategorizeCard({ enabled, providerLabel, model }: { enabled: boolean; providerLabel: string; model: string }) {
+  const { t, i18n } = useLingui()
   const [open, setOpen] = useState(false)
   const [count, setCount] = useState<number>()
   const [progress, setProgress] = useState<{ done: number; total: number }>()
   const [result, setResult] = useState('')
   const requests = Math.ceil((count ?? 0) / BATCH_SIZE)
+  const usage = useLiveQuery(() => db.usage.toArray(), [])
+  const est = count && usage ? estimate(usage, count, loadPrices()[model]) : undefined
 
   async function prepare() {
     setCount(undefined)
@@ -132,7 +138,7 @@ function RecategorizeCard({ enabled, providerLabel }: { enabled: boolean; provid
     setResult('')
     setProgress({ done: 0, total: count ?? 0 })
     try {
-      const r = await recategorizeAll(aiGenerate(makeModel(loadSettings()!)), undefined, (done, total) => setProgress({ done, total }))
+      const r = await recategorizeAll(aiFor(loadSettings()!, 'recategorize'), undefined, (done, total) => setProgress({ done, total }))
       setResult(r.failed ? t`${r.done} re-categorized. ${r.failed} failed and kept their previous category, flagged for review.` : t`${r.done} merchants re-categorized.`)
     } catch (e) {
       setResult(e instanceof Error ? e.message : String(e))
@@ -161,7 +167,7 @@ function RecategorizeCard({ enabled, providerLabel }: { enabled: boolean; provid
             <AlertDialogDescription>
               {count === undefined ? <Trans>Counting merchants…</Trans>
                 : count === 0 ? <Trans>Nothing to re-categorize yet. Upload a CSV first.</Trans>
-                : <><Trans>{count} merchant names will be sent to {providerLabel}</Trans> (<Plural value={requests} one="about # request" other="about # requests" />). <Trans>Amounts and dates are never sent. Categories you picked yourself won't change.</Trans></>}
+                : <><Trans>{count} merchant names will be sent to {providerLabel}</Trans> (<Plural value={requests} one="about # request" other="about # requests" />). <Trans>Amounts and dates are never sent. Categories you picked yourself won't change.</Trans>{est !== undefined && <> <Trans>Estimated cost: {usd(est, i18n.locale)}.</Trans></>}</>}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -170,6 +176,70 @@ function RecategorizeCard({ enabled, providerLabel }: { enabled: boolean; provid
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+    </Card>
+  )
+}
+
+// tiny amounts need more than 2 decimals to be meaningful ($0.0021, not $0.00)
+const usd = (n: number, locale: string) => n.toLocaleString(locale, { style: 'currency', currency: 'USD', maximumFractionDigits: n < 1 ? 4 : 2 })
+
+function UsageCard({ model }: { model: string }) {
+  const { t, i18n } = useLingui()
+  const rows = useLiveQuery(() => db.usage.toArray(), [])
+  const [prices, setPrices] = useState(loadPrices)
+  const [monthStart] = useState(() => { const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), 1).getTime() })
+  if (!rows) return null
+  const periods = [
+    { label: t`This month`, s: summarize(rows.filter((r) => r.at >= monthStart), prices) },
+    { label: t`All time`, s: summarize(rows, prices) },
+  ]
+  const price = prices[model] ?? { input: 0, output: 0 }
+  const setPrice = (k: 'input' | 'output', v: string) => {
+    const next = { ...price, [k]: Math.max(0, Number(v) || 0) }
+    savePrice(model, next)
+    setPrices(loadPrices())
+  }
+  const num = (n: number) => n.toLocaleString(i18n.locale)
+  const unpriced = periods[1].s.unpriced
+
+  return (
+    <Card className="pb-0">
+      <CardHeader>
+        <CardTitle><Trans>AI usage</Trans></CardTitle>
+        <CardDescription><Trans>Token counts are reported by the provider. Cost is an estimate from the prices below; your provider's billing page is the source of truth.</Trans></CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4 px-0">
+        <Table className="border-t [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
+          <TableHeader>
+            <TableRow>
+              <TableHead />
+              <TableHead className="text-right"><Trans>Requests</Trans></TableHead>
+              <TableHead className="text-right"><Trans>Input tokens</Trans></TableHead>
+              <TableHead className="text-right"><Trans>Output tokens</Trans></TableHead>
+              <TableHead className="text-right"><Trans>Est. cost</Trans></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {periods.map(({ label, s }) => (
+              <TableRow key={label}>
+                <TableCell className="text-muted-foreground">{label}</TableCell>
+                <TableCell className="text-right tabular-nums">{num(s.requests)}</TableCell>
+                <TableCell className="text-right tabular-nums">{num(s.inputTokens)}</TableCell>
+                <TableCell className="text-right tabular-nums">{num(s.outputTokens)}</TableCell>
+                <TableCell className="text-right font-semibold tabular-nums">{usd(s.cost, i18n.locale)}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <div className="space-y-2 px-4 pb-4">
+          <div className="text-sm font-medium"><Trans>Price for {model} (USD per 1M tokens)</Trans></div>
+          <div className="flex flex-wrap gap-3">
+            <div className="space-y-1"><Label htmlFor="price-in" className="text-xs text-muted-foreground"><Trans>Input</Trans></Label><Input id="price-in" type="number" min="0" step="0.01" value={price.input} onChange={(e) => setPrice('input', e.target.value)} className="w-28" /></div>
+            <div className="space-y-1"><Label htmlFor="price-out" className="text-xs text-muted-foreground"><Trans>Output</Trans></Label><Input id="price-out" type="number" min="0" step="0.01" value={price.output} onChange={(e) => setPrice('output', e.target.value)} className="w-28" /></div>
+          </div>
+          {unpriced > 0 && <p className="text-xs text-muted-foreground"><Trans>{unpriced} requests used a model with no price set and are not in the cost.</Trans></p>}
+        </div>
+      </CardContent>
     </Card>
   )
 }

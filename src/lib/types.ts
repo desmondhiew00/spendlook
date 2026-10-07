@@ -64,6 +64,19 @@ export interface Merchant {
   needsReview: boolean
 }
 
+// One AI request. Tokens come from the provider's response; cost is derived later from editable prices.
+export interface AiUsage {
+  id: string
+  at: number
+  provider: string
+  model: string
+  job: 'categorize' | 'recategorize' | 'test'
+  items: number // merchants in the request, for per-merchant cost estimates
+  inputTokens: number
+  outputTokens: number
+  ok: boolean // false when the response was billed but could not be parsed
+}
+
 export interface Upload { id: string; accountId: string; fileName: string; createdAt: number; added: number; skipped: number }
 
 export const merchantId = (kind: Flow, merchantKey: string) => `${kind}|${merchantKey}`
