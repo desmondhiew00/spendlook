@@ -32,6 +32,6 @@ export function yen(s: string | undefined): number {
   return n
 }
 
-export function decode(bytes: ArrayBuffer, encoding: 'shift_jis' | 'utf-8'): string {
+export function decode(bytes: ArrayBuffer, encoding: string): string {
   return new TextDecoder(encoding).decode(bytes).replace(/^﻿/, '')
 }

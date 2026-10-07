@@ -30,3 +30,4 @@ data/
 node_modules/
 dist/
 .playwright-mcp/
+!src/lib/custom/fixtures/*.csv
