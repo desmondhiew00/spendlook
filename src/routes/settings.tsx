@@ -1,8 +1,11 @@
 import { Trans, useLingui } from '@lingui/react/macro'
 import { type ChangeEvent, useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { cn } from 'cn'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Picker } from '@/components/picker'
 import { exportBackup, importBackup } from '@/lib/backup'
 import { aiGenerate } from '@/lib/categorize'
 import { makeModel } from '@/lib/model'
@@ -61,14 +64,12 @@ export function SettingsPage() {
       <Card>
         <CardHeader><CardTitle><Trans>AI categorization</Trans></CardTitle></CardHeader>
         <CardContent className="space-y-3">
-          <label className="block text-sm">
-            <Trans>Provider</Trans>
-            <select value={provider} onChange={(e) => { const p = e.target.value as Provider; setProvider(p); setModel(DEFAULT_MODEL[p]); setStatus('idle') }} className="mt-1 block h-9 w-full rounded-md border bg-background px-2">
-              {(Object.keys(PROVIDER_LABEL) as Provider[]).map((p) => <option key={p} value={p}>{PROVIDER_LABEL[p]}</option>)}
-            </select>
-          </label>
-          <label className="block text-sm"><Trans>Model</Trans><Input value={model} onChange={(e) => { setModel(e.target.value); setStatus('idle') }} className="mt-1" /></label>
-          <label className="block text-sm"><Trans>API key</Trans><Input type="password" autoComplete="off" value={apiKey} onChange={(e) => { setApiKey(e.target.value); setStatus('idle') }} className="mt-1" /></label>
+          <div className="space-y-2">
+            <Label><Trans>Provider</Trans></Label>
+            <Picker<Provider> label={t`Provider`} value={provider} onChange={(p) => { setProvider(p); setModel(DEFAULT_MODEL[p]); setStatus('idle') }} className="h-9 w-full" options={(Object.keys(PROVIDER_LABEL) as Provider[]).map((p) => ({ value: p, label: PROVIDER_LABEL[p] }))} />
+          </div>
+          <div className="space-y-2"><Label htmlFor="ai-model"><Trans>Model</Trans></Label><Input id="ai-model" value={model} onChange={(e) => { setModel(e.target.value); setStatus('idle') }} /></div>
+          <div className="space-y-2"><Label htmlFor="ai-key"><Trans>API key</Trans></Label><Input id="ai-key" type="password" autoComplete="off" value={apiKey} onChange={(e) => { setApiKey(e.target.value); setStatus('idle') }} /></div>
           <p className="text-xs text-muted-foreground">
             <Trans>Stored only in this browser and sent only to {PROVIDER_LABEL[provider]}. Only merchant names are sent, never amounts or dates.</Trans>
           </p>
@@ -76,8 +77,8 @@ export function SettingsPage() {
             <Button onClick={saveAndTest} disabled={!apiKey.trim() || !model.trim() || status === 'testing'}>
               {status === 'testing' ? <Trans>Testing…</Trans> : <Trans>Save & test key</Trans>}
             </Button>
-            {status === 'ok' && <span className="text-sm text-green-600"><Trans>Key works.</Trans></span>}
-            {status === 'fail' && <span className="text-sm text-red-600"><Trans>Key test failed: {error}</Trans></span>}
+            {status === 'ok' && <span className="text-sm text-emerald-600 dark:text-emerald-400"><Trans>Key works.</Trans></span>}
+            {status === 'fail' && <span className="text-sm text-destructive"><Trans>Key test failed: {error}</Trans></span>}
           </div>
         </CardContent>
       </Card>
@@ -85,7 +86,7 @@ export function SettingsPage() {
         <CardHeader><CardTitle><Trans>Backup</Trans></CardTitle></CardHeader>
         <CardContent className="flex flex-wrap items-center gap-3">
           <Button variant="outline" onClick={download}><Trans>Export backup</Trans></Button>
-          <label className="kicker cursor-pointer border px-3 py-2 hover:bg-muted">
+          <label className={cn(buttonVariants({ variant: 'outline' }), 'cursor-pointer has-focus-visible:ring-3 has-focus-visible:ring-ring/50')}>
             <Trans>Import backup</Trans>
             <input type="file" accept="application/json,.json" className="sr-only" onChange={restore} />
           </label>

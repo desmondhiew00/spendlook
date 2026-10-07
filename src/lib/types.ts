@@ -44,6 +44,7 @@ export interface Merchant {
   kind: Flow
   merchantKey: string
   displayName: string
+  overrideName?: string // user rename; wins over the AI displayName and survives re-categorizing
   aiCategory?: Category
   confidence?: number
   overrideCategory?: Category
@@ -53,3 +54,4 @@ export interface Merchant {
 export interface Upload { id: string; accountId: string; fileName: string; createdAt: number; added: number; skipped: number }
 
 export const merchantId = (kind: Flow, merchantKey: string) => `${kind}|${merchantKey}`
+export const merchantName = (m: Merchant | undefined, rawMerchant: string) => m?.overrideName ?? m?.displayName ?? rawMerchant.normalize('NFKC')

@@ -60,8 +60,9 @@ export async function pendingMerchants(): Promise<Merchant[]> {
   return db.merchants.filter((m) => !m.aiCategory && live.has(m.id)).toArray()
 }
 
-export async function categorizePending(generate: Generate, batchSize = 50) {
+export async function categorizePending(generate: Generate, batchSize = 50, onProgress?: (processed: number, total: number) => void) {
   const pending = await pendingMerchants()
+  onProgress?.(0, pending.length)
   let done = 0
   let failed = 0
   for (let i = 0; i < pending.length; i += batchSize) {
@@ -76,6 +77,7 @@ export async function categorizePending(generate: Generate, batchSize = 50) {
       await db.merchants.bulkPut(chunk.map((m) => ({ ...m, needsReview: true })))
       failed += chunk.length
     }
+    onProgress?.(i + chunk.length, pending.length)
   }
   return { done, failed }
 }

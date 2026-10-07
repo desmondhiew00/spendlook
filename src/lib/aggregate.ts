@@ -1,4 +1,4 @@
-import { type Category, type Flow, INCOME, type Merchant, SPENDING, type Txn, merchantId } from './types'
+import { type Category, type Flow, INCOME, type Merchant, SPENDING, type Txn, merchantId, merchantName } from './types'
 
 type Resolve = (t: Txn) => Category
 
@@ -39,10 +39,10 @@ export function categoryTotals(txns: Txn[], resolve: Resolve) {
 }
 
 export function merchantTotals(txns: Txn[], merchants: Map<string, Merchant>) {
-  const out = new Map<string, { id: string; name: string; total: number; count: number }>()
+  const out = new Map<string, { id: string; name: string; raw: string; total: number; count: number }>()
   for (const t of txns) {
     const id = merchantId(t.kind as Flow, t.merchantKey)
-    const row = out.get(id) ?? { id, name: merchants.get(id)?.displayName ?? t.rawMerchant.normalize('NFKC'), total: 0, count: 0 }
+    const row = out.get(id) ?? { id, name: merchantName(merchants.get(id), t.rawMerchant), raw: t.rawMerchant.normalize('NFKC'), total: 0, count: 0 }
     row.total += t.amount
     row.count++
     out.set(id, row)

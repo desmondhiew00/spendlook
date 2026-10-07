@@ -36,7 +36,9 @@ test('categorizePending sends only uncategorized merchants, in batches, names no
     calls.push(items.map((i) => i.name))
     return items.map((i) => ok(i.id, 'shopping'))
   }
-  expect(await categorizePending(gen, 2)).toEqual({ done: 3, failed: 0 })
+  const progress: number[][] = []
+  expect(await categorizePending(gen, 2, (p, t) => progress.push([p, t]))).toEqual({ done: 3, failed: 0 })
+  expect(progress).toEqual([[0, 3], [2, 3], [3, 3]])
   expect(calls).toEqual([['a', 'b'], ['c']])
   expect((await db.merchants.get('expense|A'))?.aiCategory).toBe('shopping')
 })

@@ -37,8 +37,8 @@ test('categoryTotals and merchantTotals sort descending', () => {
   const txns = [tx('1', '2026-08', 100), tx('2', '2026-08', 300, { merchantKey: 'BIG', rawMerchant: 'Big' }), tx('3', '2026-08', 50)]
   expect(categoryTotals(txns, () => 'other')).toEqual([{ category: 'other', total: 450 }])
   expect(merchantTotals(txns, merchants)).toEqual([
-    { id: 'expense|BIG', name: 'Big', total: 300, count: 1 },
-    { id: 'expense|SHOP', name: 'Shop', total: 150, count: 2 },
+    { id: 'expense|BIG', name: 'Big', raw: 'Big', total: 300, count: 1 },
+    { id: 'expense|SHOP', name: 'Shop', raw: 'Shop', total: 150, count: 2 },
   ])
 })
 
@@ -63,4 +63,10 @@ test('monthOptions lists every month that has rows, even fully excluded ones, as
 test('previousMonth is the calendar month before, across year boundaries', () => {
   expect(previousMonth('2026-03')).toBe('2026-02')
   expect(previousMonth('2026-01')).toBe('2025-12')
+})
+
+test('merchantTotals: user rename wins over AI name', () => {
+  const rows = [tx('1', '2026-09', 5, { rawMerchant: 'ＳＨＯＰ' })]
+  expect(merchantTotals(rows, new Map([[m.id, m]]))[0]).toMatchObject({ name: 'Shop', raw: 'SHOP' })
+  expect(merchantTotals(rows, new Map([[m.id, { ...m, overrideName: 'My shop' }]]))[0].name).toBe('My shop')
 })

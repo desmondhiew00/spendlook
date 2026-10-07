@@ -4,7 +4,7 @@
 @import "@fontsource-variable/tasa-orbiter";
 @import "@fontsource-variable/geist-mono";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
     --font-heading: var(--font-sans);
@@ -50,8 +50,45 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Dark-only theme modeled on motion.dev: near-black layered surfaces, yellow accent, square corners */
+/* motion.dev-inspired: layered surfaces, yellow accent (amber in light for contrast), square corners.
+   Light is :root; .dark on <html> (set pre-paint in index.html) switches to the near-black theme. */
 :root {
+    color-scheme: light;
+    --background: #f5f6f6;
+    --foreground: #0d1111;
+    --card: #ffffff;
+    --card-foreground: #0d1111;
+    --popover: #ffffff;
+    --popover-foreground: #0d1111;
+    --primary: oklch(0.52 0.12 75);
+    --primary-foreground: #ffffff;
+    --secondary: #eceeee;
+    --secondary-foreground: #0d1111;
+    --muted: #eceeee;
+    --muted-foreground: #586160;
+    --accent: rgba(13, 17, 17, 0.05);
+    --accent-foreground: #0d1111;
+    --destructive: #d92d20;
+    --border: #e1e4e4;
+    --input: #d0d5d5;
+    --ring: oklch(0.52 0.12 75 / 60%);
+    --chart-1: #3987e5;
+    --chart-2: #d95926;
+    --chart-3: #199e70;
+    --chart-4: #c98500;
+    --chart-5: #d55181;
+    --radius: 0rem;
+    --sidebar: #ffffff;
+    --sidebar-foreground: #0d1111;
+    --sidebar-primary: oklch(0.52 0.12 75);
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #eceeee;
+    --sidebar-accent-foreground: #0d1111;
+    --sidebar-border: #e1e4e4;
+    --sidebar-ring: oklch(0.52 0.12 75 / 60%);
+}
+
+.dark {
     color-scheme: dark;
     --background: #0d1111;
     --foreground: #ededec;
@@ -71,12 +108,6 @@
     --border: #1e2427;
     --input: #2a3236;
     --ring: oklch(0.88 0.18 96 / 60%);
-    --chart-1: #3987e5;
-    --chart-2: #d95926;
-    --chart-3: #199e70;
-    --chart-4: #c98500;
-    --chart-5: #d55181;
-    --radius: 0rem;
     --sidebar: #13181a;
     --sidebar-foreground: #ededec;
     --sidebar-primary: oklch(0.88 0.18 96);

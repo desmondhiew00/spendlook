@@ -1,12 +1,10 @@
 import { useLingui } from '@lingui/react'
+import { Picker } from '@/components/picker'
 import { type Locale, setLocale } from '@/i18n'
 
 export function LocaleToggle() {
   const { i18n } = useLingui()
   return (
-    <select aria-label="Language" value={i18n.locale} onChange={(e) => setLocale(e.target.value as Locale)} className="kicker border bg-background px-2 py-1">
-      <option value="en">EN</option>
-      <option value="ja">日本語</option>
-    </select>
+    <Picker<Locale> size="sm" label="Language" value={i18n.locale as Locale} onChange={setLocale} className="kicker" options={[{ value: 'en', label: 'EN' }, { value: 'ja', label: '日本語' }]} />
   )
 }
