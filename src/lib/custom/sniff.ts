@@ -5,15 +5,29 @@ export type Encoding = (typeof ENCODINGS)[number]
 export const DELIMITERS = [',', '\t', ';'] as const
 export type Delimiter = (typeof DELIMITERS)[number]
 
-// First encoding that decodes without errors; strict UTF-8 goes first because legacy encodings accept almost anything
+// Statement header words in ja / zh-Hans / zh-Hant / ko; only the right legacy decoding produces them
+const KEYWORDS = /日付|摘要|金額|残高|入金|出金|取引|日期|交易|金额|余额|收入|支出|餘額|存入|提出|說明|说明|거래|일자|금액|잔액|입금|출금|적요|내용/g
+
+function plausibility(text: string): number {
+  const head = text.slice(0, 2000)
+  const count = (re: RegExp) => head.match(re)?.length ?? 0
+  return count(KEYWORDS) * 10 + count(/[\uAC00-\uD7AF]/g) - count(/[\uFF61-\uFF9F]/g) * 2 - count(/[\uE000-\uF8FF\uFFFD]/g) * 5
+}
+
+// Strict UTF-8 is reliable, so it wins outright. Legacy CJK encodings accept each other's bytes (Big5 swallows GBK and
+// EUC-KR), so among those that decode cleanly, pick the one whose text looks most like a real statement.
 export function detectEncoding(bytes: ArrayBuffer): Encoding {
-  for (const e of ENCODINGS) {
+  const decoded = ENCODINGS.flatMap((e) => {
     try {
-      new TextDecoder(e, { fatal: true }).decode(bytes)
-      return e
-    } catch {}
-  }
-  return 'utf-8'
+      return [{ e, text: new TextDecoder(e, { fatal: true }).decode(bytes) }]
+    } catch {
+      return []
+    }
+  })
+  if (decoded[0]?.e === 'utf-8') return 'utf-8'
+  let best = decoded[0]
+  for (const d of decoded) if (plausibility(d.text) > plausibility(best.text)) best = d
+  return best?.e ?? 'utf-8'
 }
 
 const mode = (xs: number[]) => {
@@ -41,9 +55,9 @@ export function detectHeaderRow(rows: string[][]): number {
   const head = rows.slice(0, 30)
   const [width] = mode(head.map((r) => r.length).filter((n) => n > 1))
   const i = head.findIndex(
-    (r) => r.length >= width && r.filter((c) => c.trim()).length * 2 >= width && r.filter((c) => c.trim() && numericish(c)).length * 2 < width,
+    (r) => r.length >= Math.max(width, 3) && r.filter((c) => c.trim()).length * 2 >= width && r.filter((c) => c.trim() && numericish(c)).length * 2 < width,
   )
-  return Math.max(0, Math.min(i, 19))
+  return i > 19 ? -1 : i // -1: nothing looks like a header; the user must pick it (never guess the preamble)
 }
 
 export function readRows(bytes: ArrayBuffer, encoding: Encoding, delimiter: Delimiter) {

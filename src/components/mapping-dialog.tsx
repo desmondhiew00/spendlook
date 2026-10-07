@@ -19,11 +19,12 @@ const PREVIEW_ROWS = 10
 const NONE = 'none'
 
 // Confirm (or build) how a custom CSV's columns map to transactions, against a live preview of the parsed rows
-export function MappingDialog({ account, fileName, bytes, initial, onCancel, onConfirm }: {
+export function MappingDialog({ account, fileName, bytes, initial, initialMapping, onCancel, onConfirm }: {
   account: Account
   fileName: string
   bytes: ArrayBuffer
   initial: MappingBase
+  initialMapping?: CustomMapping
   onCancel: () => void
   onConfirm: (mapping: CustomMapping, rows: ParsedRow[]) => void
 }) {
@@ -34,7 +35,7 @@ export function MappingDialog({ account, fileName, bytes, initial, onCancel, onC
   const rows = useMemo(() => readRows(bytes, encoding, delimiter), [bytes, encoding, delimiter])
   const [headerRow, setHeaderRow] = useState(initial.headerRow)
   const base: MappingBase = useMemo(() => ({ encoding, delimiter, headerRow, header: (rows[headerRow] ?? []).map(clean) }), [encoding, delimiter, headerRow, rows])
-  const [mapping, setMapping] = useState<CustomMapping>(() => localGuess(base, sampleForAi(rows, headerRow).samples))
+  const [mapping, setMapping] = useState<CustomMapping>(() => initialMapping ?? localGuess(base, sampleForAi(rows, headerRow).samples))
   const [ai, setAi] = useState<'idle' | 'running' | 'error'>('idle')
   const digits = fractionDigits(account.currency)
 
@@ -51,8 +52,10 @@ export function MappingDialog({ account, fileName, bytes, initial, onCancel, onC
   }
   const set = (patch: Partial<CustomMapping>) => setMapping((m) => ({ ...m, ...patch, ...base }))
 
+  const noHeader = headerRow < 0
+
   async function detect() {
-    if (!settings?.verified) return
+    if (!settings?.verified || noHeader) return
     setAi('running')
     try {
       const { header, samples } = sampleForAi(rows, headerRow)
@@ -83,7 +86,10 @@ export function MappingDialog({ account, fileName, bytes, initial, onCancel, onC
   const optional = [{ value: NONE, label: t`None` }, ...columns]
   const toCol = (v: string) => (v === NONE ? undefined : Number(v))
   const err = (k: string) => errors.includes(k) && <span className="text-xs text-destructive"><Trans>Check this column</Trans></span>
-  const rowOptions = rows.slice(0, 20).map((r, i) => ({ value: String(i), label: `${i + 1}: ${r.map(clean).filter(Boolean).join(' · ').slice(0, 60) || '—'}` }))
+  const rowOptions = [
+    ...(noHeader ? [{ value: '-1', label: t`Choose the header row` }] : []),
+    ...rows.slice(0, 20).map((r, i) => ({ value: String(i), label: `${i + 1}: ${r.map(clean).filter(Boolean).join(' · ').slice(0, 60) || '—'}` })),
+  ]
   const dateLabels: Record<DateFormat, string> = { YMD: '2026-09-03', DMY: '03/09/2026', MDY: '09/03/2026', YYYYMMDD: '20260903', 'D MMM Y': '3 Sep 2026' }
   const delimiterLabels: Record<Delimiter, string> = { ',': t`Comma`, '\t': t`Tab`, ';': t`Semicolon` }
 
@@ -105,11 +111,12 @@ export function MappingDialog({ account, fileName, bytes, initial, onCancel, onC
                 : <Trans>Set an AI key in Settings to get column suggestions, or map them yourself below.</Trans>}
             </p>
             {settings?.verified && (
-              <Button variant="outline" onClick={detect} disabled={ai === 'running'}>
+              <Button variant="outline" onClick={detect} disabled={ai === 'running' || noHeader}>
                 {ai === 'running' ? <Loader2 className="animate-spin motion-reduce:animate-none" data-icon="inline-start" /> : <Sparkles data-icon="inline-start" />}
                 <Trans>Detect with AI</Trans>
               </Button>
             )}
+            {noHeader && <p className="w-full text-sm text-muted-foreground"><Trans>First choose which row holds the column names below; nothing is sent until then.</Trans></p>}
             {ai === 'error' && <p role="alert" className="w-full text-sm text-destructive"><Trans>AI could not suggest a mapping. Map the columns yourself, or try again.</Trans></p>}
           </div>
 

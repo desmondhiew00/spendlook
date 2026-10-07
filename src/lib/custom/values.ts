@@ -7,18 +7,23 @@ export function fractionDigits(currency: string): number {
 
 // String arithmetic, never float math: "0.29" @2 must be exactly 29
 export function parseMinor(s: string | undefined, digits: number): number {
-  let t = (s ?? '').replace(/[\s,]/g, '')
+  let t = (s ?? '').replace(/\u2212/g, '-').replace(/[\s\u00a0\u202f]/g, '')
   if (t === '' || t === '-') return 0
   let negative = false
-  if (/^\(.*\)$/.test(t)) {
-    negative = true
-    t = t.slice(1, -1)
-  }
+  const flip = () => { negative = !negative }
+  // statement suffixes and wrappers: 100.00DR / 100.00CR, (12.50), 12.50-
+  t = t.replace(/(DR|CR)\.?$/i, (m) => { if (/^DR/i.test(m)) flip(); return '' })
+  if (/^\(.*\)$/.test(t)) { flip(); t = t.slice(1, -1) }
+  if (/^[^-]+-$/.test(t)) { flip(); t = t.slice(0, -1) }
   // currency codes/symbols around the number: S$12, RM12, ¥12, 12円, 12 USD
-  t = t.replace(/^-?[A-Z]{0,3}\p{Sc}?/u, (m) => (m.startsWith('-') ? '-' : '')).replace(/(\p{Sc}|[A-Z]{1,3}|円|元|원)$/u, '')
-  const m = t.match(/^(-?)(\d+)(?:\.(\d+))?$/)
-  if (!m || (m[3] ?? '').length > digits) throw new Error(`Bad amount: ${s}`)
-  const n = Number(m[2] + (m[3] ?? '').padEnd(digits, '0'))
+  t = t.replace(/^([-+]?)[A-Z]{0,3}\p{Sc}?/u, '$1').replace(/(\p{Sc}|[A-Z]{1,3}|円|元|원)$/u, '')
+  // decimal comma (12,50 · 1.234,50) vs thousands comma (1,234 · 1,234.50)
+  t = /^[^.]*,\d{1,2}$/.test(t) || /\.\d{3},\d+$/.test(t) ? t.replace(/\./g, '').replace(',', '.') : t.replace(/,/g, '')
+  const m = t.match(/^([-+]?)(\d+)(?:\.(\d+))?$/)
+  // extra fraction digits are fine only when they are zeros (JPY "1200.00")
+  const frac = (m?.[3] ?? '').replace(new RegExp(`(?<=^\\d{${digits}})0+$`), '')
+  if (!m || frac.length > digits) throw new Error(`Bad amount: ${s}`)
+  const n = Number(m[2] + frac.padEnd(digits, '0'))
   return (m[1] === '-') !== negative ? -n : n
 }
 

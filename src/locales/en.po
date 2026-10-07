@@ -8,7 +8,7 @@ msgstr ""
 "Language: en\n"
 
 #. placeholder {0}: all.length
-#: src/components/mapping-dialog.tsx:175
+#: src/components/mapping-dialog.tsx:182
 msgid "· {0} transactions"
 msgstr "· {0} transactions"
 
@@ -19,13 +19,13 @@ msgstr "{0, plural, one {# transaction} other {# transactions}}"
 
 #. placeholder {0}: u.added
 #. placeholder {1}: u.skipped
-#: src/components/upload-panel.tsx:190
+#: src/components/upload-panel.tsx:192
 msgid "{0} added, {1} skipped"
 msgstr "{0} added, {1} skipped"
 
 #. placeholder {0}: u.added
 #. placeholder {1}: u.skipped
-#: src/components/upload-panel.tsx:124
+#: src/components/upload-panel.tsx:126
 msgid "{0} added, {1} skipped."
 msgstr "{0} added, {1} skipped."
 
@@ -69,7 +69,7 @@ msgstr "1. Where is the CSV from?"
 msgid "2. Name it (optional)"
 msgstr "2. Name it (optional)"
 
-#: src/components/mapping-dialog.tsx:177
+#: src/components/mapping-dialog.tsx:184
 msgid "A row could not be read with these settings: {parseError}"
 msgstr "A row could not be read with these settings: {parseError}"
 
@@ -90,11 +90,11 @@ msgstr "Add account"
 msgid "AI categorization"
 msgstr "AI categorization"
 
-#: src/components/mapping-dialog.tsx:113
+#: src/components/mapping-dialog.tsx:120
 msgid "AI could not suggest a mapping. Map the columns yourself, or try again."
 msgstr "AI could not suggest a mapping. Map the columns yourself, or try again."
 
-#: src/components/upload-panel.tsx:228
+#: src/components/upload-panel.tsx:230
 msgid "AI is categorizing new merchants — you can keep browsing."
 msgstr "AI is categorizing new merchants — you can keep browsing."
 
@@ -106,7 +106,7 @@ msgstr "AI usage"
 msgid "All categories"
 msgstr "All categories"
 
-#: src/components/upload-panel.tsx:151
+#: src/components/upload-panel.tsx:153
 msgid "All merchants categorized."
 msgstr "All merchants categorized."
 
@@ -119,17 +119,17 @@ msgid "All time"
 msgstr "All time"
 
 #: src/components/dashboard.tsx:278
-#: src/components/mapping-dialog.tsx:127
-#: src/components/mapping-dialog.tsx:185
+#: src/components/mapping-dialog.tsx:134
+#: src/components/mapping-dialog.tsx:192
 msgid "Amount"
 msgstr "Amount"
 
-#: src/components/mapping-dialog.tsx:142
-#: src/components/mapping-dialog.tsx:142
+#: src/components/mapping-dialog.tsx:149
+#: src/components/mapping-dialog.tsx:149
 msgid "Amount column"
 msgstr "Amount column"
 
-#: src/components/mapping-dialog.tsx:129
+#: src/components/mapping-dialog.tsx:136
 msgid "Amount layout"
 msgstr "Amount layout"
 
@@ -153,11 +153,11 @@ msgstr "Backup"
 msgid "Backup restored."
 msgstr "Backup restored."
 
-#: src/components/mapping-dialog.tsx:153
+#: src/components/mapping-dialog.tsx:160
 msgid "Balance (optional)"
 msgstr "Balance (optional)"
 
-#: src/components/mapping-dialog.tsx:153
+#: src/components/mapping-dialog.tsx:160
 msgid "Balance column"
 msgstr "Balance column"
 
@@ -174,7 +174,7 @@ msgid "By category per month"
 msgstr "By category per month"
 
 #: src/components/confirm-delete.tsx:48
-#: src/components/mapping-dialog.tsx:204
+#: src/components/mapping-dialog.tsx:211
 #: src/routes/accounts.tsx:111
 #: src/routes/settings.tsx:178
 msgid "Cancel"
@@ -203,7 +203,7 @@ msgstr "Categories — {0}"
 
 #. placeholder {0}: work.done
 #. placeholder {1}: work.total
-#: src/components/upload-panel.tsx:210
+#: src/components/upload-panel.tsx:212
 msgid "Categorizing {0}/{1}…"
 msgstr "Categorizing {0}/{1}…"
 
@@ -230,24 +230,28 @@ msgstr "Category for {0}"
 msgid "Category for this transaction"
 msgstr "Category for this transaction"
 
-#: src/components/mapping-dialog.tsx:85
+#: src/components/mapping-dialog.tsx:88
 msgid "Check this column"
 msgstr "Check this column"
+
+#: src/components/mapping-dialog.tsx:90
+msgid "Choose the header row"
+msgstr "Choose the header row"
 
 #: src/components/category-label.ts:15
 msgid "Clothing & beauty"
 msgstr "Clothing & beauty"
 
 #. placeholder {0}: i + 1
-#: src/components/mapping-dialog.tsx:82
+#: src/components/mapping-dialog.tsx:85
 msgid "Column {0}"
 msgstr "Column {0}"
 
-#: src/components/mapping-dialog.tsx:124
+#: src/components/mapping-dialog.tsx:131
 msgid "Columns"
 msgstr "Columns"
 
-#: src/components/mapping-dialog.tsx:88
+#: src/components/mapping-dialog.tsx:94
 msgid "Comma"
 msgstr "Comma"
 
@@ -278,17 +282,17 @@ msgid "Daily goods"
 msgstr "Daily goods"
 
 #: src/components/dashboard.tsx:274
-#: src/components/mapping-dialog.tsx:125
-#: src/components/mapping-dialog.tsx:185
+#: src/components/mapping-dialog.tsx:132
+#: src/components/mapping-dialog.tsx:192
 msgid "Date"
 msgstr "Date"
 
-#: src/components/mapping-dialog.tsx:125
+#: src/components/mapping-dialog.tsx:132
 msgid "Date column"
 msgstr "Date column"
 
-#: src/components/mapping-dialog.tsx:126
-#: src/components/mapping-dialog.tsx:126
+#: src/components/mapping-dialog.tsx:133
+#: src/components/mapping-dialog.tsx:133
 msgid "Date format"
 msgstr "Date format"
 
@@ -307,20 +311,20 @@ msgstr "Delete {0}"
 msgid "Delete account"
 msgstr "Delete account"
 
-#: src/components/upload-panel.tsx:194
-#: src/components/upload-panel.tsx:194
+#: src/components/upload-panel.tsx:196
+#: src/components/upload-panel.tsx:196
 msgid "Delete the transactions from this upload"
 msgstr "Delete the transactions from this upload"
 
-#: src/components/upload-panel.tsx:195
+#: src/components/upload-panel.tsx:197
 msgid "Delete this upload?"
 msgstr "Delete this upload?"
 
-#: src/components/upload-panel.tsx:197
+#: src/components/upload-panel.tsx:199
 msgid "Delete upload"
 msgstr "Delete upload"
 
-#: src/components/mapping-dialog.tsx:110
+#: src/components/mapping-dialog.tsx:116
 msgid "Detect with AI"
 msgstr "Detect with AI"
 
@@ -329,7 +333,7 @@ msgid "Dining"
 msgstr "Dining"
 
 #. placeholder {0}: account.name
-#: src/components/upload-panel.tsx:218
+#: src/components/upload-panel.tsx:220
 msgid "Drop to upload to {0}"
 msgstr "Drop to upload to {0}"
 
@@ -337,8 +341,8 @@ msgstr "Drop to upload to {0}"
 msgid "Education"
 msgstr "Education"
 
-#: src/components/mapping-dialog.tsx:118
-#: src/components/mapping-dialog.tsx:118
+#: src/components/mapping-dialog.tsx:125
+#: src/components/mapping-dialog.tsx:125
 msgid "Encoding"
 msgstr "Encoding"
 
@@ -363,11 +367,15 @@ msgstr "Excluded"
 msgid "Export backup"
 msgstr "Export backup"
 
-#: src/components/mapping-dialog.tsx:117
+#: src/components/mapping-dialog.tsx:124
 msgid "File"
 msgstr "File"
 
-#: src/components/mapping-dialog.tsx:179
+#: src/components/mapping-dialog.tsx:119
+msgid "First choose which row holds the column names below; nothing is sent until then."
+msgstr "First choose which row holds the column names below; nothing is sent until then."
+
+#: src/components/mapping-dialog.tsx:186
 msgid "Fix the highlighted columns to see a preview."
 msgstr "Fix the highlighted columns to see a preview."
 
@@ -383,8 +391,8 @@ msgstr "Gifts & social"
 msgid "Groceries"
 msgstr "Groceries"
 
-#: src/components/mapping-dialog.tsx:120
-#: src/components/mapping-dialog.tsx:120
+#: src/components/mapping-dialog.tsx:127
+#: src/components/mapping-dialog.tsx:127
 msgid "Header row"
 msgstr "Header row"
 
@@ -397,7 +405,7 @@ msgid "Highest amount"
 msgstr "Highest amount"
 
 #. placeholder {0}: uploads.length
-#: src/components/upload-panel.tsx:179
+#: src/components/upload-panel.tsx:181
 msgid "History ({0})"
 msgstr "History ({0})"
 
@@ -405,7 +413,7 @@ msgstr "History ({0})"
 msgid "Import backup"
 msgstr "Import backup"
 
-#: src/components/upload-panel.tsx:209
+#: src/components/upload-panel.tsx:211
 msgid "Importing…"
 msgstr "Importing…"
 
@@ -447,7 +455,7 @@ msgid "Last upload"
 msgstr "Last upload"
 
 #. placeholder {0}: PROVIDER_LABEL[settings.provider]
-#: src/components/mapping-dialog.tsx:104
+#: src/components/mapping-dialog.tsx:110
 msgid "Let AI suggest the columns. Only the header and the first 3 rows are sent to {0}."
 msgstr "Let AI suggest the columns. Only the header and the first 3 rows are sent to {0}."
 
@@ -455,17 +463,17 @@ msgstr "Let AI suggest the columns. Only the header and the first 3 rows are sen
 msgid "Lowest amount"
 msgstr "Lowest amount"
 
-#: src/components/mapping-dialog.tsx:94
+#: src/components/mapping-dialog.tsx:100
 msgid "Map the columns"
 msgstr "Map the columns"
 
 #: src/components/dashboard.tsx:191
 #: src/components/dashboard.tsx:275
-#: src/components/mapping-dialog.tsx:185
+#: src/components/mapping-dialog.tsx:192
 msgid "Merchant"
 msgstr "Merchant"
 
-#: src/components/mapping-dialog.tsx:158
+#: src/components/mapping-dialog.tsx:165
 msgid "Merchant / description"
 msgstr "Merchant / description"
 
@@ -485,27 +493,27 @@ msgstr "Method"
 msgid "Model"
 msgstr "Model"
 
-#: src/components/mapping-dialog.tsx:148
+#: src/components/mapping-dialog.tsx:155
 msgid "Money in (card statements)"
 msgstr "Money in (card statements)"
 
-#: src/components/mapping-dialog.tsx:138
+#: src/components/mapping-dialog.tsx:145
 msgid "Money in (credit)"
 msgstr "Money in (credit)"
 
-#: src/components/mapping-dialog.tsx:138
+#: src/components/mapping-dialog.tsx:145
 msgid "Money in column"
 msgstr "Money in column"
 
-#: src/components/mapping-dialog.tsx:148
+#: src/components/mapping-dialog.tsx:155
 msgid "Money out"
 msgstr "Money out"
 
-#: src/components/mapping-dialog.tsx:137
+#: src/components/mapping-dialog.tsx:144
 msgid "Money out (debit)"
 msgstr "Money out (debit)"
 
-#: src/components/mapping-dialog.tsx:137
+#: src/components/mapping-dialog.tsx:144
 msgid "Money out column"
 msgstr "Money out column"
 
@@ -521,8 +529,8 @@ msgstr "My account"
 msgid "Needs review only"
 msgstr "Needs review only"
 
-#: src/components/mapping-dialog.tsx:143
-#: src/components/mapping-dialog.tsx:145
+#: src/components/mapping-dialog.tsx:150
+#: src/components/mapping-dialog.tsx:152
 msgid "Negative amounts are"
 msgstr "Negative amounts are"
 
@@ -534,7 +542,7 @@ msgstr "Newest first"
 msgid "Next month"
 msgstr "Next month"
 
-#: src/components/mapping-dialog.tsx:181
+#: src/components/mapping-dialog.tsx:188
 msgid "No transactions found below the header row."
 msgstr "No transactions found below the header row."
 
@@ -542,7 +550,7 @@ msgstr "No transactions found below the header row."
 msgid "No transactions yet. Upload a CSV above."
 msgstr "No transactions yet. Upload a CSV above."
 
-#: src/components/mapping-dialog.tsx:83
+#: src/components/mapping-dialog.tsx:86
 msgid "None"
 msgstr "None"
 
@@ -554,7 +562,7 @@ msgstr "Nothing to re-categorize yet. Upload a CSV first."
 msgid "Oldest first"
 msgstr "Oldest first"
 
-#: src/components/mapping-dialog.tsx:132
+#: src/components/mapping-dialog.tsx:139
 msgid "One column with + / −"
 msgstr "One column with + / −"
 
@@ -590,7 +598,7 @@ msgstr "PayPay"
 msgid "Phone & Internet"
 msgstr "Phone & Internet"
 
-#: src/components/mapping-dialog.tsx:159
+#: src/components/mapping-dialog.tsx:166
 msgid "Pick every column that names the shop or person. Banks often put it in a reference column."
 msgstr "Pick every column that names the shop or person. Banks often put it in a reference column."
 
@@ -598,7 +606,7 @@ msgstr "Pick every column that names the shop or person. Banks often put it in a
 msgid "Pick or type a model ID"
 msgstr "Pick or type a model ID"
 
-#: src/components/mapping-dialog.tsx:175
+#: src/components/mapping-dialog.tsx:182
 msgid "Preview"
 msgstr "Preview"
 
@@ -639,11 +647,11 @@ msgstr "Re-categorizing {0}/{1}…"
 msgid "Received from others"
 msgstr "Received from others"
 
-#: src/components/mapping-dialog.tsx:154
+#: src/components/mapping-dialog.tsx:161
 msgid "Reference column"
 msgstr "Reference column"
 
-#: src/components/mapping-dialog.tsx:154
+#: src/components/mapping-dialog.tsx:161
 msgid "Reference no. (optional)"
 msgstr "Reference no. (optional)"
 
@@ -667,16 +675,16 @@ msgstr "Rent"
 msgid "Requests"
 msgstr "Requests"
 
-#: src/components/upload-panel.tsx:170
-#: src/components/upload-panel.tsx:173
+#: src/components/upload-panel.tsx:172
+#: src/components/upload-panel.tsx:175
 msgid "Reset columns"
 msgstr "Reset columns"
 
-#: src/components/upload-panel.tsx:171
+#: src/components/upload-panel.tsx:173
 msgid "Reset the column mapping?"
 msgstr "Reset the column mapping?"
 
-#: src/components/upload-panel.tsx:166
+#: src/components/upload-panel.tsx:168
 msgid "Retry categorize ({pending})"
 msgstr "Retry categorize ({pending})"
 
@@ -701,7 +709,7 @@ msgid "Save and test a key first."
 msgstr "Save and test a key first."
 
 #. placeholder {0}: all.length
-#: src/components/mapping-dialog.tsx:205
+#: src/components/mapping-dialog.tsx:212
 msgid "Save mapping and import {0}"
 msgstr "Save mapping and import {0}"
 
@@ -709,7 +717,7 @@ msgstr "Save mapping and import {0}"
 msgid "Search merchant"
 msgstr "Search merchant"
 
-#: src/components/mapping-dialog.tsx:88
+#: src/components/mapping-dialog.tsx:94
 msgid "Semicolon"
 msgstr "Semicolon"
 
@@ -717,20 +725,20 @@ msgstr "Semicolon"
 msgid "Sent to others"
 msgstr "Sent to others"
 
-#: src/components/mapping-dialog.tsx:132
+#: src/components/mapping-dialog.tsx:139
 msgid "Separate money out / in columns"
 msgstr "Separate money out / in columns"
 
-#: src/components/mapping-dialog.tsx:119
-#: src/components/mapping-dialog.tsx:119
+#: src/components/mapping-dialog.tsx:126
+#: src/components/mapping-dialog.tsx:126
 msgid "Separator"
 msgstr "Separator"
 
-#: src/components/mapping-dialog.tsx:105
+#: src/components/mapping-dialog.tsx:111
 msgid "Set an AI key in Settings to get column suggestions, or map them yourself below."
 msgstr "Set an AI key in Settings to get column suggestions, or map them yourself below."
 
-#: src/components/upload-panel.tsx:158
+#: src/components/upload-panel.tsx:160
 msgid "Set and test your AI key in <0>Settings</0> to upload."
 msgstr "Set and test your AI key in <0>Settings</0> to upload."
 
@@ -777,7 +785,7 @@ msgstr "Stored only in this browser and sent only to {0}. Only merchant names ar
 msgid "Subscriptions"
 msgstr "Subscriptions"
 
-#: src/components/mapping-dialog.tsx:88
+#: src/components/mapping-dialog.tsx:94
 msgid "Tab"
 msgstr "Tab"
 
@@ -786,7 +794,7 @@ msgid "Taxes & social insurance"
 msgstr "Taxes & social insurance"
 
 #. placeholder {0}: account.name
-#: src/components/mapping-dialog.tsx:96
+#: src/components/mapping-dialog.tsx:102
 msgid "Tell spendlook how to read “{fileName}”. This is saved for {0} and reused while the bank’s format stays the same."
 msgstr "Tell spendlook how to read “{fileName}”. This is saved for {0} and reused while the bank’s format stays the same."
 
@@ -796,7 +804,7 @@ msgstr "Testing…"
 
 #. placeholder {0}: u.added
 #. placeholder {1}: u.fileName
-#: src/components/upload-panel.tsx:196
+#: src/components/upload-panel.tsx:198
 msgid "The {0} transactions imported from “{1}” will be removed. Other uploads are not affected, and you can re-upload the file later."
 msgstr "The {0} transactions imported from “{1}” will be removed. Other uploads are not affected, and you can re-upload the file later."
 
@@ -878,20 +886,20 @@ msgstr "Travel"
 msgid "Unrecognized file. Upload the CSV exported from MUFG or PayPay."
 msgstr "Unrecognized file. Upload the CSV exported from MUFG or PayPay."
 
-#: src/components/upload-panel.tsx:208
+#: src/components/upload-panel.tsx:210
 msgid "Upload {sourceLabel} CSV"
 msgstr "Upload {sourceLabel} CSV"
 
-#: src/components/upload-panel.tsx:224
+#: src/components/upload-panel.tsx:226
 msgid "Upload cancelled."
 msgstr "Upload cancelled."
 
-#: src/components/upload-panel.tsx:208
+#: src/components/upload-panel.tsx:210
 #: src/routes/accounts.tsx:70
 msgid "Upload CSV"
 msgstr "Upload CSV"
 
-#: src/components/upload-panel.tsx:182
+#: src/components/upload-panel.tsx:184
 msgid "Upload history"
 msgstr "Upload history"
 
@@ -915,6 +923,6 @@ msgstr "Your data lives only in this browser. Clearing site data or switching de
 msgid "Your data stays in this browser only. Clearing site data deletes it, so export a backup in Settings."
 msgstr "Your data stays in this browser only. Clearing site data deletes it, so export a backup in Settings."
 
-#: src/components/upload-panel.tsx:172
+#: src/components/upload-panel.tsx:174
 msgid "Your next upload will ask you to map the columns again. Imported transactions are kept."
 msgstr "Your next upload will ask you to map the columns again. Imported transactions are kept."

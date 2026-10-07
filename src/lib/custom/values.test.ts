@@ -40,3 +40,24 @@ test('fractionDigits from Intl', () => {
   expect(fractionDigits('JPY')).toBe(0)
   expect(fractionDigits('SGD')).toBe(2)
 })
+
+test('European decimal comma and space/dot thousands', () => {
+  expect(parseMinor('12,50', 2)).toBe(1250)
+  expect(parseMinor('1 234,50', 2)).toBe(123450)
+  expect(parseMinor('1.234,50', 2)).toBe(123450)
+  expect(parseMinor('1,234', 0)).toBe(1234) // still thousands
+  expect(parseMinor('1,234.50', 2)).toBe(123450)
+})
+
+test('DR/CR suffixes, trailing minus, unicode minus, plus sign', () => {
+  expect(parseMinor('100.00DR', 2)).toBe(-10000)
+  expect(parseMinor('100.00 CR', 2)).toBe(10000)
+  expect(parseMinor('12.50-', 2)).toBe(-1250)
+  expect(parseMinor('−3.00', 2)).toBe(-300)
+  expect(parseMinor('+3.00', 2)).toBe(300)
+})
+
+test('zero-decimal currencies accept zero-padded fractions only', () => {
+  expect(parseMinor('1200.00', 0)).toBe(1200)
+  expect(() => parseMinor('1200.50', 0)).toThrow('Bad amount')
+})

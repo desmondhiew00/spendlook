@@ -36,3 +36,18 @@ test('header wider than data rows (trailing empty cells dropped), after a key:va
     ['01-09-2026', "'1'", 'X', '1.00', '', 'a'], ['02-09-2026', "'2'", 'Y', '', '2.00', 'b'], ['03-09-2026', "'3'", 'Z', '3.00', '', 'c']]
   expect(detectHeaderRow(rows)).toBe(4)
 })
+
+test.each([
+  ['gbk.csv', 'gbk', '交易日期'],
+  ['euckr.csv', 'euc-kr', '거래일자'],
+  ['big5.csv', 'big5', '交易日期'],
+  ['sjis.csv', 'shift_jis', '日付'],
+])('%s decodes as %s, not as another legacy encoding', async (f, enc, first) => {
+  const r = sniff(await load(f))
+  expect(r.encoding).toBe(enc)
+  expect(r.rows[0][0]).toBe(first)
+})
+
+test('no plausible header row → -1, so the preamble is never treated as the header', () => {
+  expect(detectHeaderRow([['Account Number:', '***1234'], ['Account Type:', 'Savings']])).toBe(-1)
+})

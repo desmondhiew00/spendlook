@@ -106,3 +106,16 @@ export function localGuess(base: MappingBase, samples: string[][] = []): CustomM
     balanceCol: find(/balance|残高|余额|餘額|baki|잔액/i, used),
   }
 }
+
+// The bank changed its export: keep the user's picks for every column whose name still exists
+export function carryOver(old: CustomMapping, base: MappingBase): CustomMapping | null {
+  const at = (i: number) => base.header.indexOf(old.header[i])
+  const opt = (i: number | undefined) => (i === undefined || at(i) < 0 ? undefined : at(i))
+  const dateCol = at(old.dateCol)
+  const descriptionCols = old.descriptionCols.map(at).filter((i) => i >= 0)
+  const amount: CustomMapping['amount'] | null = old.amount.mode === 'signed'
+    ? at(old.amount.col) < 0 ? null : { ...old.amount, col: at(old.amount.col) }
+    : at(old.amount.outCol) < 0 || at(old.amount.inCol) < 0 ? null : { mode: 'split', outCol: at(old.amount.outCol), inCol: at(old.amount.inCol) }
+  if (dateCol < 0 || !descriptionCols.length || !amount) return null
+  return { ...base, dateCol, dateFormat: old.dateFormat, descriptionCols, amount, idCol: opt(old.idCol), balanceCol: opt(old.balanceCol) }
+}

@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test'
-import { type MappingGuess, detectDateFormat, guessToMapping, localGuess, sampleForAi } from './ai'
+import { type MappingGuess, carryOver, detectDateFormat, guessToMapping, localGuess, sampleForAi } from './ai'
 
 const base = { encoding: 'utf-8' as const, delimiter: ',' as const, headerRow: 2, header: ['Date', 'Description', 'Debit', 'Credit', 'Ref 1', 'Balance'] }
 const guess: MappingGuess = {
@@ -37,4 +37,11 @@ test('detectDateFormat picks the first format every sample parses with', () => {
   expect(detectDateFormat(['2026/09/13'])).toBe('YMD')
   expect(detectDateFormat(['09/13/2026'])).toBe('MDY')
   expect(detectDateFormat(['nonsense'])).toBe('YMD')
+})
+
+test('carryOver remaps a saved mapping onto a changed header by column name', () => {
+  const old = { ...guessToMapping(guess, base), descriptionCols: [1, 4] }
+  const next = { ...base, header: ['Date', 'Ref 1', 'Description', 'Debit', 'Credit', 'Balance', 'New'] }
+  expect(carryOver(old, next)).toMatchObject({ dateCol: 0, descriptionCols: [2, 1], amount: { mode: 'split', outCol: 3, inCol: 4 }, balanceCol: 5, header: next.header })
+  expect(carryOver(old, { ...base, header: ['When', 'What', 'How much'] })).toBeNull()
 })

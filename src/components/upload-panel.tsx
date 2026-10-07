@@ -9,7 +9,7 @@ import { MappingDialog } from '@/components/mapping-dialog'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { categorizePending, pendingMerchants } from '@/lib/categorize'
-import type { MappingBase } from '@/lib/custom/ai'
+import { carryOver, type MappingBase } from '@/lib/custom/ai'
 import { clean, headerMatches, parseCustom } from '@/lib/custom/parse'
 import { readRows, sniff } from '@/lib/custom/sniff'
 import { fractionDigits } from '@/lib/custom/values'
@@ -32,7 +32,7 @@ export function UploadPanel({ account }: { account: Account }) {
   const [dragging, setDragging] = useState(false)
   const uploadRef = useRef<(file: File) => void>(null)
   // custom CSV whose columns still need confirming (first upload, or the bank changed its export format)
-  const [mappingFor, setMappingFor] = useState<{ fileName: string; bytes: ArrayBuffer; initial: MappingBase } | null>(null)
+  const [mappingFor, setMappingFor] = useState<{ fileName: string; bytes: ArrayBuffer; initial: MappingBase; initialMapping?: CustomMapping } | null>(null)
   const sourceLabel = account.type === 'mufg' ? 'MUFG' : account.type === 'paypay' ? 'PayPay' : ''
 
   // drop a CSV anywhere on the page; the depth counter stops flicker when dragging across child elements
@@ -87,7 +87,7 @@ export function UploadPanel({ account }: { account: Account }) {
   }
 
   async function upload(file: File) {
-    if (busy) return
+    if (busy || mappingFor) return // a drop behind the open mapping dialog must not swap its file
     setWork({ step: 'import' })
     setMessage('')
     try {
@@ -96,7 +96,9 @@ export function UploadPanel({ account }: { account: Account }) {
         const rows = account.mapping && readRows(bytes, account.mapping.encoding, account.mapping.delimiter)
         if (!account.mapping || !rows || !headerMatches(rows, account.mapping)) {
           const s = sniff(bytes)
-          setMappingFor({ fileName: file.name, bytes, initial: { encoding: s.encoding, delimiter: s.delimiter, headerRow: s.headerRow, header: (s.rows[s.headerRow] ?? []).map(clean) } })
+          const initial = { encoding: s.encoding, delimiter: s.delimiter, headerRow: s.headerRow, header: (s.rows[s.headerRow] ?? []).map(clean) }
+          // header changed: keep the user's earlier column picks wherever those columns still exist
+          setMappingFor({ fileName: file.name, bytes, initial, initialMapping: (account.mapping && carryOver(account.mapping, initial)) ?? undefined })
           return
         }
         await importAndCategorize(file.name, parseCustomOrBadRow(rows, account.mapping))

@@ -8,7 +8,7 @@ msgstr ""
 "Language: ja\n"
 
 #. placeholder {0}: all.length
-#: src/components/mapping-dialog.tsx:175
+#: src/components/mapping-dialog.tsx:182
 msgid "· {0} transactions"
 msgstr "· {0} 件の取引"
 
@@ -19,13 +19,13 @@ msgstr "{0, plural, other {#件の取引}}"
 
 #. placeholder {0}: u.added
 #. placeholder {1}: u.skipped
-#: src/components/upload-panel.tsx:190
+#: src/components/upload-panel.tsx:192
 msgid "{0} added, {1} skipped"
 msgstr "{0} 件追加、{1} 件スキップ"
 
 #. placeholder {0}: u.added
 #. placeholder {1}: u.skipped
-#: src/components/upload-panel.tsx:124
+#: src/components/upload-panel.tsx:126
 msgid "{0} added, {1} skipped."
 msgstr "{0} 件追加、{1} 件スキップしました。"
 
@@ -69,7 +69,7 @@ msgstr "1. CSVの取得元"
 msgid "2. Name it (optional)"
 msgstr "2. 名前（任意）"
 
-#: src/components/mapping-dialog.tsx:177
+#: src/components/mapping-dialog.tsx:184
 msgid "A row could not be read with these settings: {parseError}"
 msgstr "この設定では読み取れない行があります: {parseError}"
 
@@ -90,11 +90,11 @@ msgstr "口座を追加"
 msgid "AI categorization"
 msgstr "AI 分類"
 
-#: src/components/mapping-dialog.tsx:113
+#: src/components/mapping-dialog.tsx:120
 msgid "AI could not suggest a mapping. Map the columns yourself, or try again."
 msgstr "AI が列を推定できませんでした。手動で設定するか、もう一度お試しください。"
 
-#: src/components/upload-panel.tsx:228
+#: src/components/upload-panel.tsx:230
 msgid "AI is categorizing new merchants — you can keep browsing."
 msgstr "AIが新しい店舗を分類中です。そのまま閲覧できます。"
 
@@ -106,7 +106,7 @@ msgstr "AI使用量"
 msgid "All categories"
 msgstr "すべてのカテゴリ"
 
-#: src/components/upload-panel.tsx:151
+#: src/components/upload-panel.tsx:153
 msgid "All merchants categorized."
 msgstr "すべての店舗を分類しました。"
 
@@ -119,17 +119,17 @@ msgid "All time"
 msgstr "全期間"
 
 #: src/components/dashboard.tsx:278
-#: src/components/mapping-dialog.tsx:127
-#: src/components/mapping-dialog.tsx:185
+#: src/components/mapping-dialog.tsx:134
+#: src/components/mapping-dialog.tsx:192
 msgid "Amount"
 msgstr "金額"
 
-#: src/components/mapping-dialog.tsx:142
-#: src/components/mapping-dialog.tsx:142
+#: src/components/mapping-dialog.tsx:149
+#: src/components/mapping-dialog.tsx:149
 msgid "Amount column"
 msgstr "金額の列"
 
-#: src/components/mapping-dialog.tsx:129
+#: src/components/mapping-dialog.tsx:136
 msgid "Amount layout"
 msgstr "金額の形式"
 
@@ -153,11 +153,11 @@ msgstr "バックアップ"
 msgid "Backup restored."
 msgstr "バックアップを復元しました。"
 
-#: src/components/mapping-dialog.tsx:153
+#: src/components/mapping-dialog.tsx:160
 msgid "Balance (optional)"
 msgstr "残高（任意）"
 
-#: src/components/mapping-dialog.tsx:153
+#: src/components/mapping-dialog.tsx:160
 msgid "Balance column"
 msgstr "残高の列"
 
@@ -174,7 +174,7 @@ msgid "By category per month"
 msgstr "月別カテゴリ"
 
 #: src/components/confirm-delete.tsx:48
-#: src/components/mapping-dialog.tsx:204
+#: src/components/mapping-dialog.tsx:211
 #: src/routes/accounts.tsx:111
 #: src/routes/settings.tsx:178
 msgid "Cancel"
@@ -203,7 +203,7 @@ msgstr "カテゴリ — {0}"
 
 #. placeholder {0}: work.done
 #. placeholder {1}: work.total
-#: src/components/upload-panel.tsx:210
+#: src/components/upload-panel.tsx:212
 msgid "Categorizing {0}/{1}…"
 msgstr "分類中 {0}/{1}…"
 
@@ -230,24 +230,28 @@ msgstr "{0} のカテゴリ"
 msgid "Category for this transaction"
 msgstr "この取引のカテゴリ"
 
-#: src/components/mapping-dialog.tsx:85
+#: src/components/mapping-dialog.tsx:88
 msgid "Check this column"
 msgstr "この列を確認してください"
+
+#: src/components/mapping-dialog.tsx:90
+msgid "Choose the header row"
+msgstr "見出し行を選択"
 
 #: src/components/category-label.ts:15
 msgid "Clothing & beauty"
 msgstr "衣服・美容"
 
 #. placeholder {0}: i + 1
-#: src/components/mapping-dialog.tsx:82
+#: src/components/mapping-dialog.tsx:85
 msgid "Column {0}"
 msgstr "列 {0}"
 
-#: src/components/mapping-dialog.tsx:124
+#: src/components/mapping-dialog.tsx:131
 msgid "Columns"
 msgstr "列"
 
-#: src/components/mapping-dialog.tsx:88
+#: src/components/mapping-dialog.tsx:94
 msgid "Comma"
 msgstr "カンマ"
 
@@ -278,17 +282,17 @@ msgid "Daily goods"
 msgstr "日用品"
 
 #: src/components/dashboard.tsx:274
-#: src/components/mapping-dialog.tsx:125
-#: src/components/mapping-dialog.tsx:185
+#: src/components/mapping-dialog.tsx:132
+#: src/components/mapping-dialog.tsx:192
 msgid "Date"
 msgstr "日付"
 
-#: src/components/mapping-dialog.tsx:125
+#: src/components/mapping-dialog.tsx:132
 msgid "Date column"
 msgstr "日付の列"
 
-#: src/components/mapping-dialog.tsx:126
-#: src/components/mapping-dialog.tsx:126
+#: src/components/mapping-dialog.tsx:133
+#: src/components/mapping-dialog.tsx:133
 msgid "Date format"
 msgstr "日付の形式"
 
@@ -307,20 +311,20 @@ msgstr "{0}を削除"
 msgid "Delete account"
 msgstr "口座を削除"
 
-#: src/components/upload-panel.tsx:194
-#: src/components/upload-panel.tsx:194
+#: src/components/upload-panel.tsx:196
+#: src/components/upload-panel.tsx:196
 msgid "Delete the transactions from this upload"
 msgstr "このアップロードの取引を削除"
 
-#: src/components/upload-panel.tsx:195
+#: src/components/upload-panel.tsx:197
 msgid "Delete this upload?"
 msgstr "このアップロードを削除しますか？"
 
-#: src/components/upload-panel.tsx:197
+#: src/components/upload-panel.tsx:199
 msgid "Delete upload"
 msgstr "アップロードを削除"
 
-#: src/components/mapping-dialog.tsx:110
+#: src/components/mapping-dialog.tsx:116
 msgid "Detect with AI"
 msgstr "AI で検出"
 
@@ -329,7 +333,7 @@ msgid "Dining"
 msgstr "外食"
 
 #. placeholder {0}: account.name
-#: src/components/upload-panel.tsx:218
+#: src/components/upload-panel.tsx:220
 msgid "Drop to upload to {0}"
 msgstr "ドロップして{0}にアップロード"
 
@@ -337,8 +341,8 @@ msgstr "ドロップして{0}にアップロード"
 msgid "Education"
 msgstr "教育・教養"
 
-#: src/components/mapping-dialog.tsx:118
-#: src/components/mapping-dialog.tsx:118
+#: src/components/mapping-dialog.tsx:125
+#: src/components/mapping-dialog.tsx:125
 msgid "Encoding"
 msgstr "文字コード"
 
@@ -363,11 +367,15 @@ msgstr "除外"
 msgid "Export backup"
 msgstr "バックアップをエクスポート"
 
-#: src/components/mapping-dialog.tsx:117
+#: src/components/mapping-dialog.tsx:124
 msgid "File"
 msgstr "ファイル"
 
-#: src/components/mapping-dialog.tsx:179
+#: src/components/mapping-dialog.tsx:119
+msgid "First choose which row holds the column names below; nothing is sent until then."
+msgstr "まず下で列名が入っている行を選んでください。それまでは何も送信されません。"
+
+#: src/components/mapping-dialog.tsx:186
 msgid "Fix the highlighted columns to see a preview."
 msgstr "プレビューを表示するには、強調表示された列を修正してください。"
 
@@ -383,8 +391,8 @@ msgstr "交際費"
 msgid "Groceries"
 msgstr "食料品"
 
-#: src/components/mapping-dialog.tsx:120
-#: src/components/mapping-dialog.tsx:120
+#: src/components/mapping-dialog.tsx:127
+#: src/components/mapping-dialog.tsx:127
 msgid "Header row"
 msgstr "見出し行"
 
@@ -397,7 +405,7 @@ msgid "Highest amount"
 msgstr "金額の高い順"
 
 #. placeholder {0}: uploads.length
-#: src/components/upload-panel.tsx:179
+#: src/components/upload-panel.tsx:181
 msgid "History ({0})"
 msgstr "履歴 ({0})"
 
@@ -405,7 +413,7 @@ msgstr "履歴 ({0})"
 msgid "Import backup"
 msgstr "バックアップをインポート"
 
-#: src/components/upload-panel.tsx:209
+#: src/components/upload-panel.tsx:211
 msgid "Importing…"
 msgstr "取り込み中…"
 
@@ -447,7 +455,7 @@ msgid "Last upload"
 msgstr "最終アップロード"
 
 #. placeholder {0}: PROVIDER_LABEL[settings.provider]
-#: src/components/mapping-dialog.tsx:104
+#: src/components/mapping-dialog.tsx:110
 msgid "Let AI suggest the columns. Only the header and the first 3 rows are sent to {0}."
 msgstr "AI に列を推定させます。{0} に送信されるのは見出しと最初の 3 行だけです。"
 
@@ -455,17 +463,17 @@ msgstr "AI に列を推定させます。{0} に送信されるのは見出し�
 msgid "Lowest amount"
 msgstr "金額の低い順"
 
-#: src/components/mapping-dialog.tsx:94
+#: src/components/mapping-dialog.tsx:100
 msgid "Map the columns"
 msgstr "列の設定"
 
 #: src/components/dashboard.tsx:191
 #: src/components/dashboard.tsx:275
-#: src/components/mapping-dialog.tsx:185
+#: src/components/mapping-dialog.tsx:192
 msgid "Merchant"
 msgstr "店舗"
 
-#: src/components/mapping-dialog.tsx:158
+#: src/components/mapping-dialog.tsx:165
 msgid "Merchant / description"
 msgstr "店舗 / 摘要"
 
@@ -485,27 +493,27 @@ msgstr "支払方法"
 msgid "Model"
 msgstr "モデル"
 
-#: src/components/mapping-dialog.tsx:148
+#: src/components/mapping-dialog.tsx:155
 msgid "Money in (card statements)"
 msgstr "入金（カード明細）"
 
-#: src/components/mapping-dialog.tsx:138
+#: src/components/mapping-dialog.tsx:145
 msgid "Money in (credit)"
 msgstr "入金（貸方）"
 
-#: src/components/mapping-dialog.tsx:138
+#: src/components/mapping-dialog.tsx:145
 msgid "Money in column"
 msgstr "入金の列"
 
-#: src/components/mapping-dialog.tsx:148
+#: src/components/mapping-dialog.tsx:155
 msgid "Money out"
 msgstr "出金"
 
-#: src/components/mapping-dialog.tsx:137
+#: src/components/mapping-dialog.tsx:144
 msgid "Money out (debit)"
 msgstr "出金（借方）"
 
-#: src/components/mapping-dialog.tsx:137
+#: src/components/mapping-dialog.tsx:144
 msgid "Money out column"
 msgstr "出金の列"
 
@@ -521,8 +529,8 @@ msgstr "マイ口座"
 msgid "Needs review only"
 msgstr "要確認のみ"
 
-#: src/components/mapping-dialog.tsx:143
-#: src/components/mapping-dialog.tsx:145
+#: src/components/mapping-dialog.tsx:150
+#: src/components/mapping-dialog.tsx:152
 msgid "Negative amounts are"
 msgstr "マイナスの金額は"
 
@@ -534,7 +542,7 @@ msgstr "新しい順"
 msgid "Next month"
 msgstr "翌月"
 
-#: src/components/mapping-dialog.tsx:181
+#: src/components/mapping-dialog.tsx:188
 msgid "No transactions found below the header row."
 msgstr "見出し行の下に取引が見つかりません。"
 
@@ -542,7 +550,7 @@ msgstr "見出し行の下に取引が見つかりません。"
 msgid "No transactions yet. Upload a CSV above."
 msgstr "取引がまだありません。上から CSV をアップロードしてください。"
 
-#: src/components/mapping-dialog.tsx:83
+#: src/components/mapping-dialog.tsx:86
 msgid "None"
 msgstr "なし"
 
@@ -554,7 +562,7 @@ msgstr "再分類する店舗がありません。先にCSVをアップロード
 msgid "Oldest first"
 msgstr "古い順"
 
-#: src/components/mapping-dialog.tsx:132
+#: src/components/mapping-dialog.tsx:139
 msgid "One column with + / −"
 msgstr "＋／− の 1 列"
 
@@ -590,7 +598,7 @@ msgstr "PayPay"
 msgid "Phone & Internet"
 msgstr "通信費"
 
-#: src/components/mapping-dialog.tsx:159
+#: src/components/mapping-dialog.tsx:166
 msgid "Pick every column that names the shop or person. Banks often put it in a reference column."
 msgstr "店舗名や相手の名前が入っている列をすべて選んでください。銀行によっては参照列に入っています。"
 
@@ -598,7 +606,7 @@ msgstr "店舗名や相手の名前が入っている列をすべて選んでく
 msgid "Pick or type a model ID"
 msgstr "モデルIDを選択または入力"
 
-#: src/components/mapping-dialog.tsx:175
+#: src/components/mapping-dialog.tsx:182
 msgid "Preview"
 msgstr "プレビュー"
 
@@ -639,11 +647,11 @@ msgstr "再分類中 {0}/{1}…"
 msgid "Received from others"
 msgstr "受け取り"
 
-#: src/components/mapping-dialog.tsx:154
+#: src/components/mapping-dialog.tsx:161
 msgid "Reference column"
 msgstr "参照番号の列"
 
-#: src/components/mapping-dialog.tsx:154
+#: src/components/mapping-dialog.tsx:161
 msgid "Reference no. (optional)"
 msgstr "参照番号（任意）"
 
@@ -667,16 +675,16 @@ msgstr "家賃"
 msgid "Requests"
 msgstr "リクエスト数"
 
-#: src/components/upload-panel.tsx:170
-#: src/components/upload-panel.tsx:173
+#: src/components/upload-panel.tsx:172
+#: src/components/upload-panel.tsx:175
 msgid "Reset columns"
 msgstr "列の設定をリセット"
 
-#: src/components/upload-panel.tsx:171
+#: src/components/upload-panel.tsx:173
 msgid "Reset the column mapping?"
 msgstr "列の設定をリセットしますか？"
 
-#: src/components/upload-panel.tsx:166
+#: src/components/upload-panel.tsx:168
 msgid "Retry categorize ({pending})"
 msgstr "分類を再試行 ({pending})"
 
@@ -701,7 +709,7 @@ msgid "Save and test a key first."
 msgstr "先にキーを保存してテストしてください。"
 
 #. placeholder {0}: all.length
-#: src/components/mapping-dialog.tsx:205
+#: src/components/mapping-dialog.tsx:212
 msgid "Save mapping and import {0}"
 msgstr "設定を保存して {0} 件をインポート"
 
@@ -709,7 +717,7 @@ msgstr "設定を保存して {0} 件をインポート"
 msgid "Search merchant"
 msgstr "店舗を検索"
 
-#: src/components/mapping-dialog.tsx:88
+#: src/components/mapping-dialog.tsx:94
 msgid "Semicolon"
 msgstr "セミコロン"
 
@@ -717,20 +725,20 @@ msgstr "セミコロン"
 msgid "Sent to others"
 msgstr "送金"
 
-#: src/components/mapping-dialog.tsx:132
+#: src/components/mapping-dialog.tsx:139
 msgid "Separate money out / in columns"
 msgstr "出金・入金が別の列"
 
-#: src/components/mapping-dialog.tsx:119
-#: src/components/mapping-dialog.tsx:119
+#: src/components/mapping-dialog.tsx:126
+#: src/components/mapping-dialog.tsx:126
 msgid "Separator"
 msgstr "区切り文字"
 
-#: src/components/mapping-dialog.tsx:105
+#: src/components/mapping-dialog.tsx:111
 msgid "Set an AI key in Settings to get column suggestions, or map them yourself below."
 msgstr "列の推定には設定で AI キーを登録してください。下で手動でも設定できます。"
 
-#: src/components/upload-panel.tsx:158
+#: src/components/upload-panel.tsx:160
 msgid "Set and test your AI key in <0>Settings</0> to upload."
 msgstr "アップロードするには<0>設定</0>で AI キーを設定・テストしてください。"
 
@@ -777,7 +785,7 @@ msgstr "このブラウザにのみ保存され、{0} にのみ送信されま�
 msgid "Subscriptions"
 msgstr "サブスク"
 
-#: src/components/mapping-dialog.tsx:88
+#: src/components/mapping-dialog.tsx:94
 msgid "Tab"
 msgstr "タブ"
 
@@ -786,7 +794,7 @@ msgid "Taxes & social insurance"
 msgstr "税・社会保険"
 
 #. placeholder {0}: account.name
-#: src/components/mapping-dialog.tsx:96
+#: src/components/mapping-dialog.tsx:102
 msgid "Tell spendlook how to read “{fileName}”. This is saved for {0} and reused while the bank’s format stays the same."
 msgstr "「{fileName}」の読み方を設定します。{0} に保存され、銀行の形式が変わらない限り再利用されます。"
 
@@ -796,7 +804,7 @@ msgstr "テスト中…"
 
 #. placeholder {0}: u.added
 #. placeholder {1}: u.fileName
-#: src/components/upload-panel.tsx:196
+#: src/components/upload-panel.tsx:198
 msgid "The {0} transactions imported from “{1}” will be removed. Other uploads are not affected, and you can re-upload the file later."
 msgstr "「{1}」から取り込んだ{0}件の取引が削除されます。他のアップロードには影響せず、後で再アップロードできます。"
 
@@ -878,20 +886,20 @@ msgstr "旅行"
 msgid "Unrecognized file. Upload the CSV exported from MUFG or PayPay."
 msgstr "認識できないファイルです。MUFG または PayPay からエクスポートした CSV をアップロードしてください。"
 
-#: src/components/upload-panel.tsx:208
+#: src/components/upload-panel.tsx:210
 msgid "Upload {sourceLabel} CSV"
 msgstr "{sourceLabel} の CSV をアップロード"
 
-#: src/components/upload-panel.tsx:224
+#: src/components/upload-panel.tsx:226
 msgid "Upload cancelled."
 msgstr "アップロードをキャンセルしました。"
 
-#: src/components/upload-panel.tsx:208
+#: src/components/upload-panel.tsx:210
 #: src/routes/accounts.tsx:70
 msgid "Upload CSV"
 msgstr "CSVをアップロード"
 
-#: src/components/upload-panel.tsx:182
+#: src/components/upload-panel.tsx:184
 msgid "Upload history"
 msgstr "アップロード履歴"
 
@@ -915,6 +923,6 @@ msgstr "データはこのブラウザ内にのみ保存されます。サイト
 msgid "Your data stays in this browser only. Clearing site data deletes it, so export a backup in Settings."
 msgstr "データはこのブラウザにのみ保存されます。サイトデータを消去すると削除されるため、設定からバックアップをエクスポートしてください。"
 
-#: src/components/upload-panel.tsx:172
+#: src/components/upload-panel.tsx:174
 msgid "Your next upload will ask you to map the columns again. Imported transactions are kept."
 msgstr "次回のアップロード時に列を再設定します。インポート済みの取引はそのまま残ります。"

@@ -37,29 +37,48 @@ export function validateMapping(m: CustomMapping, columnCount: number): string[]
 export function parseCustom(rows: string[][], m: CustomMapping, digits: number): ParsedRow[] {
   const seen = new Map<string, number>()
   const out: ParsedRow[] = []
+  const amountCols = m.amount.mode === 'signed' ? [m.amount.col] : [m.amount.outCol, m.amount.inCol]
+  // a row that fails only matters if real rows follow it; trailing "Total 2026-09 …" summaries are dropped
+  let failed: unknown
   for (const r of rows.slice(m.headerRow + 1)) {
     if (!/\d/.test(clean(r[m.dateCol]))) continue // blank lines, "Total" footers
-    const date = parseDate(clean(r[m.dateCol]), m.dateFormat)
-    const rawMerchant = m.descriptionCols.map((c) => clean(r[c])).filter(Boolean).join(' ').replace(/\s+/g, ' ')
-    let kind: ParsedRow['kind']
-    let amount: number
-    if (m.amount.mode === 'signed') {
-      const v = parseMinor(clean(r[m.amount.col]), digits)
-      if (v === 0) continue
-      kind = (v < 0) === (m.amount.negativeIs === 'expense') ? 'expense' : 'income'
-      amount = Math.abs(v)
-    } else {
-      const debit = parseMinor(clean(r[m.amount.outCol]), digits)
-      const credit = parseMinor(clean(r[m.amount.inCol]), digits)
-      if (debit) [kind, amount] = ['expense', debit]
-      else if (credit) [kind, amount] = ['income', credit]
-      else continue
+    let row: Omit<ParsedRow, 'key'> | undefined
+    try {
+      row = parseRow(r, m, digits)
+    } catch (e) {
+      if (amountCols.some((c) => clean(r[c]))) failed ??= e
+      continue
     }
-    // ids can repeat in bank exports, so they only sharpen the key; the occurrence index keeps identical rows apart
-    const base = [date, rawMerchant, kind, amount, clean(r[m.balanceCol ?? -1]), clean(r[m.idCol ?? -1])].join('|')
+    if (failed) throw failed
+    if (!row) continue
+    // key from the raw cells, so re-mapping columns later never re-imports the same row;
+    // the occurrence index keeps genuinely identical rows apart
+    const base = trimEnd(r).join('\u001f')
     const n = (seen.get(base) ?? 0) + 1
     seen.set(base, n)
-    out.push({ key: `${base}#${n}`, date, kind, amount, rawMerchant, merchantKey: customMerchantKey(rawMerchant) })
+    out.push({ ...row, key: `${base}#${n}` })
   }
+  if (failed && !out.length) throw failed // nothing parsed: the mapping is wrong, not a footer
   return out
+}
+
+function parseRow(r: string[], m: CustomMapping, digits: number): Omit<ParsedRow, 'key'> | undefined {
+  const date = parseDate(clean(r[m.dateCol]), m.dateFormat)
+  const rawMerchant = m.descriptionCols.map((c) => clean(r[c])).filter(Boolean).join(' ').replace(/\s+/g, ' ')
+  let kind: ParsedRow['kind']
+  let amount: number
+  if (m.amount.mode === 'signed') {
+    const v = parseMinor(clean(r[m.amount.col]), digits)
+    if (v === 0) return undefined
+    kind = (v < 0) === (m.amount.negativeIs === 'expense') ? 'expense' : 'income'
+    amount = Math.abs(v)
+  } else {
+    // some banks write withdrawals as negatives in the debit column; the column already says the direction
+    const debit = Math.abs(parseMinor(clean(r[m.amount.outCol]), digits))
+    const credit = Math.abs(parseMinor(clean(r[m.amount.inCol]), digits))
+    if (debit) [kind, amount] = ['expense', debit]
+    else if (credit) [kind, amount] = ['income', credit]
+    else return undefined
+  }
+  return { date, kind, amount, rawMerchant, merchantKey: customMerchantKey(rawMerchant) }
 }

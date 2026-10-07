@@ -83,3 +83,22 @@ test('bank-statement shape: padded cells, quoted refs, merchant from a reference
   expect(out[0].rawMerchant).toBe('PB DEBIT CARD DR VISA4111XXXXXX1111 AIRASIA_D7')
   expect(headerMatches([h], m)).toBe(true) // whitespace differences don't break the match
 })
+
+test('negative values in split columns are stored as positive amounts', () => {
+  const m: CustomMapping = { ...base, amount: { mode: 'split', outCol: 2, inCol: 3 } }
+  const [a] = parseCustom(rows(['03/09/2026', 'SHOP', '-35.50', '', '']), m, 2)
+  expect([a.kind, a.amount]).toEqual(['expense', 3550])
+})
+
+test('dedupe key does not depend on the mapping (re-mapping must not duplicate rows)', () => {
+  const data = rows(['03/09/2026', 'SHOP', '-1', '9', 'R1'])
+  const k1 = parseCustom(data, base, 2)[0].key
+  const k2 = parseCustom(data, { ...base, descriptionCols: [1, 4], idCol: 4, balanceCol: 3 }, 2)[0].key
+  expect(k2).toBe(k1)
+})
+
+test('trailing summary rows that fail to parse are ignored; a bad row mid-table still throws', () => {
+  const ok = ['03/09/2026', 'SHOP', '-1', '', '']
+  expect(parseCustom(rows(ok, ['Total 2026-09', '', '-1', '', '']), base, 2)).toHaveLength(1)
+  expect(() => parseCustom(rows(['33/09/2026', 'BAD', '-1', '', ''], ok), base, 2)).toThrow('Bad date')
+})
