@@ -21,7 +21,7 @@ test('maps every PayPay type', () => {
     r('2026/09/06 21:41:30', '-', '3', 'ポイント、残高の獲得', 'マルエツ', 'PayPayポイント', 'a6'),
     r('2026/10/01 21:43:02', '-', '5,000', 'チャージ', 'PayPay', '三菱ＵＦＪ銀行 *****11', 'a7'),
   ])
-  expect(rows.map((x) => [x.key, x.date, x.kind, x.amount, x.merchantKey, x.fixedCategory])).toEqual([
+  expect(rows.map((x) => [x.key.split('|')[0], x.date, x.kind, x.amount, x.merchantKey, x.fixedCategory])).toEqual([
     ['a1', '2026-10-01', 'expense', 648, 'マルエツ', undefined],
     ['a2', '2026-10-01', 'expense', 3860, '所沢市上下水道局', undefined],
     ['a3', '2026-09-02', 'expense', -500, 'STEAM', undefined],
@@ -37,4 +37,13 @@ test('maps every PayPay type', () => {
 test('unknown type falls back on direction', () => {
   const [a, b] = parsePaypay([H, r('2026/09/01 00:00:00', '10', '-', '新種', 'X', '-', 'u1'), r('2026/09/01 00:00:00', '-', '10', '新種', 'Y', '-', 'u2')])
   expect([a.kind, b.kind]).toEqual(['expense', 'income'])
+})
+
+test('points row sharing a payment’s 取引番号 gets its own dedupe key', () => {
+  const [pay, points] = parsePaypay([
+    H,
+    r('2026/09/06 21:41:30', '368', '-', '支払い', 'マルエツ', 'クレジット VISA 7949', 'same'),
+    r('2026/09/06 21:41:30', '-', '3', 'ポイント、残高の獲得', 'マルエツ', 'PayPayポイント', 'same'),
+  ])
+  expect(pay.key).not.toBe(points.key)
 })

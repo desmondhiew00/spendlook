@@ -14,7 +14,7 @@ export function parsePaypay(rows: string[][]): ParsedRow[] {
     const inn = yen(col(r, '入金金額（円）'))
     const party = col(r, '取引先')
     const base = {
-      key: col(r, '取引番号'),
+      key: `${col(r, '取引番号')}|${col(r, '取引内容')}`, // points rows reuse the payment's 取引番号
       date: col(r, '取引日').slice(0, 10).replaceAll('/', '-'),
       rawMerchant: party,
       merchantKey: normalizeMerchant(party.split(' - ')[0]), // chain, not branch
