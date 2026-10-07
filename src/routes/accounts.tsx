@@ -24,7 +24,7 @@ export function AccountsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-4xl font-bold tracking-[-0.04em]"><Trans>Accounts</Trans></h1>
+      {accounts.length ? <h1 className="text-4xl font-bold tracking-[-0.04em]"><Trans>Accounts</Trans></h1> : <Intro />}
       {!verified && (
         <p className="border border-amber-500/50 bg-amber-500/10 p-3 text-sm">
           <Trans>Set your AI provider key in <Link to="/settings" className="underline">Settings</Link> before uploading.</Trans>
@@ -45,6 +45,21 @@ export function AccountsPage() {
       )}
       {showForm && <AddAccountForm onCancel={accounts.length ? () => setAdding(false) : undefined} />}
     </div>
+  )
+}
+
+// first-visit pitch; also the indexable text of / and /ja (search engines see an empty browser)
+function Intro() {
+  return (
+    <section className="max-w-2xl space-y-3">
+      <h1 className="text-4xl font-bold tracking-[-0.04em]"><Trans>Your bank CSVs, as a spending dashboard</Trans></h1>
+      <p className="text-muted-foreground"><Trans>spendlook turns the CSV exports from your bank and e-wallet into monthly spending charts and categories. Everything runs in your browser.</Trans></p>
+      <ul className="list-inside list-disc space-y-1 text-sm">
+        <li><Trans>Private: transactions stay in this browser. No sign-up, no server.</Trans></li>
+        <li><Trans>MUFG and PayPay built in. Any other bank or e-wallet CSV works with a column mapping.</Trans></li>
+        <li><Trans>AI categorization with your own Anthropic, Gemini or OpenAI key. Only merchant names are sent.</Trans></li>
+      </ul>
+    </section>
   )
 }
 

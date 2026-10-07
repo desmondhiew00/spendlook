@@ -2,3 +2,9 @@
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.anthropic.com https://generativelanguage.googleapis.com https://api.openai.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   Referrer-Policy: no-referrer
   X-Content-Type-Options: nosniff
+
+# private, per-browser views: empty to a crawler. Not in robots.txt so the noindex is seen.
+/accounts/*
+  X-Robots-Tag: noindex
+/settings
+  X-Robots-Tag: noindex

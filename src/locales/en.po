@@ -61,11 +61,11 @@ msgstr "{shownExcluded} not counted in total"
 msgid "{unpriced} requests used a model with no price set and are not in the cost."
 msgstr "{unpriced} requests used a model with no price set and are not in the cost."
 
-#: src/routes/accounts.tsx:114
+#: src/routes/accounts.tsx:129
 msgid "1. Where is the CSV from?"
 msgstr "1. Where is the CSV from?"
 
-#: src/routes/accounts.tsx:135
+#: src/routes/accounts.tsx:150
 msgid "2. Name it (optional)"
 msgstr "2. Name it (optional)"
 
@@ -82,13 +82,17 @@ msgid "Accounts"
 msgstr "Accounts"
 
 #: src/routes/accounts.tsx:40
-#: src/routes/accounts.tsx:110
+#: src/routes/accounts.tsx:125
 msgid "Add account"
 msgstr "Add account"
 
 #: src/routes/settings.tsx:83
 msgid "AI categorization"
 msgstr "AI categorization"
+
+#: src/routes/accounts.tsx:60
+msgid "AI categorization with your own Anthropic, Gemini or OpenAI key. Only merchant names are sent."
+msgstr "AI categorization with your own Anthropic, Gemini or OpenAI key. Only merchant names are sent."
 
 #: src/components/mapping-dialog.tsx:120
 msgid "AI could not suggest a mapping. Map the columns yourself, or try again."
@@ -141,7 +145,7 @@ msgstr "Amount layout"
 msgid "Amounts and dates are never sent. Categories you picked yourself won't change."
 msgstr "Amounts and dates are never sent. Categories you picked yourself won't change."
 
-#: src/routes/accounts.tsx:95
+#: src/routes/accounts.tsx:110
 msgid "Any CSV · columns mapped on first upload"
 msgstr "Any CSV · columns mapped on first upload"
 
@@ -165,7 +169,7 @@ msgstr "Balance (optional)"
 msgid "Balance column"
 msgstr "Balance column"
 
-#: src/routes/accounts.tsx:93
+#: src/routes/accounts.tsx:108
 msgid "Bank account · 入出金明細 CSV"
 msgstr "Bank account · 入出金明細 CSV"
 
@@ -179,7 +183,7 @@ msgstr "By category per month"
 
 #: src/components/confirm-delete.tsx:48
 #: src/components/mapping-dialog.tsx:214
-#: src/routes/accounts.tsx:111
+#: src/routes/accounts.tsx:126
 #: src/routes/settings.tsx:226
 msgid "Cancel"
 msgstr "Cancel"
@@ -267,17 +271,17 @@ msgstr "Count"
 msgid "Counting merchants…"
 msgstr "Counting merchants…"
 
-#: src/routes/accounts.tsx:138
+#: src/routes/accounts.tsx:153
 msgid "Create and upload CSV"
 msgstr "Create and upload CSV"
 
-#: src/routes/accounts.tsx:130
-#: src/routes/accounts.tsx:131
+#: src/routes/accounts.tsx:145
+#: src/routes/accounts.tsx:146
 msgid "Currency"
 msgstr "Currency"
 
 #. placeholder {0}: a.currency
-#: src/routes/accounts.tsx:62
+#: src/routes/accounts.tsx:77
 msgid "Custom CSV · {0}"
 msgstr "Custom CSV · {0}"
 
@@ -305,17 +309,17 @@ msgid "delete"
 msgstr "delete"
 
 #. placeholder {0}: a.name
-#: src/routes/accounts.tsx:76
+#: src/routes/accounts.tsx:91
 msgid "Delete “{0}”?"
 msgstr "Delete “{0}”?"
 
 #. placeholder {0}: a.name
-#: src/routes/accounts.tsx:75
-#: src/routes/accounts.tsx:75
+#: src/routes/accounts.tsx:90
+#: src/routes/accounts.tsx:90
 msgid "Delete {0}"
 msgstr "Delete {0}"
 
-#: src/routes/accounts.tsx:78
+#: src/routes/accounts.tsx:93
 msgid "Delete account"
 msgstr "Delete account"
 
@@ -475,7 +479,7 @@ msgstr "Key test failed: {error}"
 msgid "Key works."
 msgstr "Key works."
 
-#: src/routes/accounts.tsx:67
+#: src/routes/accounts.tsx:82
 msgid "Last upload"
 msgstr "Last upload"
 
@@ -546,7 +550,11 @@ msgstr "Money out column"
 msgid "Month"
 msgstr "Month"
 
-#: src/routes/accounts.tsx:97
+#: src/routes/accounts.tsx:59
+msgid "MUFG and PayPay built in. Any other bank or e-wallet CSV works with a column mapping."
+msgstr "MUFG and PayPay built in. Any other bank or e-wallet CSV works with a column mapping."
+
+#: src/routes/accounts.tsx:112
 msgid "My account"
 msgstr "My account"
 
@@ -599,7 +607,7 @@ msgstr "One column with + / −"
 msgid "Other"
 msgstr "Other"
 
-#: src/routes/accounts.tsx:95
+#: src/routes/accounts.tsx:110
 msgid "Other bank or wallet"
 msgstr "Other bank or wallet"
 
@@ -647,6 +655,10 @@ msgstr "Previous month"
 #: src/routes/settings.tsx:287
 msgid "Price for {model} (USD per 1M tokens)"
 msgstr "Price for {model} (USD per 1M tokens)"
+
+#: src/routes/accounts.tsx:58
+msgid "Private: transactions stay in this browser. No sign-up, no server."
+msgstr "Private: transactions stay in this browser. No sign-up, no server."
 
 #: src/routes/settings.tsx:86
 #: src/routes/settings.tsx:87
@@ -779,7 +791,7 @@ msgstr "Set and test your AI key in <0>Settings</0> to upload."
 msgid "Set your AI provider key in <0>Settings</0> before uploading."
 msgstr "Set your AI provider key in <0>Settings</0> before uploading."
 
-#: src/router.tsx:29
+#: src/router.tsx:31
 #: src/routes/settings.tsx:81
 msgid "Settings"
 msgstr "Settings"
@@ -808,6 +820,10 @@ msgstr "Sort by"
 #: src/routes/account.tsx:32
 msgid "Spending"
 msgstr "Spending"
+
+#: src/routes/accounts.tsx:56
+msgid "spendlook turns the CSV exports from your bank and e-wallet into monthly spending charts and categories. Everything runs in your browser."
+msgstr "spendlook turns the CSV exports from your bank and e-wallet into monthly spending charts and categories. Everything runs in your browser."
 
 #. placeholder {0}: PROVIDER_LABEL[provider]
 #: src/routes/settings.tsx:92
@@ -880,7 +896,7 @@ msgid "This month"
 msgstr "This month"
 
 #. placeholder {0}: count ?? 0
-#: src/routes/accounts.tsx:77
+#: src/routes/accounts.tsx:92
 msgid "This permanently removes the account and its {0} transactions from this browser. Export a backup in Settings first if you might need them."
 msgstr "This permanently removes the account and its {0} transactions from this browser. Export a backup in Settings first if you might need them."
 
@@ -906,7 +922,7 @@ msgstr "Top merchants — {0}"
 msgid "Total"
 msgstr "Total"
 
-#: src/routes/accounts.tsx:66
+#: src/routes/accounts.tsx:81
 msgid "Transactions"
 msgstr "Transactions"
 
@@ -940,7 +956,7 @@ msgid "Upload cancelled."
 msgstr "Upload cancelled."
 
 #: src/components/upload-panel.tsx:210
-#: src/routes/accounts.tsx:70
+#: src/routes/accounts.tsx:85
 msgid "Upload CSV"
 msgstr "Upload CSV"
 
@@ -952,19 +968,23 @@ msgstr "Upload history"
 msgid "Utilities"
 msgstr "Utilities"
 
-#: src/routes/accounts.tsx:70
+#: src/routes/accounts.tsx:85
 msgid "View dashboard"
 msgstr "View dashboard"
 
-#: src/routes/accounts.tsx:94
+#: src/routes/accounts.tsx:109
 msgid "Wallet · payment history CSV"
 msgstr "Wallet · payment history CSV"
+
+#: src/routes/accounts.tsx:55
+msgid "Your bank CSVs, as a spending dashboard"
+msgstr "Your bank CSVs, as a spending dashboard"
 
 #: src/routes/settings.tsx:108
 msgid "Your data lives only in this browser. Clearing site data or switching devices loses it, so export a backup regularly."
 msgstr "Your data lives only in this browser. Clearing site data or switching devices loses it, so export a backup regularly."
 
-#: src/router.tsx:38
+#: src/router.tsx:40
 msgid "Your data stays in this browser only. Clearing site data deletes it, so export a backup in Settings."
 msgstr "Your data stays in this browser only. Clearing site data deletes it, so export a backup in Settings."
 

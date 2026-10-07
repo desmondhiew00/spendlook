@@ -6,7 +6,9 @@ export type Locale = 'en' | 'ja'
 
 i18n.load({ en, ja })
 
+// /ja is the Japanese landing URL (own head tags for search engines), so it wins over a saved choice
 function initialLocale(): Locale {
+  if (location.pathname === '/ja') return 'ja'
   try {
     const saved = localStorage.getItem('locale')
     if (saved === 'en' || saved === 'ja') return saved

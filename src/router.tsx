@@ -1,3 +1,4 @@
+import { useLingui } from '@lingui/react'
 import { Trans } from '@lingui/react/macro'
 import { Link, Outlet, createRootRoute, createRoute, createRouter, useLocation } from '@tanstack/react-router'
 import { useLiveQuery } from 'dexie-react-hooks'
@@ -15,11 +16,12 @@ function Layout() {
   const accounts = useLiveQuery(() => db.accounts.toArray().then((a) => a.sort((x, y) => x.createdAt - y.createdAt)), [])
   // the link to the page you're on is disabled: re-clicking it would reset the view (and drop ?month=)
   const path = useLocation({ select: (l) => l.pathname })
+  const home = useLingui().i18n.locale === 'ja' ? '/ja' : '/'
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <header className="sticky top-0 z-10 border-b bg-background/90 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl flex-wrap items-center gap-4 p-4">
-          <Link to="/" disabled={path === '/'} className="flex items-center gap-2 text-lg font-bold tracking-tight aria-disabled:cursor-default"><LogoMark className="size-6" />spendlook<span className="-ml-2 text-primary">.</span></Link>
+          <Link to={home} disabled={path === home} className="flex items-center gap-2 text-lg font-bold tracking-tight aria-disabled:cursor-default"><LogoMark className="size-6" />spendlook<span className="-ml-2 text-primary">.</span></Link>
           {accounts?.map((a) => (
             <Link key={a.id} to="/accounts/$accountId" params={{ accountId: a.id }} disabled={path === `/accounts/${a.id}`} className="kicker flex items-center gap-2 text-muted-foreground hover:text-foreground aria-disabled:cursor-default" activeProps={{ className: 'text-primary!' }}>
               <AccountLogo type={a.type} className="size-5" />{a.name}
@@ -44,6 +46,8 @@ function Layout() {
 const rootRoute = createRootRoute({ component: Layout })
 const routeTree = rootRoute.addChildren([
   createRoute({ getParentRoute: () => rootRoute, path: '/', component: AccountsPage }),
+  // Japanese landing URL: same page, ja head tags come from ja.html
+  createRoute({ getParentRoute: () => rootRoute, path: '/ja', component: AccountsPage }),
   createRoute({
     getParentRoute: () => rootRoute,
     path: '/accounts/$accountId',

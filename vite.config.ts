@@ -9,4 +9,6 @@ export default defineConfig({
   // plugin-react v6 has no babel option; Lingui macros run via @rolldown/plugin-babel
   plugins: [react(), babel({ plugins: ['@lingui/babel-plugin-lingui-macro'] }), lingui(), tailwindcss()],
   resolve: { alias: { '@': path.resolve(import.meta.dirname, './src') } },
+  // ja.html = same app with Japanese head tags, served at /ja (Cloudflare maps /ja → ja.html)
+  build: { rolldownOptions: { input: { main: 'index.html', ja: 'ja.html' } } },
 })
