@@ -14,14 +14,19 @@ function initialLocale(): Locale {
   return navigator.language.startsWith('ja') ? 'ja' : 'en'
 }
 
-export function setLocale(l: Locale) {
-  try {
-    localStorage.setItem('locale', l)
-  } catch {}
+function activate(l: Locale) {
   i18n.activate(l)
   document.documentElement.lang = l
 }
 
-setLocale(initialLocale())
+// only an explicit choice is saved; the browser-language default is re-detected each visit
+export function setLocale(l: Locale) {
+  try {
+    localStorage.setItem('locale', l)
+  } catch {}
+  activate(l)
+}
+
+activate(initialLocale())
 
 export { i18n }

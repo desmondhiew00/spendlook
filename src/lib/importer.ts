@@ -43,10 +43,15 @@ export async function deleteUpload(id: string) {
   })
 }
 
+// Removes everything that belongs only to this account, including merchants (names, categories, overrides)
+// no other account still uses. Merchants shared with another account are kept.
 export async function deleteAccount(id: string) {
-  await db.transaction('rw', db.accounts, db.uploads, db.txns, async () => {
+  await db.transaction('rw', db.accounts, db.uploads, db.txns, db.merchants, async () => {
+    const mine = new Set((await db.txns.where('accountId').equals(id).toArray()).filter((t) => t.kind !== 'transfer').map((t) => merchantId(t.kind as Flow, t.merchantKey)))
     await db.txns.where('accountId').equals(id).delete()
     await db.uploads.where('accountId').equals(id).delete()
     await db.accounts.delete(id)
+    const stillUsed = new Set((await db.txns.toArray()).filter((t) => t.kind !== 'transfer').map((t) => merchantId(t.kind as Flow, t.merchantKey)))
+    await db.merchants.bulkDelete([...mine].filter((m) => !stillUsed.has(m)))
   })
 }

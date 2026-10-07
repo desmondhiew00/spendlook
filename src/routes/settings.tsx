@@ -17,7 +17,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ModelInput } from '@/components/model-input'
 import { Picker } from '@/components/picker'
-import { exportBackup, importBackup } from '@/lib/backup'
+import { deleteAllData, exportBackup, importBackup } from '@/lib/backup'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { BATCH_SIZE, recategorizableMerchants, recategorizeAll } from '@/lib/categorize'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/lib/db'
@@ -115,7 +116,54 @@ export function SettingsPage() {
           {backupMsg && <span className="text-sm">{backupMsg}</span>}
         </CardContent>
       </Card>
+      <DeleteAllCard onExport={download} />
     </div>
+  )
+}
+
+// Irreversible, so it takes a typed confirmation, offers a last-chance export, and reloads into a clean app
+function DeleteAllCard({ onExport }: { onExport: () => void }) {
+  const { t } = useLingui()
+  const word = t`delete`
+  const [typed, setTyped] = useState('')
+  const [busy, setBusy] = useState(false)
+
+  async function wipe() {
+    setBusy(true)
+    await deleteAllData()
+    try {
+      localStorage.clear() // AI keys, settings, prices, language, theme; the storage is this site's alone
+    } catch {}
+    location.assign('/')
+  }
+
+  return (
+    <Card className="border-destructive/50">
+      <CardHeader>
+        <CardTitle className="text-destructive"><Trans>Delete all data</Trans></CardTitle>
+        <CardDescription><Trans>Removes every account, transaction, merchant, category choice, AI usage log, and your saved AI keys and settings from this browser. This cannot be undone.</Trans></CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Dialog onOpenChange={(open) => !open && setTyped('')}>
+          <DialogTrigger render={<Button variant="destructive"><Trans>Delete all data…</Trans></Button>} />
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle><Trans>Delete everything?</Trans></DialogTitle>
+              <DialogDescription><Trans>All spendlook data in this browser will be erased, including your AI keys. Export a backup first if you might need it.</Trans></DialogDescription>
+            </DialogHeader>
+            <Button variant="outline" onClick={onExport}><Trans>Export backup first</Trans></Button>
+            <Label htmlFor="confirm-delete-all" className="font-normal"><Trans>Type “{word}” to confirm</Trans></Label>
+            <Input id="confirm-delete-all" value={typed} onChange={(e) => setTyped(e.target.value)} autoComplete="off" />
+            <DialogFooter>
+              <Button onClick={wipe} disabled={busy || typed.trim().toLowerCase() !== word} className="bg-destructive text-white hover:bg-destructive/90">
+                {busy && <Loader2 className="animate-spin motion-reduce:animate-none" data-icon="inline-start" />}
+                <Trans>Delete all data</Trans>
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </CardContent>
+    </Card>
   )
 }
 

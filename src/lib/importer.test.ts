@@ -74,3 +74,12 @@ test('new merchant display name is NFKC-normalized raw text', async () => {
   await importRows(acct, 'f.csv', [row('1', { rawMerchant: 'ＡＭＡＺＯＮ．Ｃ', merchantKey: 'AMAZON.C' })])
   expect((await db.merchants.get('expense|AMAZON.C'))?.displayName).toBe('AMAZON.C')
 })
+
+test('deleteAccount also removes merchants no other account uses, keeping shared ones', async () => {
+  const other = { ...acct, id: 'B' }
+  await db.accounts.bulkAdd([acct, other])
+  await importRows(acct, 'a.csv', [row('1', { merchantKey: 'ONLY_A', rawMerchant: 'only a' }), row('2', { merchantKey: 'SHARED', rawMerchant: 'shared' })])
+  await importRows(other, 'b.csv', [row('3', { merchantKey: 'SHARED', rawMerchant: 'shared' })])
+  await deleteAccount('A')
+  expect((await db.merchants.toArray()).map((m) => m.id)).toEqual(['expense|SHARED'])
+})

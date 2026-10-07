@@ -18,3 +18,10 @@ export async function importBackup(json: string) {
     await db.usage.bulkPut(d.usage ?? []) // older backups predate the usage log
   })
 }
+
+// Every table, including AI usage logs. Settings and keys in localStorage are cleared by the caller.
+export async function deleteAllData() {
+  await db.transaction('rw', db.tables, async () => {
+    await Promise.all(db.tables.map((t) => t.clear()))
+  })
+}
