@@ -14,8 +14,16 @@ function initialLocale(): Locale {
     const saved = localStorage.getItem('locale')
     if (saved === 'en' || saved === 'ja' || saved === 'zh') return saved
   } catch {}
-  const nav = navigator.language
-  return nav.startsWith('ja') ? 'ja' : nav.startsWith('zh') ? 'zh' : 'en'
+  return fromLanguages(navigator.languages?.length ? navigator.languages : [navigator.language])
+}
+
+// first supported entry in the browser's preference list, so "en-US, ja" still gets en and "fr, ja" gets ja
+export function fromLanguages(langs: readonly string[]): Locale {
+  for (const l of langs) {
+    const base = l.toLowerCase().split('-')[0]
+    if (base === 'en' || base === 'ja' || base === 'zh') return base
+  }
+  return 'en'
 }
 
 function activate(l: Locale) {
