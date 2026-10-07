@@ -91,7 +91,7 @@ export interface AiUsage {
   at: number
   provider: string
   model: string
-  job: 'categorize' | 'recategorize' | 'test'
+  job: 'categorize' | 'recategorize' | 'test' | 'map_columns'
   items: number // merchants in the request, for per-merchant cost estimates
   inputTokens: number
   outputTokens: number

@@ -1,4 +1,5 @@
 import { aiGenerate } from './categorize'
+import { aiDetectMapping } from './custom/ai'
 import { db } from './db'
 import { makeModel } from './model'
 import type { AiSettings } from './settings'
@@ -78,5 +79,11 @@ export function estimate(rows: AiUsage[], n: number, price?: Price) {
 export function aiFor(s: AiSettings, job: AiUsage['job']) {
   return aiGenerate(makeModel(s), (u, items, ok) => {
     db.usage.add({ id: crypto.randomUUID(), at: Date.now(), provider: s.provider, model: s.model, job, items, ok, ...u })
+  })
+}
+
+export function aiMappingFor(s: AiSettings) {
+  return aiDetectMapping(makeModel(s), (u, ok) => {
+    db.usage.add({ id: crypto.randomUUID(), at: Date.now(), provider: s.provider, model: s.model, job: 'map_columns', items: 0, ok, ...u })
   })
 }

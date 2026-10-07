@@ -2,17 +2,22 @@ import { Trans, useLingui } from '@lingui/react/macro'
 import { Link } from '@tanstack/react-router'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { cn } from 'cn'
-import { FileUp, History, Loader2, RefreshCw, Trash2, Upload } from 'lucide-react'
+import { Columns3, FileUp, History, Loader2, RefreshCw, Trash2, Upload } from 'lucide-react'
 import { type ChangeEvent, useEffect, useRef, useState } from 'react'
 import { ConfirmDelete } from '@/components/confirm-delete'
+import { MappingDialog } from '@/components/mapping-dialog'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { categorizePending, pendingMerchants } from '@/lib/categorize'
+import type { MappingBase } from '@/lib/custom/ai'
+import { clean, headerMatches, parseCustom } from '@/lib/custom/parse'
+import { readRows, sniff } from '@/lib/custom/sniff'
+import { fractionDigits } from '@/lib/custom/values'
 import { db } from '@/lib/db'
 import { deleteUpload, importRows } from '@/lib/importer'
 import { ImportError, parseFile } from '@/lib/parse'
 import { loadSettings } from '@/lib/settings'
-import type { Account } from '@/lib/types'
+import type { Account, CustomMapping, ParsedRow } from '@/lib/types'
 import { aiFor } from '@/lib/usage'
 
 export function UploadPanel({ account }: { account: Account }) {
@@ -26,6 +31,9 @@ export function UploadPanel({ account }: { account: Account }) {
   const [message, setMessage] = useState('')
   const [dragging, setDragging] = useState(false)
   const uploadRef = useRef<(file: File) => void>(null)
+  // custom CSV whose columns still need confirming (first upload, or the bank changed its export format)
+  const [mappingFor, setMappingFor] = useState<{ fileName: string; bytes: ArrayBuffer; initial: MappingBase } | null>(null)
+  const sourceLabel = account.type === 'mufg' ? 'MUFG' : account.type === 'paypay' ? 'PayPay' : ''
 
   // drop a CSV anywhere on the page; the depth counter stops flicker when dragging across child elements
   useEffect(() => {
@@ -83,13 +91,50 @@ export function UploadPanel({ account }: { account: Account }) {
     setWork({ step: 'import' })
     setMessage('')
     try {
-      const rows = parseFile(await file.arrayBuffer(), account.type)
-      const u = await importRows(account, file.name, rows)
-      const summary = t`${u.added} added, ${u.skipped} skipped.`
-      setMessage(summary)
-      setMessage(`${summary} ${await categorize()}`)
+      const bytes = await file.arrayBuffer()
+      if (account.type === 'custom') {
+        const rows = account.mapping && readRows(bytes, account.mapping.encoding, account.mapping.delimiter)
+        if (!account.mapping || !rows || !headerMatches(rows, account.mapping)) {
+          const s = sniff(bytes)
+          setMappingFor({ fileName: file.name, bytes, initial: { encoding: s.encoding, delimiter: s.delimiter, headerRow: s.headerRow, header: (s.rows[s.headerRow] ?? []).map(clean) } })
+          return
+        }
+        await importAndCategorize(file.name, parseCustomOrBadRow(rows, account.mapping))
+        return
+      }
+      await importAndCategorize(file.name, parseFile(bytes, account.type))
     } catch (err) {
       setMessage(err instanceof ImportError ? importErrorText[err.code] : String(err))
+    } finally {
+      setWork(null)
+    }
+  }
+
+  function parseCustomOrBadRow(rows: string[][], m: CustomMapping) {
+    try {
+      return parseCustom(rows, m, fractionDigits(account.currency))
+    } catch (e) {
+      console.error('bad row', e)
+      throw new ImportError('bad_row')
+    }
+  }
+
+  async function importAndCategorize(fileName: string, rows: ParsedRow[]) {
+    const u = await importRows(account, fileName, rows)
+    const summary = t`${u.added} added, ${u.skipped} skipped.`
+    setMessage(summary)
+    setMessage(`${summary} ${await categorize()}`)
+  }
+
+  async function confirmMapping(mapping: CustomMapping, rows: ParsedRow[]) {
+    const fileName = mappingFor!.fileName
+    setMappingFor(null)
+    setWork({ step: 'import' })
+    try {
+      await db.accounts.update(account.id, { mapping })
+      await importAndCategorize(fileName, rows)
+    } catch (err) {
+      setMessage(String(err))
     } finally {
       setWork(null)
     }
@@ -119,6 +164,15 @@ export function UploadPanel({ account }: { account: Account }) {
       <div className="flex flex-wrap items-center justify-end gap-2">
         {!!pending && !busy && (
           <Button variant="outline" size="lg" onClick={retry}><RefreshCw data-icon="inline-start" /><Trans>Retry categorize ({pending})</Trans></Button>
+        )}
+        {account.type === 'custom' && account.mapping && !busy && (
+          <ConfirmDelete
+            trigger={<Button variant="outline" size="lg"><Columns3 data-icon="inline-start" /><Trans>Reset columns</Trans></Button>}
+            title={<Trans>Reset the column mapping?</Trans>}
+            description={<Trans>Your next upload will ask you to map the columns again. Imported transactions are kept.</Trans>}
+            confirmLabel={<Trans>Reset columns</Trans>}
+            onConfirm={() => db.accounts.update(account.id, { mapping: undefined })}
+          />
         )}
         {!!uploads?.length && (
           <Dialog>
@@ -151,7 +205,7 @@ export function UploadPanel({ account }: { account: Account }) {
         )}
         <label className={cn(buttonVariants({ size: 'lg' }), 'has-focus-visible:ring-3 has-focus-visible:ring-ring/50', busy ? 'pointer-events-none opacity-80' : 'cursor-pointer')}>
           {work ? <Loader2 className="animate-spin motion-reduce:animate-none" /> : <Upload />}
-          {!work ? <Trans>Upload {account.type === 'mufg' ? 'MUFG' : 'PayPay'} CSV</Trans>
+          {!work ? (sourceLabel ? <Trans>Upload {sourceLabel} CSV</Trans> : <Trans>Upload CSV</Trans>)
             : work.step === 'import' ? <Trans>Importing…</Trans>
             : <Trans>Categorizing {work.done}/{work.total}…</Trans>}
           <input type="file" accept=".csv,text/csv" className="sr-only" onChange={onFile} disabled={busy} />
@@ -162,9 +216,12 @@ export function UploadPanel({ account }: { account: Account }) {
           <div className="flex size-full flex-col items-center justify-center gap-3 border-2 border-dashed border-primary text-center">
             <FileUp className="size-10 text-primary" />
             <div className="text-2xl font-bold tracking-tight"><Trans>Drop to upload to {account.name}</Trans></div>
-            <div className="kicker text-muted-foreground"><Trans>{account.type === 'mufg' ? 'MUFG' : 'PayPay'} CSV</Trans></div>
+            <div className="kicker text-muted-foreground">{sourceLabel} CSV</div>
           </div>
         </div>
+      )}
+      {mappingFor && (
+        <MappingDialog account={account} {...mappingFor} onCancel={() => { setMappingFor(null); setMessage(t`Upload cancelled.`) }} onConfirm={confirmMapping} />
       )}
       {/* aria-busy + live status so screen readers hear progress too */}
       <span role="status" aria-busy={busy} className="max-w-md text-right text-sm text-muted-foreground empty:hidden">

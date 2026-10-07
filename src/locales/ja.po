@@ -7,6 +7,11 @@ msgstr ""
 "X-Generator: @lingui/cli\n"
 "Language: ja\n"
 
+#. placeholder {0}: all.length
+#: src/components/mapping-dialog.tsx:175
+msgid "· {0} transactions"
+msgstr "· {0} 件の取引"
+
 #. placeholder {0}: rows.length
 #: src/components/dashboard.tsx:109
 msgid "{0, plural, one {# transaction} other {# transactions}}"
@@ -14,23 +19,18 @@ msgstr "{0, plural, other {#件の取引}}"
 
 #. placeholder {0}: u.added
 #. placeholder {1}: u.skipped
-#: src/components/upload-panel.tsx:136
+#: src/components/upload-panel.tsx:190
 msgid "{0} added, {1} skipped"
 msgstr "{0} 件追加、{1} 件スキップ"
 
 #. placeholder {0}: u.added
 #. placeholder {1}: u.skipped
-#: src/components/upload-panel.tsx:88
+#: src/components/upload-panel.tsx:124
 msgid "{0} added, {1} skipped."
 msgstr "{0} 件追加、{1} 件スキップしました。"
 
-#. placeholder {0}: account.type === 'mufg' ? 'MUFG' : 'PayPay'
-#: src/components/upload-panel.tsx:165
-msgid "{0} CSV"
-msgstr "{0} CSV"
-
 #. placeholder {0}: r.failed
-#: src/components/upload-panel.tsx:68
+#: src/components/upload-panel.tsx:76
 msgid "{0} merchants could not be categorized. Retry below."
 msgstr "{0} 件の店舗を分類できませんでした。下のボタンで再試行してください。"
 
@@ -61,24 +61,28 @@ msgstr "{shownExcluded}件は合計に含まれません"
 msgid "{unpriced} requests used a model with no price set and are not in the cost."
 msgstr "{unpriced}件のリクエストは価格未設定のモデルのため、費用に含まれていません。"
 
-#: src/routes/accounts.tsx:109
+#: src/routes/accounts.tsx:114
 msgid "1. Where is the CSV from?"
 msgstr "1. CSVの取得元"
 
-#: src/routes/accounts.tsx:124
+#: src/routes/accounts.tsx:135
 msgid "2. Name it (optional)"
 msgstr "2. 名前（任意）"
+
+#: src/components/mapping-dialog.tsx:177
+msgid "A row could not be read with these settings: {parseError}"
+msgstr "この設定では読み取れない行があります: {parseError}"
 
 #: src/routes/account.tsx:20
 msgid "Account not found."
 msgstr "口座が見つかりません。"
 
-#: src/routes/accounts.tsx:26
+#: src/routes/accounts.tsx:27
 msgid "Accounts"
 msgstr "口座"
 
-#: src/routes/accounts.tsx:39
-#: src/routes/accounts.tsx:105
+#: src/routes/accounts.tsx:40
+#: src/routes/accounts.tsx:110
 msgid "Add account"
 msgstr "口座を追加"
 
@@ -86,7 +90,11 @@ msgstr "口座を追加"
 msgid "AI categorization"
 msgstr "AI 分類"
 
-#: src/components/upload-panel.tsx:171
+#: src/components/mapping-dialog.tsx:113
+msgid "AI could not suggest a mapping. Map the columns yourself, or try again."
+msgstr "AI が列を推定できませんでした。手動で設定するか、もう一度お試しください。"
+
+#: src/components/upload-panel.tsx:228
 msgid "AI is categorizing new merchants — you can keep browsing."
 msgstr "AIが新しい店舗を分類中です。そのまま閲覧できます。"
 
@@ -98,7 +106,7 @@ msgstr "AI使用量"
 msgid "All categories"
 msgstr "すべてのカテゴリ"
 
-#: src/components/upload-panel.tsx:106
+#: src/components/upload-panel.tsx:151
 msgid "All merchants categorized."
 msgstr "すべての店舗を分類しました。"
 
@@ -111,12 +119,27 @@ msgid "All time"
 msgstr "全期間"
 
 #: src/components/dashboard.tsx:278
+#: src/components/mapping-dialog.tsx:127
+#: src/components/mapping-dialog.tsx:185
 msgid "Amount"
 msgstr "金額"
+
+#: src/components/mapping-dialog.tsx:142
+#: src/components/mapping-dialog.tsx:142
+msgid "Amount column"
+msgstr "金額の列"
+
+#: src/components/mapping-dialog.tsx:129
+msgid "Amount layout"
+msgstr "金額の形式"
 
 #: src/routes/settings.tsx:174
 msgid "Amounts and dates are never sent. Categories you picked yourself won't change."
 msgstr "金額や日付は送信されません。自分で選んだカテゴリは変更されません。"
+
+#: src/routes/accounts.tsx:95
+msgid "Any CSV · columns mapped on first upload"
+msgstr "任意の CSV · 初回アップロード時に列を設定"
 
 #: src/routes/settings.tsx:89
 msgid "API key"
@@ -130,7 +153,15 @@ msgstr "バックアップ"
 msgid "Backup restored."
 msgstr "バックアップを復元しました。"
 
-#: src/routes/accounts.tsx:90
+#: src/components/mapping-dialog.tsx:153
+msgid "Balance (optional)"
+msgstr "残高（任意）"
+
+#: src/components/mapping-dialog.tsx:153
+msgid "Balance column"
+msgstr "残高の列"
+
+#: src/routes/accounts.tsx:93
 msgid "Bank account · 入出金明細 CSV"
 msgstr "銀行口座 · 入出金明細CSV"
 
@@ -143,7 +174,8 @@ msgid "By category per month"
 msgstr "月別カテゴリ"
 
 #: src/components/confirm-delete.tsx:48
-#: src/routes/accounts.tsx:106
+#: src/components/mapping-dialog.tsx:204
+#: src/routes/accounts.tsx:111
 #: src/routes/settings.tsx:178
 msgid "Cancel"
 msgstr "キャンセル"
@@ -171,11 +203,11 @@ msgstr "カテゴリ — {0}"
 
 #. placeholder {0}: work.done
 #. placeholder {1}: work.total
-#: src/components/upload-panel.tsx:156
+#: src/components/upload-panel.tsx:210
 msgid "Categorizing {0}/{1}…"
 msgstr "分類中 {0}/{1}…"
 
-#: src/components/upload-panel.tsx:71
+#: src/components/upload-panel.tsx:79
 msgid "Categorizing failed. Check your AI key in Settings, then retry."
 msgstr "分類に失敗しました。設定で AI キーを確認してから再試行してください。"
 
@@ -198,9 +230,26 @@ msgstr "{0} のカテゴリ"
 msgid "Category for this transaction"
 msgstr "この取引のカテゴリ"
 
+#: src/components/mapping-dialog.tsx:85
+msgid "Check this column"
+msgstr "この列を確認してください"
+
 #: src/components/category-label.ts:15
 msgid "Clothing & beauty"
 msgstr "衣服・美容"
+
+#. placeholder {0}: i + 1
+#: src/components/mapping-dialog.tsx:82
+msgid "Column {0}"
+msgstr "列 {0}"
+
+#: src/components/mapping-dialog.tsx:124
+msgid "Columns"
+msgstr "列"
+
+#: src/components/mapping-dialog.tsx:88
+msgid "Comma"
+msgstr "カンマ"
 
 #: src/components/dashboard.tsx:193
 msgid "Count"
@@ -210,58 +259,88 @@ msgstr "件数"
 msgid "Counting merchants…"
 msgstr "店舗を集計中…"
 
-#: src/routes/accounts.tsx:127
+#: src/routes/accounts.tsx:138
 msgid "Create and upload CSV"
 msgstr "作成してCSVをアップロード"
+
+#: src/routes/accounts.tsx:130
+#: src/routes/accounts.tsx:131
+msgid "Currency"
+msgstr "通貨"
+
+#. placeholder {0}: a.currency
+#: src/routes/accounts.tsx:62
+msgid "Custom CSV · {0}"
+msgstr "カスタム CSV · {0}"
 
 #: src/components/category-label.ts:8
 msgid "Daily goods"
 msgstr "日用品"
 
 #: src/components/dashboard.tsx:274
+#: src/components/mapping-dialog.tsx:125
+#: src/components/mapping-dialog.tsx:185
 msgid "Date"
 msgstr "日付"
 
+#: src/components/mapping-dialog.tsx:125
+msgid "Date column"
+msgstr "日付の列"
+
+#: src/components/mapping-dialog.tsx:126
+#: src/components/mapping-dialog.tsx:126
+msgid "Date format"
+msgstr "日付の形式"
+
 #. placeholder {0}: a.name
-#: src/routes/accounts.tsx:75
+#: src/routes/accounts.tsx:76
 msgid "Delete “{0}”?"
 msgstr "「{0}」を削除しますか？"
 
 #. placeholder {0}: a.name
-#: src/routes/accounts.tsx:74
-#: src/routes/accounts.tsx:74
+#: src/routes/accounts.tsx:75
+#: src/routes/accounts.tsx:75
 msgid "Delete {0}"
 msgstr "{0}を削除"
 
-#: src/routes/accounts.tsx:77
+#: src/routes/accounts.tsx:78
 msgid "Delete account"
 msgstr "口座を削除"
 
-#: src/components/upload-panel.tsx:140
-#: src/components/upload-panel.tsx:140
+#: src/components/upload-panel.tsx:194
+#: src/components/upload-panel.tsx:194
 msgid "Delete the transactions from this upload"
 msgstr "このアップロードの取引を削除"
 
-#: src/components/upload-panel.tsx:141
+#: src/components/upload-panel.tsx:195
 msgid "Delete this upload?"
 msgstr "このアップロードを削除しますか？"
 
-#: src/components/upload-panel.tsx:143
+#: src/components/upload-panel.tsx:197
 msgid "Delete upload"
 msgstr "アップロードを削除"
+
+#: src/components/mapping-dialog.tsx:110
+msgid "Detect with AI"
+msgstr "AI で検出"
 
 #: src/components/category-label.ts:7
 msgid "Dining"
 msgstr "外食"
 
 #. placeholder {0}: account.name
-#: src/components/upload-panel.tsx:164
+#: src/components/upload-panel.tsx:218
 msgid "Drop to upload to {0}"
 msgstr "ドロップして{0}にアップロード"
 
 #: src/components/category-label.ts:18
 msgid "Education"
 msgstr "教育・教養"
+
+#: src/components/mapping-dialog.tsx:118
+#: src/components/mapping-dialog.tsx:118
+msgid "Encoding"
+msgstr "文字コード"
 
 #: src/components/category-label.ts:19
 msgid "Entertainment"
@@ -284,6 +363,14 @@ msgstr "除外"
 msgid "Export backup"
 msgstr "バックアップをエクスポート"
 
+#: src/components/mapping-dialog.tsx:117
+msgid "File"
+msgstr "ファイル"
+
+#: src/components/mapping-dialog.tsx:179
+msgid "Fix the highlighted columns to see a preview."
+msgstr "プレビューを表示するには、強調表示された列を修正してください。"
+
 #: src/components/dashboard.tsx:208
 msgid "Fixed"
 msgstr "固定"
@@ -296,6 +383,11 @@ msgstr "交際費"
 msgid "Groceries"
 msgstr "食料品"
 
+#: src/components/mapping-dialog.tsx:120
+#: src/components/mapping-dialog.tsx:120
+msgid "Header row"
+msgstr "見出し行"
+
 #: src/components/category-label.ts:16
 msgid "Health"
 msgstr "医療・健康"
@@ -305,7 +397,7 @@ msgid "Highest amount"
 msgstr "金額の高い順"
 
 #. placeholder {0}: uploads.length
-#: src/components/upload-panel.tsx:125
+#: src/components/upload-panel.tsx:179
 msgid "History ({0})"
 msgstr "履歴 ({0})"
 
@@ -313,7 +405,7 @@ msgstr "履歴 ({0})"
 msgid "Import backup"
 msgstr "バックアップをインポート"
 
-#: src/components/upload-panel.tsx:155
+#: src/components/upload-panel.tsx:209
 msgid "Importing…"
 msgstr "取り込み中…"
 
@@ -350,18 +442,32 @@ msgstr "キーのテストに失敗しました: {error}"
 msgid "Key works."
 msgstr "キーは有効です。"
 
-#: src/routes/accounts.tsx:66
+#: src/routes/accounts.tsx:67
 msgid "Last upload"
 msgstr "最終アップロード"
+
+#. placeholder {0}: PROVIDER_LABEL[settings.provider]
+#: src/components/mapping-dialog.tsx:104
+msgid "Let AI suggest the columns. Only the header and the first 3 rows are sent to {0}."
+msgstr "AI に列を推定させます。{0} に送信されるのは見出しと最初の 3 行だけです。"
 
 #: src/components/dashboard.tsx:244
 msgid "Lowest amount"
 msgstr "金額の低い順"
 
+#: src/components/mapping-dialog.tsx:94
+msgid "Map the columns"
+msgstr "列の設定"
+
 #: src/components/dashboard.tsx:191
 #: src/components/dashboard.tsx:275
+#: src/components/mapping-dialog.tsx:185
 msgid "Merchant"
 msgstr "店舗"
+
+#: src/components/mapping-dialog.tsx:158
+msgid "Merchant / description"
+msgstr "店舗 / 摘要"
 
 #: src/components/dashboard.tsx:245
 msgid "Merchant A→Z"
@@ -379,13 +485,46 @@ msgstr "支払方法"
 msgid "Model"
 msgstr "モデル"
 
+#: src/components/mapping-dialog.tsx:148
+msgid "Money in (card statements)"
+msgstr "入金（カード明細）"
+
+#: src/components/mapping-dialog.tsx:138
+msgid "Money in (credit)"
+msgstr "入金（貸方）"
+
+#: src/components/mapping-dialog.tsx:138
+msgid "Money in column"
+msgstr "入金の列"
+
+#: src/components/mapping-dialog.tsx:148
+msgid "Money out"
+msgstr "出金"
+
+#: src/components/mapping-dialog.tsx:137
+msgid "Money out (debit)"
+msgstr "出金（借方）"
+
+#: src/components/mapping-dialog.tsx:137
+msgid "Money out column"
+msgstr "出金の列"
+
 #: src/components/dashboard.tsx:115
 msgid "Month"
 msgstr "月"
 
+#: src/routes/accounts.tsx:97
+msgid "My account"
+msgstr "マイ口座"
+
 #: src/components/dashboard.tsx:231
 msgid "Needs review only"
 msgstr "要確認のみ"
+
+#: src/components/mapping-dialog.tsx:143
+#: src/components/mapping-dialog.tsx:145
+msgid "Negative amounts are"
+msgstr "マイナスの金額は"
 
 #: src/components/dashboard.tsx:241
 msgid "Newest first"
@@ -395,9 +534,17 @@ msgstr "新しい順"
 msgid "Next month"
 msgstr "翌月"
 
+#: src/components/mapping-dialog.tsx:181
+msgid "No transactions found below the header row."
+msgstr "見出し行の下に取引が見つかりません。"
+
 #: src/components/dashboard.tsx:54
 msgid "No transactions yet. Upload a CSV above."
 msgstr "取引がまだありません。上から CSV をアップロードしてください。"
+
+#: src/components/mapping-dialog.tsx:83
+msgid "None"
+msgstr "なし"
 
 #: src/routes/settings.tsx:173
 msgid "Nothing to re-categorize yet. Upload a CSV first."
@@ -407,9 +554,17 @@ msgstr "再分類する店舗がありません。先にCSVをアップロード
 msgid "Oldest first"
 msgstr "古い順"
 
+#: src/components/mapping-dialog.tsx:132
+msgid "One column with + / −"
+msgstr "＋／− の 1 列"
+
 #: src/components/category-label.ts:28
 msgid "Other"
 msgstr "その他"
+
+#: src/routes/accounts.tsx:95
+msgid "Other bank or wallet"
+msgstr "その他の銀行・ウォレット"
 
 #: src/components/category-label.ts:38
 msgid "Other income"
@@ -435,9 +590,17 @@ msgstr "PayPay"
 msgid "Phone & Internet"
 msgstr "通信費"
 
+#: src/components/mapping-dialog.tsx:159
+msgid "Pick every column that names the shop or person. Banks often put it in a reference column."
+msgstr "店舗名や相手の名前が入っている列をすべて選んでください。銀行によっては参照列に入っています。"
+
 #: src/components/model-input.tsx:32
 msgid "Pick or type a model ID"
 msgstr "モデルIDを選択または入力"
+
+#: src/components/mapping-dialog.tsx:175
+msgid "Preview"
+msgstr "プレビュー"
 
 #: src/components/dashboard.tsx:114
 #: src/components/dashboard.tsx:138
@@ -476,6 +639,14 @@ msgstr "再分類中 {0}/{1}…"
 msgid "Received from others"
 msgstr "受け取り"
 
+#: src/components/mapping-dialog.tsx:154
+msgid "Reference column"
+msgstr "参照番号の列"
+
+#: src/components/mapping-dialog.tsx:154
+msgid "Reference no. (optional)"
+msgstr "参照番号（任意）"
+
 #: src/components/category-label.ts:34
 msgid "Refunds"
 msgstr "返金"
@@ -496,7 +667,16 @@ msgstr "家賃"
 msgid "Requests"
 msgstr "リクエスト数"
 
-#: src/components/upload-panel.tsx:121
+#: src/components/upload-panel.tsx:170
+#: src/components/upload-panel.tsx:173
+msgid "Reset columns"
+msgstr "列の設定をリセット"
+
+#: src/components/upload-panel.tsx:171
+msgid "Reset the column mapping?"
+msgstr "列の設定をリセットしますか？"
+
+#: src/components/upload-panel.tsx:166
 msgid "Retry categorize ({pending})"
 msgstr "分類を再試行 ({pending})"
 
@@ -520,19 +700,41 @@ msgstr "保存してキーをテスト"
 msgid "Save and test a key first."
 msgstr "先にキーを保存してテストしてください。"
 
+#. placeholder {0}: all.length
+#: src/components/mapping-dialog.tsx:205
+msgid "Save mapping and import {0}"
+msgstr "設定を保存して {0} 件をインポート"
+
 #: src/components/dashboard.tsx:226
 msgid "Search merchant"
 msgstr "店舗を検索"
+
+#: src/components/mapping-dialog.tsx:88
+msgid "Semicolon"
+msgstr "セミコロン"
 
 #: src/components/category-label.ts:25
 msgid "Sent to others"
 msgstr "送金"
 
-#: src/components/upload-panel.tsx:113
+#: src/components/mapping-dialog.tsx:132
+msgid "Separate money out / in columns"
+msgstr "出金・入金が別の列"
+
+#: src/components/mapping-dialog.tsx:119
+#: src/components/mapping-dialog.tsx:119
+msgid "Separator"
+msgstr "区切り文字"
+
+#: src/components/mapping-dialog.tsx:105
+msgid "Set an AI key in Settings to get column suggestions, or map them yourself below."
+msgstr "列の推定には設定で AI キーを登録してください。下で手動でも設定できます。"
+
+#: src/components/upload-panel.tsx:158
 msgid "Set and test your AI key in <0>Settings</0> to upload."
 msgstr "アップロードするには<0>設定</0>で AI キーを設定・テストしてください。"
 
-#: src/routes/accounts.tsx:29
+#: src/routes/accounts.tsx:30
 msgid "Set your AI provider key in <0>Settings</0> before uploading."
 msgstr "アップロードする前に<0>設定</0>で AI プロバイダーのキーを設定してください。"
 
@@ -575,9 +777,18 @@ msgstr "このブラウザにのみ保存され、{0} にのみ送信されま�
 msgid "Subscriptions"
 msgstr "サブスク"
 
+#: src/components/mapping-dialog.tsx:88
+msgid "Tab"
+msgstr "タブ"
+
 #: src/components/category-label.ts:23
 msgid "Taxes & social insurance"
 msgstr "税・社会保険"
+
+#. placeholder {0}: account.name
+#: src/components/mapping-dialog.tsx:96
+msgid "Tell spendlook how to read “{fileName}”. This is saved for {0} and reused while the bank’s format stays the same."
+msgstr "「{fileName}」の読み方を設定します。{0} に保存され、銀行の形式が変わらない限り再利用されます。"
 
 #: src/routes/settings.tsx:95
 msgid "Testing…"
@@ -585,11 +796,11 @@ msgstr "テスト中…"
 
 #. placeholder {0}: u.added
 #. placeholder {1}: u.fileName
-#: src/components/upload-panel.tsx:142
+#: src/components/upload-panel.tsx:196
 msgid "The {0} transactions imported from “{1}” will be removed. Other uploads are not affected, and you can re-upload the file later."
 msgstr "「{1}」から取り込んだ{0}件の取引が削除されます。他のアップロードには影響せず、後で再アップロードできます。"
 
-#: src/components/upload-panel.tsx:61
+#: src/components/upload-panel.tsx:69
 msgid "The file has a row that could not be read. Re-export the CSV and try again."
 msgstr "読み取れない行があります。CSV を再エクスポートしてもう一度お試しください。"
 
@@ -610,11 +821,11 @@ msgstr "テーマ: システム"
 msgid "This doesn't look like a {0} key, so it won't be sent."
 msgstr "{0}のキーではないようなので、送信しません。"
 
-#: src/components/upload-panel.tsx:59
+#: src/components/upload-panel.tsx:67
 msgid "This looks like a MUFG file, not PayPay."
 msgstr "これは PayPay ではなく MUFG のファイルのようです。"
 
-#: src/components/upload-panel.tsx:58
+#: src/components/upload-panel.tsx:66
 msgid "This looks like a PayPay file, not MUFG."
 msgstr "これは MUFG ではなく PayPay のファイルのようです。"
 
@@ -628,7 +839,7 @@ msgid "This month"
 msgstr "今月"
 
 #. placeholder {0}: count ?? 0
-#: src/routes/accounts.tsx:76
+#: src/routes/accounts.tsx:77
 msgid "This permanently removes the account and its {0} transactions from this browser. Export a backup in Settings first if you might need them."
 msgstr "この口座と{0}件の取引をこのブラウザから完全に削除します。必要な場合は先に設定からバックアップをエクスポートしてください。"
 
@@ -646,7 +857,7 @@ msgstr "上位の店舗 — {0}"
 msgid "Total"
 msgstr "合計"
 
-#: src/routes/accounts.tsx:65
+#: src/routes/accounts.tsx:66
 msgid "Transactions"
 msgstr "取引"
 
@@ -663,20 +874,24 @@ msgstr "交通"
 msgid "Travel"
 msgstr "旅行"
 
-#: src/components/upload-panel.tsx:60
+#: src/components/upload-panel.tsx:68
 msgid "Unrecognized file. Upload the CSV exported from MUFG or PayPay."
 msgstr "認識できないファイルです。MUFG または PayPay からエクスポートした CSV をアップロードしてください。"
 
-#. placeholder {0}: account.type === 'mufg' ? 'MUFG' : 'PayPay'
-#: src/components/upload-panel.tsx:154
-msgid "Upload {0} CSV"
-msgstr "{0} の CSV をアップロード"
+#: src/components/upload-panel.tsx:208
+msgid "Upload {sourceLabel} CSV"
+msgstr "{sourceLabel} の CSV をアップロード"
 
-#: src/routes/accounts.tsx:69
+#: src/components/upload-panel.tsx:224
+msgid "Upload cancelled."
+msgstr "アップロードをキャンセルしました。"
+
+#: src/components/upload-panel.tsx:208
+#: src/routes/accounts.tsx:70
 msgid "Upload CSV"
 msgstr "CSVをアップロード"
 
-#: src/components/upload-panel.tsx:128
+#: src/components/upload-panel.tsx:182
 msgid "Upload history"
 msgstr "アップロード履歴"
 
@@ -684,11 +899,11 @@ msgstr "アップロード履歴"
 msgid "Utilities"
 msgstr "光熱費"
 
-#: src/routes/accounts.tsx:69
+#: src/routes/accounts.tsx:70
 msgid "View dashboard"
 msgstr "ダッシュボードを見る"
 
-#: src/routes/accounts.tsx:91
+#: src/routes/accounts.tsx:94
 msgid "Wallet · payment history CSV"
 msgstr "ウォレット · 取引履歴CSV"
 
@@ -699,3 +914,7 @@ msgstr "データはこのブラウザ内にのみ保存されます。サイト
 #: src/router.tsx:38
 msgid "Your data stays in this browser only. Clearing site data deletes it, so export a backup in Settings."
 msgstr "データはこのブラウザにのみ保存されます。サイトデータを消去すると削除されるため、設定からバックアップをエクスポートしてください。"
+
+#: src/components/upload-panel.tsx:172
+msgid "Your next upload will ask you to map the columns again. Imported transactions are kept."
+msgstr "次回のアップロード時に列を再設定します。インポート済みの取引はそのまま残ります。"
