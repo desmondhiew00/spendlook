@@ -25,10 +25,7 @@ export const CATEGORY_LABEL: Record<Category, MessageDescriptor> = {
   other_income: msg`Other income`,
 }
 
-// One fixed color per category; stable across months and accounts
-export const CATEGORY_COLOR: Record<Category, string> = {
-  groceries: '#16a34a', dining: '#ea580c', transport: '#2563eb', rent: '#7c3aed', utilities: '#0891b2',
-  phone_internet: '#0d9488', shopping: '#db2777', health: '#dc2626', entertainment: '#ca8a04', travel: '#4f46e5',
-  subscriptions: '#9333ea', paypay: '#e11d48', transfer_out: '#64748b', other: '#94a3b8', excluded: '#cbd5e1',
-  salary: '#16a34a', cashback_points: '#f59e0b', transfer_in: '#2563eb', interest: '#0891b2', other_income: '#94a3b8',
-}
+// Validated categorical slots (dataviz palette, dark column, vs card surface #13181a): all six checks pass
+export const SERIES_COLORS = ['#3987e5', '#d95926', '#199e70', '#c98500', '#d55181', '#9085e9', '#e66767'] as const
+// The "Other" fold bucket stays neutral and never takes a hue
+export const FOLD_COLOR = '#7a8180'

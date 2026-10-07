@@ -48,9 +48,21 @@ msgstr "口座を追加"
 msgid "AI categorization"
 msgstr "AI 分類"
 
+#: src/components/dashboard.tsx:150
+msgid "All categories"
+msgstr "すべてのカテゴリ"
+
 #: src/components/upload-panel.tsx:55
 msgid "All merchants categorized."
 msgstr "すべての店舗を分類しました。"
+
+#: src/components/dashboard.tsx:155
+msgid "All methods"
+msgstr "すべての支払方法"
+
+#: src/components/dashboard.tsx:162
+msgid "Amount"
+msgstr "金額"
 
 #: src/routes/settings.tsx:71
 msgid "API key"
@@ -64,13 +76,52 @@ msgstr "バックアップ"
 msgid "Backup restored."
 msgstr "バックアップを復元しました。"
 
+#: src/components/dashboard.tsx:83
+msgid "By category per month"
+msgstr "月別カテゴリ"
+
 #: src/components/category-label.ts:22
 msgid "Cashback & points"
 msgstr "キャッシュバック・ポイント"
 
+#. placeholder {0}: formatMonth(month!, locale)
+#: src/components/dashboard.tsx:100
+msgid "Categories — {0}"
+msgstr "カテゴリ — {0}"
+
 #: src/components/upload-panel.tsx:44
 msgid "Categorizing…"
 msgstr "分類中…"
+
+#: src/components/dashboard.tsx:119
+#: src/components/dashboard.tsx:162
+msgid "Category"
+msgstr "カテゴリ"
+
+#: src/components/dashboard.tsx:149
+msgid "Category filter"
+msgstr "カテゴリで絞り込み"
+
+#. placeholder {0}: m.name
+#: src/components/dashboard.tsx:130
+msgid "Category for {0}"
+msgstr "{0} のカテゴリ"
+
+#: src/components/dashboard.tsx:173
+msgid "Category for this transaction"
+msgstr "この取引のカテゴリ"
+
+#: src/components/dashboard.tsx:79
+msgid "Change"
+msgstr "前月比"
+
+#: src/components/dashboard.tsx:119
+msgid "Count"
+msgstr "件数"
+
+#: src/components/dashboard.tsx:162
+msgid "Date"
+msgstr "日付"
 
 #: src/components/upload-panel.tsx:85
 #: src/routes/accounts.tsx:46
@@ -101,6 +152,10 @@ msgstr "除外"
 msgid "Export backup"
 msgstr "バックアップをエクスポート"
 
+#: src/components/dashboard.tsx:132
+msgid "Fixed"
+msgstr "固定"
+
 #: src/components/category-label.ts:6
 msgid "Groceries"
 msgstr "食料品"
@@ -129,9 +184,30 @@ msgstr "キーのテストに失敗しました: {error}"
 msgid "Key works."
 msgstr "キーは有効です。"
 
+#: src/components/dashboard.tsx:119
+#: src/components/dashboard.tsx:162
+msgid "Merchant"
+msgstr "店舗"
+
+#: src/components/dashboard.tsx:162
+msgid "Method"
+msgstr "支払方法"
+
 #: src/routes/settings.tsx:70
 msgid "Model"
 msgstr "モデル"
+
+#: src/components/dashboard.tsx:71
+msgid "Month"
+msgstr "月"
+
+#: src/components/dashboard.tsx:159
+msgid "Needs review only"
+msgstr "要確認のみ"
+
+#: src/components/dashboard.tsx:37
+msgid "No transactions yet. Upload a CSV above."
+msgstr "取引がまだありません。上から CSV をアップロードしてください。"
 
 #: src/components/category-label.ts:19
 msgid "Other"
@@ -141,6 +217,10 @@ msgstr "その他"
 msgid "Other income"
 msgstr "その他収入"
 
+#: src/components/dashboard.tsx:154
+msgid "Payment method"
+msgstr "支払方法"
+
 #: src/components/category-label.ts:17
 msgid "PayPay"
 msgstr "PayPay"
@@ -148,6 +228,10 @@ msgstr "PayPay"
 #: src/components/category-label.ts:11
 msgid "Phone & Internet"
 msgstr "通信費"
+
+#: src/components/dashboard.tsx:78
+msgid "Previous month"
+msgstr "前月"
 
 #: src/routes/settings.tsx:65
 msgid "Provider"
@@ -165,6 +249,10 @@ msgstr "家賃"
 msgid "Retry categorize ({pending})"
 msgstr "分類を再試行 ({pending})"
 
+#: src/components/dashboard.tsx:169
+msgid "Review"
+msgstr "要確認"
+
 #: src/components/category-label.ts:21
 msgid "Salary"
 msgstr "給与"
@@ -172,6 +260,10 @@ msgstr "給与"
 #: src/routes/settings.tsx:77
 msgid "Save & test key"
 msgstr "保存してキーをテスト"
+
+#: src/components/dashboard.tsx:148
+msgid "Search merchant"
+msgstr "店舗を検索"
 
 #: src/components/category-label.ts:18
 msgid "Sent to others"
@@ -218,6 +310,24 @@ msgstr "これは PayPay ではなく MUFG のファイルのようです。"
 #: src/components/upload-panel.tsx:24
 msgid "This looks like a PayPay file, not MUFG."
 msgstr "これは MUFG ではなく PayPay のファイルのようです。"
+
+#: src/components/dashboard.tsx:77
+msgid "This month"
+msgstr "今月"
+
+#. placeholder {0}: formatMonth(month!, locale)
+#: src/components/dashboard.tsx:116
+msgid "Top merchants — {0}"
+msgstr "上位の店舗 — {0}"
+
+#: src/components/dashboard.tsx:119
+msgid "Total"
+msgstr "合計"
+
+#. placeholder {0}: formatMonth(month!, locale)
+#: src/components/dashboard.tsx:145
+msgid "Transactions — {0}"
+msgstr "取引 — {0}"
 
 #: src/components/category-label.ts:8
 msgid "Transport"

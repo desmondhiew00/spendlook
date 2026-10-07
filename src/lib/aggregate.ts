@@ -1,4 +1,4 @@
-import { type Category, type Flow, type Merchant, type Txn, merchantId } from './types'
+import { type Category, type Flow, INCOME, type Merchant, SPENDING, type Txn, merchantId } from './types'
 
 type Resolve = (t: Txn) => Category
 
@@ -42,10 +42,17 @@ export function merchantTotals(txns: Txn[], merchants: Map<string, Merchant>) {
   const out = new Map<string, { id: string; name: string; total: number; count: number }>()
   for (const t of txns) {
     const id = merchantId(t.kind as Flow, t.merchantKey)
-    const row = out.get(id) ?? { id, name: merchants.get(id)?.displayName ?? t.rawMerchant, total: 0, count: 0 }
+    const row = out.get(id) ?? { id, name: merchants.get(id)?.displayName ?? t.rawMerchant.normalize('NFKC'), total: 0, count: 0 }
     row.total += t.amount
     row.count++
     out.set(id, row)
   }
   return [...out.values()].sort((a, b) => b.total - a.total)
+}
+
+// Chart series: the n largest categories (fold bucket excluded), in fixed list order so each keeps a stable color slot
+export function topCategories(txns: Txn[], resolve: Resolve, n: number, fold: Category): Category[] {
+  const order: readonly Category[] = [...SPENDING, ...INCOME]
+  const top = categoryTotals(txns, resolve).filter((c) => c.category !== fold && c.total > 0).slice(0, n).map((c) => c.category)
+  return top.sort((a, b) => order.indexOf(a) - order.indexOf(b))
 }

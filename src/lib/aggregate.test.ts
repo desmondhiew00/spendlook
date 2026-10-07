@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test'
-import { byCategoryMonth, categoryTotals, merchantTotals, monthlyTotals, resolveCategory } from './aggregate'
+import { byCategoryMonth, categoryTotals, merchantTotals, monthlyTotals, resolveCategory, topCategories } from './aggregate'
 import type { Category, Merchant, Txn } from './types'
 
 const tx = (id: string, month: string, amount: number, extra: Partial<Txn> = {}): Txn => ({
@@ -40,4 +40,17 @@ test('categoryTotals and merchantTotals sort descending', () => {
     { id: 'expense|BIG', name: 'Big', total: 300, count: 1 },
     { id: 'expense|SHOP', name: 'Shop', total: 150, count: 2 },
   ])
+})
+
+test('topCategories: largest n by total, fold bucket never takes a slot, returned in fixed list order', () => {
+  const by: Record<string, Category> = { a: 'travel', b: 'dining', c: 'other', d: 'rent', e: 'groceries' }
+  const txns = [tx('a', '2026-08', 900), tx('b', '2026-08', 500), tx('c', '2026-08', 9999), tx('d', '2026-07', 300), tx('e', '2026-08', 100)]
+  const resolve = (t: Txn) => by[t.id]
+  // fixed SPENDING order: groceries, dining, transport, rent, ..., travel
+  expect(topCategories(txns, resolve, 3, 'other')).toEqual(['dining', 'rent', 'travel'])
+})
+
+test('merchantTotals falls back to a half-width display name for merchants without a record', () => {
+  const [row] = merchantTotals([tx('1', '2026-08', 100, { merchantKey: 'RTK ペイペイ', rawMerchant: 'ＲＴＫ　ペイペイ' })], merchants)
+  expect(row.name).toBe('RTK ペイペイ')
 })

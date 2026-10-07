@@ -21,7 +21,7 @@ export async function importRows(account: Account, fileName: string, rows: Parse
       if (t.kind === 'transfer' || t.fixedCategory) continue
       const id = merchantId(t.kind as Flow, t.merchantKey)
       if (!candidates.has(id)) {
-        candidates.set(id, { id, kind: t.kind as Flow, merchantKey: t.merchantKey, displayName: t.rawMerchant, needsReview: false })
+        candidates.set(id, { id, kind: t.kind as Flow, merchantKey: t.merchantKey, displayName: t.rawMerchant.normalize('NFKC'), needsReview: false })
       }
     }
     const known = await db.merchants.bulkGet([...candidates.keys()])

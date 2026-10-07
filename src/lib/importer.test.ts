@@ -62,3 +62,8 @@ test('deleteAccount removes account, uploads, txns', async () => {
   await deleteAccount('A')
   expect([await db.accounts.count(), await db.uploads.count(), await db.txns.count()]).toEqual([0, 0, 0])
 })
+
+test('new merchant display name is NFKC-normalized raw text', async () => {
+  await importRows(acct, 'f.csv', [row('1', { rawMerchant: 'ＡＭＡＺＯＮ．Ｃ', merchantKey: 'AMAZON.C' })])
+  expect((await db.merchants.get('expense|AMAZON.C'))?.displayName).toBe('AMAZON.C')
+})

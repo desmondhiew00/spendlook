@@ -48,9 +48,21 @@ msgstr "Add account"
 msgid "AI categorization"
 msgstr "AI categorization"
 
+#: src/components/dashboard.tsx:150
+msgid "All categories"
+msgstr "All categories"
+
 #: src/components/upload-panel.tsx:55
 msgid "All merchants categorized."
 msgstr "All merchants categorized."
+
+#: src/components/dashboard.tsx:155
+msgid "All methods"
+msgstr "All methods"
+
+#: src/components/dashboard.tsx:162
+msgid "Amount"
+msgstr "Amount"
 
 #: src/routes/settings.tsx:71
 msgid "API key"
@@ -64,13 +76,52 @@ msgstr "Backup"
 msgid "Backup restored."
 msgstr "Backup restored."
 
+#: src/components/dashboard.tsx:83
+msgid "By category per month"
+msgstr "By category per month"
+
 #: src/components/category-label.ts:22
 msgid "Cashback & points"
 msgstr "Cashback & points"
 
+#. placeholder {0}: formatMonth(month!, locale)
+#: src/components/dashboard.tsx:100
+msgid "Categories — {0}"
+msgstr "Categories — {0}"
+
 #: src/components/upload-panel.tsx:44
 msgid "Categorizing…"
 msgstr "Categorizing…"
+
+#: src/components/dashboard.tsx:119
+#: src/components/dashboard.tsx:162
+msgid "Category"
+msgstr "Category"
+
+#: src/components/dashboard.tsx:149
+msgid "Category filter"
+msgstr "Category filter"
+
+#. placeholder {0}: m.name
+#: src/components/dashboard.tsx:130
+msgid "Category for {0}"
+msgstr "Category for {0}"
+
+#: src/components/dashboard.tsx:173
+msgid "Category for this transaction"
+msgstr "Category for this transaction"
+
+#: src/components/dashboard.tsx:79
+msgid "Change"
+msgstr "Change"
+
+#: src/components/dashboard.tsx:119
+msgid "Count"
+msgstr "Count"
+
+#: src/components/dashboard.tsx:162
+msgid "Date"
+msgstr "Date"
 
 #: src/components/upload-panel.tsx:85
 #: src/routes/accounts.tsx:46
@@ -101,6 +152,10 @@ msgstr "Excluded"
 msgid "Export backup"
 msgstr "Export backup"
 
+#: src/components/dashboard.tsx:132
+msgid "Fixed"
+msgstr "Fixed"
+
 #: src/components/category-label.ts:6
 msgid "Groceries"
 msgstr "Groceries"
@@ -129,9 +184,30 @@ msgstr "Key test failed: {error}"
 msgid "Key works."
 msgstr "Key works."
 
+#: src/components/dashboard.tsx:119
+#: src/components/dashboard.tsx:162
+msgid "Merchant"
+msgstr "Merchant"
+
+#: src/components/dashboard.tsx:162
+msgid "Method"
+msgstr "Method"
+
 #: src/routes/settings.tsx:70
 msgid "Model"
 msgstr "Model"
+
+#: src/components/dashboard.tsx:71
+msgid "Month"
+msgstr "Month"
+
+#: src/components/dashboard.tsx:159
+msgid "Needs review only"
+msgstr "Needs review only"
+
+#: src/components/dashboard.tsx:37
+msgid "No transactions yet. Upload a CSV above."
+msgstr "No transactions yet. Upload a CSV above."
 
 #: src/components/category-label.ts:19
 msgid "Other"
@@ -141,6 +217,10 @@ msgstr "Other"
 msgid "Other income"
 msgstr "Other income"
 
+#: src/components/dashboard.tsx:154
+msgid "Payment method"
+msgstr "Payment method"
+
 #: src/components/category-label.ts:17
 msgid "PayPay"
 msgstr "PayPay"
@@ -148,6 +228,10 @@ msgstr "PayPay"
 #: src/components/category-label.ts:11
 msgid "Phone & Internet"
 msgstr "Phone & Internet"
+
+#: src/components/dashboard.tsx:78
+msgid "Previous month"
+msgstr "Previous month"
 
 #: src/routes/settings.tsx:65
 msgid "Provider"
@@ -165,6 +249,10 @@ msgstr "Rent"
 msgid "Retry categorize ({pending})"
 msgstr "Retry categorize ({pending})"
 
+#: src/components/dashboard.tsx:169
+msgid "Review"
+msgstr "Review"
+
 #: src/components/category-label.ts:21
 msgid "Salary"
 msgstr "Salary"
@@ -172,6 +260,10 @@ msgstr "Salary"
 #: src/routes/settings.tsx:77
 msgid "Save & test key"
 msgstr "Save & test key"
+
+#: src/components/dashboard.tsx:148
+msgid "Search merchant"
+msgstr "Search merchant"
 
 #: src/components/category-label.ts:18
 msgid "Sent to others"
@@ -218,6 +310,24 @@ msgstr "This looks like a MUFG file, not PayPay."
 #: src/components/upload-panel.tsx:24
 msgid "This looks like a PayPay file, not MUFG."
 msgstr "This looks like a PayPay file, not MUFG."
+
+#: src/components/dashboard.tsx:77
+msgid "This month"
+msgstr "This month"
+
+#. placeholder {0}: formatMonth(month!, locale)
+#: src/components/dashboard.tsx:116
+msgid "Top merchants — {0}"
+msgstr "Top merchants — {0}"
+
+#: src/components/dashboard.tsx:119
+msgid "Total"
+msgstr "Total"
+
+#. placeholder {0}: formatMonth(month!, locale)
+#: src/components/dashboard.tsx:145
+msgid "Transactions — {0}"
+msgstr "Transactions — {0}"
 
 #: src/components/category-label.ts:8
 msgid "Transport"
