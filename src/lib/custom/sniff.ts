@@ -36,12 +36,12 @@ export function detectDelimiter(text: string): Delimiter {
 
 const numericish = (cell: string) => /^[\d\s.,\-/:()+\p{Sc}]*$/u.test(cell)
 
-// First row of the most common width that looks like labels rather than data
+// First row at least as wide as the data (banks drop trailing empty cells on data rows) that looks like labels
 export function detectHeaderRow(rows: string[][]): number {
   const head = rows.slice(0, 30)
   const [width] = mode(head.map((r) => r.length).filter((n) => n > 1))
   const i = head.findIndex(
-    (r) => r.length === width && r.filter((c) => c.trim()).length * 2 >= width && r.filter((c) => c.trim() && numericish(c)).length * 2 < width,
+    (r) => r.length >= width && r.filter((c) => c.trim()).length * 2 >= width && r.filter((c) => c.trim() && numericish(c)).length * 2 < width,
   )
   return Math.max(0, Math.min(i, 19))
 }

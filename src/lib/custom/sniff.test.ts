@@ -29,3 +29,10 @@ test('detectDelimiter prefers the consistent one', () => {
 test('detectHeaderRow skips numeric-looking rows of the modal width', () => {
   expect(detectHeaderRow([['Report'], ['2026', '1', '2'], ['Date', 'Desc', 'Amt'], ['2026-01-01', 'x', '1']])).toBe(2)
 })
+
+test('header wider than data rows (trailing empty cells dropped), after a key:value preamble', () => {
+  const rows = [['Account Number:', '***1234'], ['Account Type:', 'Savings'], ['From Date:', '01-09-2026'], [''],
+    ['Date', 'Ref', 'Description', 'Debit', 'Credit', 'Ref 1', 'Ref 2', 'Ref 3'],
+    ['01-09-2026', "'1'", 'X', '1.00', '', 'a'], ['02-09-2026', "'2'", 'Y', '', '2.00', 'b'], ['03-09-2026', "'3'", 'Z', '3.00', '', 'c']]
+  expect(detectHeaderRow(rows)).toBe(4)
+})

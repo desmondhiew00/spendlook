@@ -26,11 +26,32 @@ export type Category = SpendingCategory | IncomeCategory
 export const UNCOUNTED: readonly Category[] = ['excluded', 'card_payment', 'cash_withdrawal']
 export const counts = (c: Category) => !UNCOUNTED.includes(c)
 
-export type AccountType = 'mufg' | 'paypay'
+import type { DateFormat } from './custom/values'
+import type { Delimiter, Encoding } from './custom/sniff'
+
+export type AccountType = 'mufg' | 'paypay' | 'custom'
+
+export type AmountMapping =
+  | { mode: 'signed'; col: number; negativeIs: 'expense' | 'income' }
+  | { mode: 'split'; outCol: number; inCol: number }
+
+// Column indexes are 0-based into the header row
+export interface CustomMapping {
+  encoding: Encoding
+  delimiter: Delimiter
+  headerRow: number
+  header: string[] // saved to detect when the bank changes its export
+  dateCol: number
+  dateFormat: DateFormat
+  descriptionCols: number[] // joined with a space; banks often put the real merchant in a reference column
+  amount: AmountMapping
+  idCol?: number // part of the dedupe key, not the whole key: bank refs are often not unique
+  balanceCol?: number
+}
 export type Kind = 'expense' | 'income' | 'transfer'
 export type Flow = Exclude<Kind, 'transfer'>
 
-export interface Account { id: string; type: AccountType; name: string; currency: string; createdAt: number }
+export interface Account { id: string; type: AccountType; name: string; currency: string; createdAt: number; mapping?: CustomMapping }
 
 export interface ParsedRow {
   key: string // dedupe key within an account
