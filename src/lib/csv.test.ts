@@ -22,3 +22,8 @@ test('yen parses commas, dash, empty', () => {
 test('yen throws on garbage instead of NaN', () => {
   expect(() => yen('abc')).toThrow('Bad amount')
 })
+
+test('custom delimiters', () => {
+  expect(parseCsv('a\tb\n1\t2\n', '\t')).toEqual([['a', 'b'], ['1', '2']])
+  expect(parseCsv('a;"x;y"\n', ';')).toEqual([['a', 'x;y']])
+})
