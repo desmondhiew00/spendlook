@@ -1,5 +1,4 @@
-Contact: mailto:[CONTACT EMAIL]
+Contact: mailto:contact@spendlook.app
 Expires: 2027-10-08T00:00:00.000Z
 Preferred-Languages: en, ja
 Canonical: https://spendlook.app/.well-known/security.txt
-Policy: https://github.com/[REPO]/blob/main/SECURITY.md

@@ -1,7 +1,7 @@
 import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { type ChangeEvent, useState } from 'react'
 import { cn } from 'cn'
-import { Loader2 } from 'lucide-react'
+import { Fingerprint, KeyRound, LifeBuoy, Loader2, Lock, ShieldAlert, ShieldCheck } from 'lucide-react'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -18,8 +18,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ModelInput } from '@/components/model-input'
 import { Picker } from '@/components/picker'
-import { PassphraseNeeded, changePassphrase, deleteAllData, disableEncryption, enableEncryption, exportBackup, importBackup } from '@/lib/backup'
-import { isEnabled, setMaster } from '@/lib/vault'
+import { PassphraseNeeded, deleteAllData, exportBackup, importBackup } from '@/lib/backup'
+import { changePassphrase, disableEncryption, newRecoveryKey } from '@/lib/encryption'
+import { AUTO_LOCK_OPTIONS, autoLockMinutes, isEnabled, isWrongSecret, loadMeta, lock, passkeysSupported, passphraseWeakness, removePasskey, setAutoLockMinutes, setMaster } from '@/lib/vault'
+import { ConfirmDelete } from '@/components/confirm-delete'
+import { EncryptionSetup, NewPassphraseFields, PasskeyStep, RecoveryKeyStep } from '@/components/encryption-setup'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { BATCH_SIZE, recategorizableMerchants, recategorizeAll } from '@/lib/categorize'
 import { useLiveQuery } from 'dexie-react-hooks'
@@ -173,72 +176,127 @@ export function SettingsPage() {
   )
 }
 
-const MIN_PASSPHRASE = 10
-
-// Passphrase lock for everything stored in this browser (database and AI keys)
+// Encryption of everything stored in this browser (database and AI keys): ways to unlock, auto-lock, turn off
 function EncryptionCard() {
-  const { t } = useLingui()
+  const { t, i18n } = useLingui()
   const [on, setOn] = useState(isEnabled)
+  const [meta, setMeta] = useState(loadMeta)
+  const [view, setView] = useState<'main' | 'setup' | 'passphrase' | 'recovery' | 'passkey' | 'off'>('main')
   const [current, setCurrent] = useState('')
   const [next, setNext] = useState('')
   const [confirm, setConfirm] = useState('')
+  const [code, setCode] = useState('')
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState('')
-  const valid = next.length >= MIN_PASSPHRASE && next === confirm
-  const reset = () => { setCurrent(''); setNext(''); setConfirm('') }
+  const [minutes, setMinutes] = useState(autoLockMinutes)
+  const refresh = () => { setOn(isEnabled()); setMeta(loadMeta()); setView('main'); setCurrent(''); setNext(''); setConfirm('') }
 
   async function run(action: () => Promise<void>, done: string) {
     setBusy(true)
     setMsg('')
     try {
       await action()
-      reset()
-      setOn(isEnabled())
+      refresh()
       setMsg(done)
     } catch (e) {
       // a failed GCM unwrap means the passphrase was wrong; anything else is shown as is
-      setMsg(e instanceof Error && /tag|invalid/i.test(e.message) ? t`Wrong passphrase.` : e instanceof Error ? e.message : String(e))
+      setMsg(isWrongSecret(e) ? t`Wrong passphrase.` : e instanceof Error ? e.message : String(e))
     } finally {
       setBusy(false)
     }
   }
 
-  const field = (id: string, label: string, value: string, set: (v: string) => void, autoComplete: string) => (
-    <div className="space-y-1"><Label htmlFor={id} className="text-xs text-muted-foreground">{label}</Label><Input id={id} type="password" autoComplete={autoComplete} value={value} onChange={(e) => set(e.target.value)} /></div>
+  const currentField = (
+    <div className="space-y-1"><Label htmlFor="enc-current"><Trans>Current passphrase</Trans></Label><Input id="enc-current" type="password" autoComplete="current-password" value={current} onChange={(e) => setCurrent(e.target.value)} /></div>
   )
+  const back = <Button type="button" variant="ghost" onClick={refresh}><Trans>Cancel</Trans></Button>
+
+  let body
+  if (!on) {
+    body = view === 'setup'
+      ? <EncryptionSetup onDone={() => { refresh(); setMsg(t`Encryption is on.`) }} />
+      : <Button onClick={() => setView('setup')}><Lock data-icon="inline-start" /><Trans>Turn on encryption</Trans></Button>
+  } else if (view === 'passphrase') {
+    body = (
+      <form className="space-y-3" onSubmit={(e) => { e.preventDefault(); run(() => changePassphrase(current, next), t`Passphrase changed.`) }}>
+        {currentField}
+        <NewPassphraseFields idPrefix="enc" value={next} onChange={setNext} confirm={confirm} onConfirm={setConfirm} />
+        <div className="flex gap-2"><Button type="submit" disabled={busy || !current || !!passphraseWeakness(next) || next !== confirm}><Trans>Change passphrase</Trans></Button>{back}</div>
+      </form>
+    )
+  } else if (view === 'recovery') {
+    body = code
+      ? <RecoveryKeyStep code={code} onDone={() => { setCode(''); refresh(); setMsg(t`New recovery key saved. The old one no longer works.`) }} />
+      : (
+        <div className="space-y-3">
+          <p className="text-sm"><Trans>A new recovery key replaces the old one, which stops working. Do this if you lost it or think someone else has seen it.</Trans></p>
+          {currentField}
+          <div className="flex gap-2"><Button disabled={busy || !current} onClick={() => newRecoveryKey(current).then((c) => { setCurrent(''); setCode(c) }, () => setMsg(t`Wrong passphrase.`))}><Trans>Create new recovery key</Trans></Button>{back}</div>
+        </div>
+      )
+  } else if (view === 'passkey') {
+    body = (
+      <div className="space-y-3">
+        {currentField}
+        {current ? <PasskeyStep passphrase={current} onDone={refresh} skipLabel={<Trans>Cancel</Trans>} /> : back}
+      </div>
+    )
+  } else if (view === 'off') {
+    body = (
+      <form className="space-y-3" onSubmit={(e) => { e.preventDefault(); run(() => disableEncryption(current), t`Encryption is off.`) }}>
+        <p className="text-sm text-destructive"><Trans>Your data and AI keys will be stored in this browser unencrypted, readable by anyone with access to this device.</Trans></p>
+        {currentField}
+        <div className="flex gap-2"><Button type="submit" variant="destructive" disabled={busy || !current}><Trans>Turn off encryption</Trans></Button>{back}</div>
+      </form>
+    )
+  } else {
+    body = (
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <div className="text-sm font-medium"><Trans>Ways to unlock</Trans></div>
+          <ul className="divide-y border text-sm">
+            <li className="flex items-center gap-2 px-3 py-2"><KeyRound className="size-4 text-muted-foreground" /><span className="flex-1"><Trans>Passphrase</Trans></span><Button variant="ghost" size="sm" onClick={() => setView('passphrase')}><Trans>Change</Trans></Button></li>
+            <li className="flex items-center gap-2 px-3 py-2"><LifeBuoy className="size-4 text-muted-foreground" /><span className="flex-1"><Trans>Recovery key</Trans>{!meta?.recovery && <span className="text-destructive"> · <Trans>not set</Trans></span>}</span><Button variant="ghost" size="sm" onClick={() => setView('recovery')}>{meta?.recovery ? <Trans>Replace</Trans> : <Trans>Create</Trans>}</Button></li>
+            {meta?.passkeys.map((p) => (
+              <li key={p.id} className="flex items-center gap-2 px-3 py-2">
+                <Fingerprint className="size-4 text-muted-foreground" />
+                <span className="min-w-0 flex-1 truncate">{p.name} <span className="text-muted-foreground">· {new Date(p.created).toLocaleDateString(i18n.locale)}</span></span>
+                <ConfirmDelete
+                  trigger={<Button variant="ghost" size="sm"><Trans>Remove</Trans></Button>}
+                  title={<Trans>Remove this passkey?</Trans>}
+                  description={<Trans>It will no longer unlock spendlook. Your passphrase and recovery key still work.</Trans>}
+                  confirmLabel={<Trans>Remove passkey</Trans>}
+                  onConfirm={async () => { removePasskey(p.id); refresh() }}
+                />
+              </li>
+            ))}
+          </ul>
+          {passkeysSupported() && <Button variant="outline" size="sm" onClick={() => setView('passkey')}><Fingerprint data-icon="inline-start" /><Trans>Add a passkey</Trans></Button>}
+        </div>
+        <div className="flex flex-wrap items-end gap-3">
+          <div className="space-y-1">
+            <Label><Trans>Lock after inactivity</Trans></Label>
+            <Picker<string> label={t`Lock after inactivity`} value={String(minutes)} onChange={(v) => { setAutoLockMinutes(Number(v)); setMinutes(Number(v)) }} className="h-9 w-40" options={AUTO_LOCK_OPTIONS.map((m) => ({ value: String(m), label: t`${m} min` }))} />
+          </div>
+          <Button variant="outline" onClick={() => { lock(); location.reload() }}><Lock data-icon="inline-start" /><Trans>Lock now</Trans></Button>
+          <Button variant="ghost" className="ml-auto text-muted-foreground" onClick={() => setView('off')}><Trans>Turn off…</Trans></Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <Card>
+    <Card className={on ? undefined : 'border-amber-500/50'}>
       <CardHeader>
-        <CardTitle><Trans>Encryption</Trans></CardTitle>
+        <CardTitle className="flex items-center gap-2"><Trans>Encryption</Trans>{on ? <span className="text-emerald-600 dark:text-emerald-400"><ShieldCheck className="size-4" /></span> : <span className="text-amber-600"><ShieldAlert className="size-4" /></span>}</CardTitle>
         <CardDescription>
           {on
-            ? <Trans>On. Everything in this browser, including your AI keys, is encrypted with your passphrase. It is asked for each time the app opens.</Trans>
-            : <Trans>Lock everything stored in this browser, including your AI keys, with a passphrase. Protects your data if someone copies this browser's files or uses this device. If you forget the passphrase, the data cannot be recovered by anyone.</Trans>}
+            ? <Trans>On. Everything in this browser, including your AI keys, is encrypted. It locks when you close the tab or after inactivity.</Trans>
+            : <Trans>Off. Anyone with access to this device or a copy of this browser's files can read your transactions and AI keys. Turn it on to lock them with a passphrase.</Trans>}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
-        {!on ? (
-          <form className="space-y-3" onSubmit={(e) => { e.preventDefault(); run(() => enableEncryption(next), t`Encryption is on.`) }}>
-            {field('enc-new', t`Passphrase (at least ${MIN_PASSPHRASE} characters)`, next, setNext, 'new-password')}
-            {field('enc-confirm', t`Repeat passphrase`, confirm, setConfirm, 'new-password')}
-            {confirm && next !== confirm && <p className="text-xs text-destructive"><Trans>The passphrases don't match.</Trans></p>}
-            <Button type="submit" disabled={busy || !valid}>{busy && <Loader2 className="animate-spin motion-reduce:animate-none" data-icon="inline-start" />}<Trans>Turn on encryption</Trans></Button>
-          </form>
-        ) : (
-          <>
-            <form className="space-y-3" onSubmit={(e) => { e.preventDefault(); run(() => changePassphrase(current, next), t`Passphrase changed.`) }}>
-              {field('enc-current', t`Current passphrase`, current, setCurrent, 'current-password')}
-              {field('enc-new', t`New passphrase (at least ${MIN_PASSPHRASE} characters)`, next, setNext, 'new-password')}
-              {field('enc-confirm', t`Repeat new passphrase`, confirm, setConfirm, 'new-password')}
-              <div className="flex flex-wrap gap-2">
-                <Button type="submit" disabled={busy || !current || !valid}><Trans>Change passphrase</Trans></Button>
-                <Button type="button" variant="outline" onClick={() => location.reload()}><Trans>Lock now</Trans></Button>
-                <Button type="button" variant="ghost" disabled={busy || !current} onClick={() => run(() => disableEncryption(current), t`Encryption is off.`)}><Trans>Turn off (needs current passphrase)</Trans></Button>
-              </div>
-            </form>
-          </>
-        )}
+        {body}
         {msg && <p role="status" className="text-sm">{msg}</p>}
       </CardContent>
     </Card>

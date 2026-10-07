@@ -2,11 +2,8 @@ import { z } from 'zod'
 import { DATE_FORMATS } from './custom/values'
 import { DELIMITERS, ENCODINGS } from './custom/sniff'
 import { db } from './db'
-import { readSecrets, writeSecrets } from './settings'
 import { INCOME, SPENDING } from './types'
-import {
-  b64, decryptBytes, encryptBytes, getMaster, isEnabled, loadMeta, newMaster, saveMeta, setMaster, split, unb64, unwrap, wrap,
-} from './vault'
+import { b64, decryptBytes, encryptBytes, isEnabled, loadMeta, openSlot, split, unb64 } from './vault'
 
 // A backup file is untrusted input: every row is checked before anything is written
 const category = z.enum([...SPENDING, ...INCOME])
@@ -54,7 +51,13 @@ const backup = z.object({
 
 // While the vault is on, the backup is encrypted with the same key and carries it wrapped by the passphrase,
 // so it opens anywhere with that passphrase and never sits in Downloads in the clear
-const sealed = z.object({ app: z.literal('spendlook'), version: z.literal(1), vault: z.object({ v: z.literal(1), salt: z.string(), iterations: z.number().int().min(100_000), wrapped: z.string() }), data: z.string() })
+const slot = z.union([
+  z.object({ kdf: z.literal('argon2id'), m: z.number().int().min(19_456), t: z.number().int().min(1), p: z.number().int().min(1), salt: z.string(), wrapped: z.string() }),
+  z.object({ kdf: z.literal('pbkdf2'), iterations: z.number().int().min(100_000), salt: z.string(), wrapped: z.string() }),
+  // backups made before Argon2id
+  z.object({ v: z.literal(1), iterations: z.number().int().min(100_000), salt: z.string(), wrapped: z.string() }).transform((o) => ({ kdf: 'pbkdf2' as const, iterations: o.iterations, salt: o.salt, wrapped: o.wrapped })),
+])
+const sealed = z.object({ app: z.literal('spendlook'), version: z.literal(1), vault: slot, data: z.string() })
 
 export class PassphraseNeeded extends Error {}
 
@@ -64,7 +67,7 @@ export async function exportBackup(): Promise<string> {
   ])
   const json = JSON.stringify({ app: 'spendlook', version: 1, accounts, uploads, txns, merchants, usage })
   if (!isEnabled()) return json
-  return JSON.stringify({ app: 'spendlook', version: 1, vault: loadMeta(), data: b64(encryptBytes(new TextEncoder().encode(json))) })
+  return JSON.stringify({ app: 'spendlook', version: 1, vault: loadMeta()!.passphrase, data: b64(encryptBytes(new TextEncoder().encode(json))) })
 }
 
 export async function importBackup(json: string, passphrase?: string) {
@@ -72,7 +75,7 @@ export async function importBackup(json: string, passphrase?: string) {
   const enc = sealed.safeParse(raw)
   if (enc.success) {
     if (!passphrase) throw new PassphraseNeeded('This backup is encrypted. Enter its passphrase.')
-    const master = await unwrap(enc.data.vault, passphrase).catch(() => { throw new PassphraseNeeded('Wrong passphrase for this backup.') })
+    const master = await openSlot(enc.data.vault, passphrase).catch(() => { throw new PassphraseNeeded('Wrong passphrase for this backup.') })
     raw = parseJson(new TextDecoder().decode(decryptBytes(unb64(enc.data.data), split(master).enc)))
   }
   const parsed = backup.safeParse(raw)
@@ -100,48 +103,4 @@ export async function deleteAllData() {
   await db.transaction('rw', db.tables, async () => {
     await Promise.all(db.tables.map((t) => t.clear()))
   })
-}
-
-// Reads every row under the current keys, switches keys, writes them back, all in one transaction:
-// a failure rolls the rows back, and `revert` puts the keys back to match.
-async function rewriteAll(switchKeys: () => void, revert: () => void) {
-  const secrets = readSecrets()
-  try {
-    await db.transaction('rw', db.tables, async () => {
-      const all = await Promise.all(db.tables.map((t) => t.toArray()))
-      switchKeys()
-      for (const [i, t] of db.tables.entries()) {
-        await t.clear()
-        await t.bulkAdd(all[i])
-      }
-    })
-  } catch (e) {
-    revert()
-    throw e
-  }
-  writeSecrets(secrets)
-}
-
-// ponytail: the vault meta is saved inside the transaction, before it commits; a tab killed in that instant
-// leaves meta without encrypted rows. Rare enough for now; a "repair" pass on unlock covers it if it ever bites.
-export async function enableEncryption(passphrase: string) {
-  if (isEnabled()) throw new Error('Encryption is already on')
-  const master = newMaster()
-  const meta = await wrap(master, passphrase) // slow KDF runs before the transaction opens
-  await rewriteAll(() => { saveMeta(meta); setMaster(master) }, () => { saveMeta(null); setMaster(null) })
-}
-
-export async function disableEncryption(passphrase: string) {
-  const meta = loadMeta()
-  const master = getMaster()
-  if (!meta || !master) throw new Error('Encryption is not on')
-  await unwrap(meta, passphrase) // confirms it's the owner, not just someone at an unlocked tab
-  await rewriteAll(() => { saveMeta(null); setMaster(null) }, () => { saveMeta(meta); setMaster(master) })
-}
-
-// Only re-wraps the master key; the data is untouched
-export async function changePassphrase(current: string, next: string) {
-  const meta = loadMeta()
-  if (!meta) throw new Error('Encryption is not on')
-  saveMeta(await wrap(await unwrap(meta, current), next))
 }

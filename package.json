@@ -29,6 +29,7 @@
     "cn": "^0.4.0",
     "dexie": "^4.4.6",
     "dexie-react-hooks": "^4.4.0",
+    "dompurify": "^3.4.16",
     "echarts": "^6.1.0",
     "lucide-react": "^1.52.0",
     "react": "^19.2.8",
@@ -54,5 +55,8 @@
     "typescript": "~6.0.2",
     "vite": "^8.3.0",
     "wrangler": "^4.148.0"
+  },
+  "overrides": {
+    "sharp": "^0.35.5"
   }
 }

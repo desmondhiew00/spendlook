@@ -23,12 +23,12 @@
         </div>
 
         <h2>1. Who we are</h2>
-        <p>spendlook (“we”) is operated by [OPERATOR NAME], [ADDRESS / COUNTRY]. Contact: <a href="mailto:[CONTACT EMAIL]">[CONTACT EMAIL]</a>.</p>
+        <p>spendlook (“we”) is operated by Desmond Hiew, Tokyo, Japan. Contact: <a href="mailto:contact@spendlook.app">contact@spendlook.app</a>.</p>
 
         <h2>2. Data stored on your device</h2>
         <p>When you upload a CSV, spendlook reads it in your browser and stores accounts, transactions, merchant names, your category choices and an AI usage log in your browser's IndexedDB. Your AI provider key, AI settings, theme and language are stored in localStorage. We have no copy and cannot access, recover or delete this data for you.</p>
         <ul>
-          <li><strong>Encryption (optional):</strong> in Settings you can encrypt all of it with a passphrase (AES-256-GCM, key derived with PBKDF2). We never see the passphrase, and a forgotten passphrase cannot be recovered.</li>
+          <li><strong>Encryption:</strong> before your first data is stored, spendlook asks for a passphrase and encrypts all of it (AES-256-GCM; key derived with Argon2id). You can also unlock with a passkey (fingerprint, face or device PIN) and a one-time recovery key. It locks automatically after inactivity. We never see your passphrase, recovery key or passkey; if you lose all of them, the data cannot be recovered by anyone. You may choose to continue without encryption.</li>
           <li><strong>Deletion:</strong> Settings → Delete all data, or clear this site's data in your browser.</li>
           <li><strong>Backups</strong> you export are files on your device. They are encrypted only if encryption is on.</li>
         </ul>
@@ -55,7 +55,7 @@
         <p>spendlook is not directed at children under 16.</p>
 
         <h2>8. Security</h2>
-        <p>See our <a href="https://github.com/[REPO]/blob/main/SECURITY.md" rel="noreferrer">security policy</a> and <a href="/.well-known/security.txt">security.txt</a> to report a vulnerability.</p>
+        <p>To report a vulnerability, see our <a href="/.well-known/security.txt">security.txt</a>.</p>
 
         <h2>9. Changes</h2>
         <p>We will update this page and its effective date when the policy changes. If the change is material, for example new data leaving your device, the app will say so before it happens.</p>
@@ -70,12 +70,12 @@
         </div>
 
         <h2>1. 運営者</h2>
-        <p>spendlook は [運営者名]（[所在地]）が運営しています。お問い合わせ：<a href="mailto:[CONTACT EMAIL]">[CONTACT EMAIL]</a></p>
+        <p>spendlook は Desmond Hiew（東京都）が運営しています。お問い合わせ：<a href="mailto:contact@spendlook.app">contact@spendlook.app</a></p>
 
         <h2>2. 端末内に保存されるデータ</h2>
         <p>アップロードした CSV はブラウザ内で読み込まれ、口座・取引・店舗名・カテゴリ設定・AI利用ログがブラウザの IndexedDB に保存されます。AIキーや設定、テーマ、言語は localStorage に保存されます。運営者はこれらのデータを保持しておらず、閲覧・復元・削除することはできません。</p>
         <ul>
-          <li><strong>暗号化（任意）：</strong>設定画面からパスフレーズですべてを暗号化できます（AES-256-GCM、PBKDF2 による鍵導出）。パスフレーズを運営者が知ることはなく、忘れた場合は復元できません。</li>
+          <li><strong>暗号化：</strong>最初のデータを保存する前にパスフレーズを設定し、すべてを暗号化します（AES-256-GCM、Argon2id による鍵導出）。パスキー（指紋・顔・端末PIN）や一度だけ表示される復旧キーでもロック解除でき、一定時間操作がないと自動でロックされます。パスフレーズ・復旧キー・パスキーを運営者が知ることはなく、すべて失うと誰もデータを復元できません。暗号化せずに使うこともできます。</li>
           <li><strong>削除：</strong>設定 → すべてのデータを削除、またはブラウザでこのサイトのデータを消去してください。</li>
           <li><strong>バックアップ</strong>は端末上のファイルです。暗号化がオンの場合のみ暗号化されます。</li>
         </ul>
@@ -101,7 +101,10 @@
         <h2>7. 子ども</h2>
         <p>16歳未満の方を対象としたサービスではありません。</p>
 
-        <h2>8. 改定</h2>
+        <h2>8. セキュリティ</h2>
+        <p>脆弱性の報告は <a href="/.well-known/security.txt">security.txt</a> をご覧ください。</p>
+
+        <h2>9. 改定</h2>
         <p>本ポリシーを変更する場合は本ページと施行日を更新します。端末外へ送信するデータが増えるなどの重要な変更は、実施前にアプリ内でお知らせします。</p>
       </section>
     </main>

@@ -1,18 +1,21 @@
 import { Trans, useLingui } from '@lingui/react/macro'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { ArrowRight, Plus, Trash2, X } from 'lucide-react'
+import { ArrowRight, Plus, ShieldAlert, Trash2, X } from 'lucide-react'
 import { type FormEvent, useMemo, useState } from 'react'
 import { ACCOUNT_LABEL, AccountLogo } from '@/components/account-logo'
 import { ConfirmDelete } from '@/components/confirm-delete'
 import { Picker } from '@/components/picker'
+import { EncryptionSetup } from '@/components/encryption-setup'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { db } from '@/lib/db'
 import { deleteAccount } from '@/lib/importer'
 import { loadSettings } from '@/lib/settings'
+import { isEnabled, skipEncryption, skippedEncryption } from '@/lib/vault'
 import type { Account, AccountType } from '@/lib/types'
 
 export function AccountsPage() {
@@ -25,6 +28,12 @@ export function AccountsPage() {
   return (
     <div className="space-y-6">
       {accounts.length ? <h1 className="text-4xl font-bold tracking-[-0.04em]"><Trans>Accounts</Trans></h1> : <Intro />}
+      {!!accounts.length && !isEnabled() && (
+        <p className="flex items-start gap-2 border border-amber-500/50 bg-amber-500/10 p-3 text-sm">
+          <ShieldAlert className="mt-0.5 size-4 shrink-0 text-amber-600" />
+          <span><Trans>Your data isn't encrypted. Anyone with access to this device can read it. <Link to="/settings" className="underline">Turn on encryption</Link></Trans></span>
+        </p>
+      )}
       {!verified && (
         <p className="border p-3 text-sm text-muted-foreground">
           <Trans>Optional: add an AI key in <Link to="/settings" className="underline">Settings</Link> to auto-categorize merchants. Without one, nothing leaves this browser and you pick categories yourself.</Trans>
@@ -111,8 +120,16 @@ function AddAccountForm({ onCancel }: { onCancel?: () => void }) {
   ]
   const fallbackName = type === 'custom' ? t`My account` : ACCOUNT_LABEL[type]
 
-  async function add(e: FormEvent) {
+  // encryption is the default: before the first data is stored, ask for a passphrase (skippable, remembered)
+  const [protect, setProtect] = useState(false)
+  function add(e: FormEvent) {
     e.preventDefault()
+    if (!isEnabled() && !skippedEncryption()) setProtect(true)
+    else create()
+  }
+
+  async function create() {
+    setProtect(false)
     const id = crypto.randomUUID()
     // MUFG and PayPay are JPY; custom accounts pick their currency
     await db.accounts.add({ id, type, name: name.trim() || fallbackName, currency: type === 'custom' ? currency : 'JPY', createdAt: Date.now() })
@@ -120,6 +137,16 @@ function AddAccountForm({ onCancel }: { onCancel?: () => void }) {
   }
 
   return (
+    <>
+    <Dialog open={protect} onOpenChange={setProtect}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle><Trans>Protect your data first</Trans></DialogTitle>
+          <DialogDescription><Trans>Your transactions will be encrypted in this browser with a passphrase only you know. Without it, anyone with access to this device can read them.</Trans></DialogDescription>
+        </DialogHeader>
+        <EncryptionSetup onDone={create} firstStepFooter={<Button type="button" variant="link" className="w-full text-muted-foreground" onClick={() => { skipEncryption(); create() }}><Trans>Continue without encryption</Trans></Button>} />
+      </DialogContent>
+    </Dialog>
     <form onSubmit={add} className="space-y-5 border bg-card p-5">
       <div className="flex items-center justify-between">
         <h2 className="kicker text-primary"><Trans>Add account</Trans></h2>
@@ -152,6 +179,7 @@ function AddAccountForm({ onCancel }: { onCancel?: () => void }) {
       </div>
       <Button type="submit" size="lg"><Trans>Create and upload CSV</Trans><ArrowRight data-icon="inline-end" /></Button>
     </form>
+    </>
   )
 }
 

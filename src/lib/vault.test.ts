@@ -1,10 +1,11 @@
 import { afterAll, beforeAll, beforeEach, expect, test } from 'bun:test'
 import { liveQuery } from 'dexie'
-import { PassphraseNeeded, changePassphrase, disableEncryption, enableEncryption, exportBackup, importBackup } from './backup'
+import { PassphraseNeeded, exportBackup, importBackup } from './backup'
+import { changePassphrase, disableEncryption, enableEncryption, finishPending, newRecoveryKey } from './encryption'
 import { db } from './db'
 import { deleteAccount, importRows } from './importer'
 import { loadKey, saveKey } from './settings'
-import { isEnabled, saveMeta, setMaster, unlock } from './vault'
+import { isEnabled, loadMeta, passphraseWeakness, saveMeta, setMaster, unlock, unlockWithRecovery } from './vault'
 
 beforeAll(() => {
   const m = new Map<string, string>()
@@ -94,6 +95,7 @@ test('locked: nothing can be read or written; only the right passphrase unlocks'
 test('changing the passphrase keeps the data; disabling decrypts it', async () => {
   await seed()
   await enableEncryption(PASS)
+  expect(loadMeta()?.passphrase.kdf).toBe('argon2id')
   await changePassphrase(PASS, 'new passphrase!')
   setMaster(null)
   await expect(unlock(PASS)).rejects.toThrow()
@@ -136,4 +138,71 @@ test('live queries still fire on changes while encrypted', async () => {
   await new Promise((r) => setTimeout(r, 20))
   sub.unsubscribe()
   expect(seen.at(-1)).toEqual(['Renamed'])
+})
+
+test('the recovery key unlocks, and a new one replaces it', async () => {
+  await seed()
+  const code = await enableEncryption(PASS)
+  expect(code).toMatch(/^[0-9A-Z]{5}(-[0-9A-Z]{5}){4}$/)
+  setMaster(null)
+  await expect(unlockWithRecovery('AAAAA-AAAAA-AAAAA-AAAAA-AAAAA')).rejects.toThrow()
+  await unlockWithRecovery(code.toLowerCase().replace(/-/g, ' ')) // forgiving about case and separators
+  await changePassphrase(null, 'a brand new passphrase')
+  await expect(newRecoveryKey(PASS)).rejects.toThrow() // the old passphrase no longer works
+  const next = await newRecoveryKey('a brand new passphrase')
+  setMaster(null)
+  await expect(unlockWithRecovery(code)).rejects.toThrow()
+  await unlockWithRecovery(next)
+  setMaster(null)
+  await unlock('a brand new passphrase')
+  expect((await db.accounts.toArray()).length).toBe(1)
+})
+
+test('a v1 (PBKDF2) vault still unlocks and is upgraded to Argon2id', async () => {
+  await seed()
+  await enableEncryption(PASS)
+  const master = (await import('./vault')).getMaster()!
+  // rebuild the old format around the same master key
+  const salt = crypto.getRandomValues(new Uint8Array(16))
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(PASS), 'PBKDF2', false, ['deriveBits'])
+  const kek = new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt, iterations: 100_000 }, base, 256))
+  const { gcm } = await import('@noble/ciphers/aes.js')
+  const { managedNonce } = await import('@noble/ciphers/utils.js')
+  const { b64 } = await import('./vault')
+  localStorage.setItem('vault', JSON.stringify({ v: 1, salt: b64(salt), iterations: 100_000, wrapped: b64(managedNonce(gcm)(kek).encrypt(master)) }))
+  const { readMetaForTest } = await import('./vault')
+  readMetaForTest()
+  setMaster(null)
+  await unlock(PASS)
+  expect(loadMeta()?.passphrase.kdf).toBe('argon2id')
+  expect((await db.accounts.toArray()).length).toBe(1)
+})
+
+test('an enable interrupted after the rows were written is finished on unlock', async () => {
+  await seed()
+  await enableEncryption(PASS)
+  saveMeta({ ...loadMeta()!, pending: 'enable' }) // as if the tab died before the meta was settled
+  await finishPending()
+  expect(loadMeta()?.pending).toBeUndefined()
+  expect(await rawDump()).not.toContain('SECRET')
+  saveMeta({ ...loadMeta()!, pending: 'disable' }) // died mid-disable: finishing it decrypts everything
+  await finishPending()
+  expect(isEnabled()).toBe(false)
+  expect(await rawDump()).toContain('SECRET SHOP')
+})
+
+test('weak passphrases are refused', () => {
+  expect(passphraseWeakness('short1!')).toBe('short')
+  expect(passphraseWeakness('password12345678')).toBe('common')
+  expect(passphraseWeakness('aaaaaaaaaaaaaaaa')).toBe('weak')
+  expect(passphraseWeakness('abcabcabcabc')).toBe('weak')
+  expect(passphraseWeakness(PASS)).toBeNull()
+  expect(passphraseWeakness('家計簿のパスワード2026')).toBeNull()
+})
+
+test('an unlocked tab alone cannot reset the passphrase or mint a recovery key', async () => {
+  await seed()
+  await enableEncryption(PASS)
+  await expect(changePassphrase(null, 'attacker passphrase!')).rejects.toThrow('required')
+  await expect(newRecoveryKey('guess')).rejects.toThrow()
 })

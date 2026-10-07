@@ -1,74 +1,89 @@
 # spendlook security review
 
-Date: 2026-10-08 · Scope: whole app (client-only SPA on Cloudflare Workers static assets) · Method: code review plus a browser test of the built app with production headers (`wrangler dev`)
+Date: 2026-10-08 · Scope: whole app (client-only SPA on Cloudflare Workers static assets) · Method: code review plus browser tests of the built app with production headers (`wrangler dev`), including passkeys on a Chrome virtual authenticator with PRF
 
 ## Score
 
-| | Before | After |
-|---|---|---|
-| **Overall** | **6.5 / 10** | **8.5 / 10** |
-| Data minimisation (what leaves the browser) | 5 | 9 |
-| Data at rest (IndexedDB, localStorage) | 3 | 8 (with passphrase on) / 4 (off) |
-| Browser hardening (CSP, headers) | 7 | 9 |
-| Input handling (CSV, backup import) | 7 | 9 |
-| Supply chain and deploy | 7 | 7 |
-| Transparency and consent | 5 | 9 |
+| | Start | Round 1 | Round 2 (now) |
+|---|---|---|---|
+| **Overall** | **6.5 / 10** | **8.5 / 10** | **9.2 / 10** |
+| Data minimisation (what leaves the browser) | 5 | 9 | 9 |
+| Data at rest (IndexedDB, localStorage) | 3 | 8 when on, 4 off, off by default | 9 (on by default) |
+| Unlock strength | – | 6 (PBKDF2, 10 chars) | 9 (Argon2id, strength check, passkeys) |
+| Exposure while unlocked | 4 | 4 | 7 (auto-lock, Trusted Types) |
+| Browser hardening (CSP, headers) | 7 | 9 | 10 |
+| Input handling (CSV, backup import) | 7 | 9 | 9 |
+| Supply chain and deploy | 7 | 7 | 8 (audit gate in CI) |
+| Transparency and consent | 5 | 9 | 9 |
 
 No app scores 10. A client-side app can't be fully protected from a compromised device, a malicious browser extension, or a compromised dependency, because each of those runs with the same access as the app itself.
 
 ## Architecture (trust boundaries)
 
 ```
-CSV file ──► browser (parse, store, chart) ──► IndexedDB / localStorage   [this device only]
+CSV file ──► browser (parse, store, chart) ──► IndexedDB / localStorage, encrypted   [this device only]
                     │
                     └── only if AI is on ──► api.anthropic.com | generativelanguage.googleapis.com | api.openai.com
 Cloudflare: serves static files only. Never receives user data.
 ```
 
-## What changed
+## Controls
 
-| # | Fix | Where |
-|---|---|---|
-| P0-1 | AI is opt-in. Uploading works with no key; without one, nothing leaves the browser | `upload-panel.tsx`, `accounts.tsx` |
-| P0-2 | Transfers to or from people get a fixed `transfer_in`/`transfer_out` category, so the person's name is never sent to the AI. Companies (`(カ`, `SDN BHD`, `LTD`…) keep AI categorization | `normalize.ts` `isPersonTransfer`, `parse/mufg.ts`, `custom/parse.ts` |
-| P0-3 | Column-mapping sample rows are redacted to their shape (`2026/09/03` → `0000/00/00`, words → `x`). The date format is checked locally against the real cells | `custom/ai.ts` `redact`, `checkDateFormat` |
-| P1-4 | Settings explains exactly what is sent; an explicit consent checkbox is required before a key is saved or tested; "Turn off AI" removes keys | `settings.tsx` |
-| P1-5 | Gemini free-tier warning (Google may use the data for training and human review), with a link to the terms | `settings.tsx` |
-| P2-6 | Headers: HSTS, Permissions-Policy, COOP, CORP, X-Frame-Options; CSP adds `object-src`/`worker-src`/`frame-src 'none'`, `base-uri`/`form-action 'none'`, `upgrade-insecure-requests`; `connect-src` no longer allows `'self'` | `public/_headers` |
-| P2-7 | Backup import is validated with zod before anything is written | `backup.ts` |
-| P2-9 | Parse errors are no longer logged with cell contents | `parse/index.ts`, `upload-panel.tsx` |
-| + | **Optional passphrase encryption** of every table and of the AI keys | `vault.ts`, `db.ts`, `unlock-screen.tsx` |
-| + | MUFG debit authorization number removed from display names | `parse/mufg.ts` |
+### Data leaving the browser
+- AI is opt-in. Without a key, nothing is sent anywhere. A consent checkbox is required before a key is saved or tested, and "Turn off AI" removes keys.
+- Only merchant names and their kind (spending or income) are sent. Never amounts, dates, balances or account numbers.
+- Transfers to or from people get a fixed transfer category, so the person's name is never sent. Companies (`(カ`, `SDN BHD`, `LTD`…) keep AI categorization. See `normalize.ts` `isPersonTransfer`.
+- Column-mapping sample rows are redacted to their shape: digits become 0, words become x. The date format is checked locally against the real cells.
+- OpenAI requests use `store: false`. Settings warns about Gemini's free tier.
 
-## Encryption design
+### Data at rest
+- **On by default.** Before the first account is created, a "Protect your data first" dialog asks for a passphrase. "Continue without encryption" is a visible link, and the choice is remembered. While data is stored unencrypted, the accounts page shows a permanent warning.
+- **Keys.** A random 64-byte master key: 32 bytes for AES-256-GCM, 32 bytes for HMAC-SHA256. It is stored only wrapped, once per way to unlock (a "slot"):
+  - **Passphrase.** Argon2id with 64 MiB, t=3, p=1 (RFC 9106). A strength check enforces at least 12 characters, rejects common passwords, and requires roughly 60 bits of estimated entropy. Old PBKDF2 vaults are upgraded on their next unlock.
+  - **Recovery key.** 125 random bits in Crockford base32, shown once, with copy, save-to-file and an "I saved it" confirmation. Unlocking with it forces a new passphrase.
+  - **Passkeys.** WebAuthn PRF: Touch ID, Face ID or Windows Hello. The authenticator's secret goes through HKDF to the wrapping key, so there is nothing to guess offline.
+- **Re-authentication.** Adding a passkey, minting a new recovery key, changing the passphrase or turning encryption off all need the current passphrase. An unlocked tab alone can't add a new way in. The only exception: right after a recovery-key unlock, one passphrase reset is allowed.
+- **Rows.** Each row is stored as `{ id: HMAC(id), <indexed ids>, _e: AES-GCM(row) }`. Primary keys are blinded because they carry content. This is done by a Dexie DBCore middleware at the lowest level using synchronous crypto (`@noble/ciphers`, `@noble/hashes`, both audited), so IndexedDB transactions stay atomic.
+- **AI keys.** Stored as `enc:` + ciphertext in localStorage. While locked, every read or write throws.
+- **Crash safety.** Turning encryption on or off records `pending` first. A tab killed mid-way is finished on the next unlock (`finishPending`).
+- **Backups.** Encrypted when the vault is on, and carry the passphrase slot.
 
-- **Keys.** A random 64-byte master key: 32 bytes for AES-256-GCM, 32 bytes for HMAC-SHA256. It is wrapped with a key derived by PBKDF2-SHA256 (600k iterations, 16-byte salt) from the passphrase. Changing the passphrase only re-wraps the master key; no data is re-encrypted.
-- **Rows.** Each row is stored as `{ id: HMAC(id), <indexed ids>, _e: AES-GCM(row) }`. Primary keys are blinded because they carry content: a txn id contains the raw CSV row, a merchant id contains the name. The fields left in the clear are random UUIDs and the AI-usage timestamp.
-- **Where it runs.** A Dexie DBCore middleware at the lowest level, so the cache, liveQuery and hooks layers above it all see plaintext. It uses synchronous crypto (`@noble/ciphers`, `@noble/hashes`, both audited) because awaiting WebCrypto inside an IndexedDB transaction would auto-commit it.
-- **AI keys.** Stored as `enc:` + ciphertext in localStorage. While locked, every read or write throws, so nothing is ever written in the clear.
-- **Backups.** With encryption on, the export is encrypted and carries the wrapped key, so it opens anywhere with the passphrase.
-- **Tests.** Verified in `vault.test.ts` (6 tests) and in the browser: a raw IndexedDB dump after enabling contains no names, file names or keys; a wrong passphrase is rejected; the right one unlocks.
+### While unlocked
+- **Auto-lock** after 1, 5 (default), 15, 30 or 60 minutes without input, counting time the tab spends in the background. There is deliberately no "never". Locking wipes the key and reloads, dropping every decrypted value in memory. Closing the tab also locks.
+- **Trusted Types** (`require-trusted-types-for 'script'`). Every HTML string written to the DOM goes through a DOMPurify `default` policy (only ECharts' tooltip uses one). Script and script-URL sinks have no policy, so they stay blocked. zod runs `jitless`, so nothing probes `eval`.
+- **CSP:**
+  - `script-src 'self'`, no inline scripts, no eval.
+  - `connect-src` allows only the 3 AI APIs.
+  - `object-src`, `worker-src`, `frame-src`, `base-uri` and `form-action` are `'none'`.
+  - `frame-ancestors 'none'`, plus `upgrade-insecure-requests`.
+- **Other headers:** HSTS, Permissions-Policy, COOP, CORP, `X-Frame-Options`, `nosniff`, `no-referrer`.
+
+### Input handling
+- CSV parsing never evaluates content. React escapes all output, and the chart tooltip escapes names.
+- Backup import is validated with zod before any write.
+
+### Supply chain and deploy
+- Lockfile frozen in CI. Dependabot is enabled. Actions are pinned by SHA.
+- **New:** `bun audit --audit-level=high` blocks a deploy that has a known-vulnerable dependency. `sharp` is pinned via `overrides` to the patched 0.35.5. `braces` is ignored: a glob DoS in dev-only tooling with no fixed release.
+- Deploys are manual (`workflow_dispatch`) through the `production` environment.
 
 ## Residual risks
 
-| Risk | Likelihood | Impact | Rating | Mitigation / note |
+| Risk | Likelihood | Impact | Rating | Note |
 |---|---|---|---|---|
-| Compromised npm dependency exfiltrates data (e.g. to an attacker's own key at an allowed AI host, or by navigating to a URL) | Low | Critical | **High** | CSP can't block navigation, and `connect-src` can't tell keys apart. Keep `bun.lock` frozen, review Dependabot PRs, keep dependencies few |
-| Compromised deploy (GitHub or Cloudflare account, `CLOUDFLARE_API_TOKEN`) ships malicious JS | Low | Critical | **High** | Manual: 2FA on GitHub and Cloudflare, required reviewer on the `production` environment, token scoped to Workers deploy only |
-| Malicious browser extension or XSS reads data while unlocked | Low | High | Medium | Strict CSP, no `innerHTML`, React escaping, chart tooltip escaped. Encryption doesn't help while the vault is unlocked |
-| Encryption off: anyone with the device or profile files reads everything | Medium | High | Medium | Offered in Settings; default off, since a forgotten passphrase loses data |
-| Weak passphrase brute-forced offline | Low | High | Medium | 10-character minimum, PBKDF2 at 600k iterations. Upgrade path: Argon2id |
-| Merchant names reveal a profile (health, religion, debts) to the AI provider | Medium (if AI on) | Medium | Medium | Opt-in, disclosed, people's names filtered, no amounts or dates. The provider's retention policy applies |
-| Person-transfer heuristic misses a format (a name sent to the AI) | Medium | Low | Low | Regex covers JP/MY/US/CN/KR wording; the user can still review |
-| Merchants imported before this change (old transfer names) can still be sent by "Re-categorize all" | Low | Low | Low | Only data from before 2026-10-08; delete and re-upload to reclassify |
-| Plaintext backup file (encryption off) | Medium | Medium | Low | The UI says so |
-| Tab killed in the moment between saving the vault meta and the transaction commit | Very low | Medium | Low | `ponytail:` note in `backup.ts`; a repair-on-unlock pass is the upgrade |
-| Lock is per session; there is no idle auto-lock | Low | Low | Low | "Lock now" button. Add an idle timer if users ask |
+| Compromised npm dependency exfiltrates data while unlocked (to an allowed AI host with an attacker's key, or via navigation) | Low | Critical | **High** | CSP can't tell keys apart or block navigation. Audit gate, lockfile and few dependencies reduce it; it can't be eliminated |
+| Compromised deploy (GitHub or Cloudflare account, API token) ships malicious JS | Low | Critical | **High** | Owner actions below |
+| Malicious browser extension reads the page while unlocked | Low | High | Medium | No web app can stop this. Auto-lock shrinks the window. Advise a browser profile with no extensions |
+| User skips encryption | Medium | High | Medium | Default is on; the skip is explicit and a banner keeps warning |
+| Merchant names reveal a profile to the AI provider | Medium (if AI on) | Medium | Medium | Opt-in, disclosed, people's names filtered |
+| Person-transfer heuristic misses a format | Medium | Low | Low | The user can review |
+| Merchants imported before 2026-10-08 (old transfer names) can be re-sent by "Re-categorize all" | Low | Low | Low | Delete and re-upload to reclassify |
+| Passkey unlock unavailable (Firefox PRF support is partial; older devices) | – | – | Info | Passphrase and recovery key always work |
 
-## Manual actions for the owner
+## Owner actions (only you can do these)
 
-1. Turn on 2FA for GitHub and Cloudflare.
+1. Turn on 2FA for GitHub and Cloudflare. Hardware keys or passkeys are preferred.
 2. GitHub → Settings → Environments → `production` → add required reviewers.
 3. Scope the Cloudflare API token to *Workers Scripts: Edit* for this account only, then rotate it.
-4. Enable Dependabot security updates and secret scanning in the repo settings.
-5. Have the Terms and Privacy Policy (`public/terms.html`, `public/privacy.html`) reviewed by a lawyer before launch.
+4. Turn on Dependabot security updates and secret scanning.
+5. Have the Terms and Privacy Policy reviewed by a lawyer before launch.
