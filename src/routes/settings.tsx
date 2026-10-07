@@ -15,12 +15,13 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { ModelInput } from '@/components/model-input'
 import { Picker } from '@/components/picker'
 import { exportBackup, importBackup } from '@/lib/backup'
 import { BATCH_SIZE, recategorizableMerchants, recategorizeAll } from '@/lib/categorize'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/lib/db'
-import { type AiSettings, DEFAULT_MODEL, PROVIDER_LABEL, type Provider, loadSettings, saveSettings } from '@/lib/settings'
+import { type AiSettings, DEFAULT_MODEL, PROVIDER_LABEL, type Provider, keyMatches, loadKey, loadSettings, saveKey, saveSettings } from '@/lib/settings'
 import { aiFor, estimate, loadPrices, savePrice, summarize } from '@/lib/usage'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
@@ -29,14 +30,17 @@ export function SettingsPage() {
   const initial = loadSettings()
   const [provider, setProvider] = useState<Provider>(initial?.provider ?? 'anthropic')
   const [model, setModel] = useState(initial?.model ?? DEFAULT_MODEL.anthropic)
-  const [apiKey, setApiKey] = useState(initial?.apiKey ?? '')
+  const [apiKey, setApiKey] = useState(() => loadKey(initial?.provider ?? 'anthropic'))
   const [status, setStatus] = useState<'idle' | 'testing' | 'ok' | 'fail'>(initial?.verified ? 'ok' : 'idle')
   const [error, setError] = useState('')
   const [backupMsg, setBackupMsg] = useState('')
+  // a key in another provider's format is never sent (e.g. an Anthropic key left in the box after switching)
+  const keyOk = keyMatches(provider, apiKey)
 
   async function saveAndTest() {
     const s: AiSettings = { provider, model: model.trim(), apiKey: apiKey.trim(), verified: false }
     saveSettings(s)
+    saveKey(provider, s.apiKey)
     setStatus('testing')
     setError('')
     try {
@@ -79,15 +83,15 @@ export function SettingsPage() {
         <CardContent className="space-y-3">
           <div className="space-y-2">
             <Label><Trans>Provider</Trans></Label>
-            <Picker<Provider> label={t`Provider`} value={provider} onChange={(p) => { setProvider(p); setModel(DEFAULT_MODEL[p]); setStatus('idle') }} className="h-9 w-full" options={(Object.keys(PROVIDER_LABEL) as Provider[]).map((p) => ({ value: p, label: PROVIDER_LABEL[p] }))} />
+            <Picker<Provider> label={t`Provider`} value={provider} onChange={(p) => { setProvider(p); setModel(DEFAULT_MODEL[p]); setApiKey(loadKey(p)); setStatus('idle') }} className="h-9 w-full" options={(Object.keys(PROVIDER_LABEL) as Provider[]).map((p) => ({ value: p, label: PROVIDER_LABEL[p] }))} />
           </div>
-          <div className="space-y-2"><Label htmlFor="ai-model"><Trans>Model</Trans></Label><Input id="ai-model" value={model} onChange={(e) => { setModel(e.target.value); setStatus('idle') }} /></div>
-          <div className="space-y-2"><Label htmlFor="ai-key"><Trans>API key</Trans></Label><Input id="ai-key" type="password" autoComplete="off" value={apiKey} onChange={(e) => { setApiKey(e.target.value); setStatus('idle') }} /></div>
+          <div className="space-y-2"><Label htmlFor="ai-model"><Trans>Model</Trans></Label><ModelInput id="ai-model" provider={provider} value={model} onChange={(v) => { setModel(v); setStatus('idle') }} /></div>
+          <div className="space-y-2"><Label htmlFor="ai-key"><Trans>API key</Trans></Label><Input id="ai-key" type="password" autoComplete="off" value={apiKey} onChange={(e) => { setApiKey(e.target.value); setStatus('idle') }} />{apiKey.trim() && !keyOk && <p className="text-xs text-destructive"><Trans>This doesn't look like a {PROVIDER_LABEL[provider]} key, so it won't be sent.</Trans></p>}</div>
           <p className="text-xs text-muted-foreground">
             <Trans>Stored only in this browser and sent only to {PROVIDER_LABEL[provider]}. Only merchant names are sent, never amounts or dates.</Trans>
           </p>
           <div className="flex items-center gap-3">
-            <Button onClick={saveAndTest} disabled={!apiKey.trim() || !model.trim() || status === 'testing'}>
+            <Button onClick={saveAndTest} disabled={!keyOk || !model.trim() || status === 'testing'}>
               {status === 'testing' ? <Trans>Testing…</Trans> : <Trans>Save & test key</Trans>}
             </Button>
             {status === 'ok' && <span className="text-sm text-emerald-600 dark:text-emerald-400"><Trans>Key works.</Trans></span>}

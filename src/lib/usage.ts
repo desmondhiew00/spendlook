@@ -10,8 +10,22 @@ export interface Price { input: number; output: number } // USD per 1M tokens
 // from public price trackers. Estimates only, editable in Settings; the provider's billing page is the truth.
 export const DEFAULT_PRICES: Record<string, Price> = {
   'claude-haiku-4-5': { input: 1, output: 5 },
-  'gemini-3.5-flash-lite': { input: 0.3, output: 2.5 },
+  'claude-sonnet-5': { input: 2, output: 10 },
+  'claude-sonnet-4-6': { input: 3, output: 15 },
+  'claude-opus-5': { input: 5, output: 25 },
   'gpt-5.4-mini': { input: 0.75, output: 4.5 },
+  'gpt-5.4-nano': { input: 0.2, output: 1.25 },
+  'gpt-5.4': { input: 2.5, output: 15 },
+  'gpt-5-mini': { input: 0.25, output: 2 },
+  'gpt-5-nano': { input: 0.05, output: 0.4 },
+  'gpt-4.1-mini': { input: 0.4, output: 1.6 },
+  'gemini-3.5-flash-lite': { input: 0.3, output: 2.5 },
+  'gemini-3.5-flash': { input: 1.5, output: 9 },
+  'gemini-3.1-flash-lite': { input: 0.25, output: 1.5 },
+  'gemini-3.1-pro-preview': { input: 2, output: 12 },
+  'gemini-2.5-flash-lite': { input: 0.1, output: 0.4 },
+  'gemini-2.5-flash': { input: 0.3, output: 2.5 },
+  'gemini-2.5-pro': { input: 1.25, output: 10 },
 }
 
 const KEY = 'ai-prices'
