@@ -27,7 +27,7 @@ export function AccountsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold"><Trans>Accounts</Trans></h1>
+      <h1 className="text-4xl font-bold tracking-[-0.04em]"><Trans>Accounts</Trans></h1>
       {!verified && (
         <p className="rounded border border-amber-500/50 bg-amber-500/10 p-3 text-sm">
           <Trans>Set your AI provider key in <Link to="/settings" className="underline">Settings</Link> before uploading.</Trans>

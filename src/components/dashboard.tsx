@@ -74,9 +74,9 @@ export function Dashboard({ accountId, currency, flow, hasMethod }: { accountId:
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3">
-        <Card><CardHeader><CardTitle className="text-sm font-normal text-muted-foreground"><Trans>This month</Trans></CardTitle></CardHeader><CardContent className="text-2xl font-semibold tabular-nums">{yen(current)}</CardContent></Card>
-        <Card><CardHeader><CardTitle className="text-sm font-normal text-muted-foreground"><Trans>Previous month</Trans></CardTitle></CardHeader><CardContent className="text-2xl font-semibold tabular-nums">{previous === undefined ? '—' : yen(previous)}</CardContent></Card>
-        <Card><CardHeader><CardTitle className="text-sm font-normal text-muted-foreground"><Trans>Change</Trans></CardTitle></CardHeader><CardContent className="text-2xl font-semibold tabular-nums">{change === undefined ? '—' : `${change > 0 ? '+' : ''}${change.toFixed(1)}%`}</CardContent></Card>
+        <Card><CardHeader><CardTitle className="text-muted-foreground"><Trans>This month</Trans></CardTitle></CardHeader><CardContent className="text-3xl font-bold tracking-tight tabular-nums">{yen(current)}</CardContent></Card>
+        <Card><CardHeader><CardTitle className="text-muted-foreground"><Trans>Previous month</Trans></CardTitle></CardHeader><CardContent className="text-3xl font-bold tracking-tight tabular-nums">{previous === undefined ? '—' : yen(previous)}</CardContent></Card>
+        <Card><CardHeader><CardTitle className="text-muted-foreground"><Trans>Change</Trans></CardTitle></CardHeader><CardContent className="text-3xl font-bold tracking-tight tabular-nums">{change === undefined ? '—' : `${change > 0 ? '+' : ''}${change.toFixed(1)}%`}</CardContent></Card>
       </div>
 
       <Card>
@@ -84,11 +84,11 @@ export function Dashboard({ accountId, currency, flow, hasMethod }: { accountId:
         <CardContent className="h-80">
           <ResponsiveContainer>
             <BarChart data={stacked.rows}>
-              <CartesianGrid vertical={false} strokeOpacity={0.2} />
-              <XAxis dataKey="month" tickFormatter={(m) => formatMonth(m, locale)} />
-              <YAxis tickFormatter={yen} width={90} />
-              <Tooltip formatter={(v, name) => [yen(Number(v)), i18n._(CATEGORY_LABEL[name as Category])]} labelFormatter={(m) => formatMonth(String(m), locale)} />
-              <Legend formatter={(name: string) => i18n._(CATEGORY_LABEL[name as Category])} />
+              <CartesianGrid vertical={false} stroke="var(--border)" />
+              <XAxis dataKey="month" tickFormatter={(m) => formatMonth(m, locale)} tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }} axisLine={{ stroke: 'var(--border)' }} tickLine={false} />
+              <YAxis tickFormatter={yen} width={90} tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }} axisLine={false} tickLine={false} />
+              <Tooltip cursor={{ fill: 'var(--accent)' }} contentStyle={{ background: 'var(--popover)', border: '1px solid var(--input)', borderRadius: 0 }} labelStyle={{ color: 'var(--foreground)' }} itemStyle={{ color: 'var(--foreground)' }} formatter={(v, name) => [yen(Number(v)), i18n._(CATEGORY_LABEL[name as Category])]} labelFormatter={(m) => formatMonth(String(m), locale)} />
+              <Legend iconType="square" formatter={(name: string) => <span className="text-xs text-foreground">{i18n._(CATEGORY_LABEL[name as Category])}</span>} />
               {series.map((c) => <Bar key={c} dataKey={c} stackId="a" fill={colorOf(c)} stroke="var(--card)" strokeWidth={2} />)}
             </BarChart>
           </ResponsiveContainer>

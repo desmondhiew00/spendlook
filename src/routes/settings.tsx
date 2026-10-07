@@ -57,7 +57,7 @@ export function SettingsPage() {
 
   return (
     <div className="max-w-xl space-y-6">
-      <h1 className="text-2xl font-semibold"><Trans>Settings</Trans></h1>
+      <h1 className="text-4xl font-bold tracking-[-0.04em]"><Trans>Settings</Trans></h1>
       <Card>
         <CardHeader><CardTitle><Trans>AI categorization</Trans></CardTitle></CardHeader>
         <CardContent className="space-y-3">

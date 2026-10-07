@@ -11,24 +11,24 @@ function Layout() {
   const accounts = useLiveQuery(() => db.accounts.toArray().then((a) => a.sort((x, y) => x.createdAt - y.createdAt)), [])
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b">
+      <header className="sticky top-0 z-10 border-b bg-background/90 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl flex-wrap items-center gap-4 p-4">
-          <Link to="/" className="font-semibold">spendlook</Link>
+          <Link to="/" className="text-lg font-bold tracking-tight">spendlook<span className="text-primary">.</span></Link>
           {accounts?.map((a) => (
-            <Link key={a.id} to="/accounts/$accountId" params={{ accountId: a.id }} activeProps={{ className: 'font-semibold underline' }}>
+            <Link key={a.id} to="/accounts/$accountId" params={{ accountId: a.id }} className="kicker text-muted-foreground hover:text-foreground" activeProps={{ className: 'text-primary!' }}>
               {a.name}
             </Link>
           ))}
           <div className="ml-auto flex items-center gap-3">
-            <Link to="/settings" activeProps={{ className: 'font-semibold underline' }}><Trans>Settings</Trans></Link>
+            <Link to="/settings" className="kicker text-muted-foreground hover:text-foreground" activeProps={{ className: 'text-primary!' }}><Trans>Settings</Trans></Link>
             <LocaleToggle />
           </div>
         </nav>
       </header>
-      <p className="bg-muted px-4 py-2 text-center text-xs text-muted-foreground">
+      <p className="kicker border-b px-4 py-2 text-center text-[0.65rem] text-muted-foreground"><span className="text-primary">&gt; </span>
         <Trans>Your data stays in this browser only. Clearing site data deletes it, so export a backup in Settings.</Trans>
       </p>
-      <main className="mx-auto max-w-6xl p-4"><Outlet /></main>
+      <main className="mx-auto max-w-6xl px-4 py-8"><Outlet /></main>
     </div>
   )
 }

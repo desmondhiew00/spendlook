@@ -16,7 +16,7 @@ export function AccountPage() {
   if (!account) return <p><Trans>Account not found.</Trans></p>
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">{account.name}</h1>
+      <h1 className="text-4xl font-bold tracking-[-0.04em]">{account.name}</h1>
       <UploadPanel account={account} />
       <Tabs value={flow} onValueChange={(v) => setFlow(v as Flow)}>
         <TabsList>

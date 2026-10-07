@@ -64,7 +64,7 @@ export function UploadPanel({ account }: { account: Account }) {
     <Card>
       <CardContent className="space-y-3 pt-6">
         <div className="flex flex-wrap items-center gap-3">
-          <label className={`rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground ${busy ? 'pointer-events-none opacity-50' : 'cursor-pointer'}`}>
+          <label className={`kicker bg-primary px-4 py-2.5 text-primary-foreground hover:bg-primary/85 ${busy ? 'pointer-events-none opacity-50' : 'cursor-pointer'}`}>
             <Trans>Upload {account.type === 'mufg' ? 'MUFG' : 'PayPay'} CSV</Trans>
             <input type="file" accept=".csv,text/csv" className="sr-only" onChange={onFile} disabled={busy} />
           </label>
