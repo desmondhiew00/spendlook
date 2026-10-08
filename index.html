@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- ja twin: ja.html. Keep scripts and shared tags in sync; only the copy differs. -->
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f2f2f7" />
+    <title>spendlook — spending dashboard for your bank and e-wallet CSVs</title>
+    <meta
+      name="description"
+      content="Turn your PayPay transaction history CSV, MUFG or any bank CSV export into monthly spending charts and categories. Your data stays in your browser; AI categorization uses your own key."
+    />
+    <link rel="canonical" href="https://spendlook.app/" />
+    <link rel="alternate" hreflang="en" href="https://spendlook.app/" />
+    <link rel="alternate" hreflang="ja" href="https://spendlook.app/ja" />
+    <link rel="alternate" hreflang="x-default" href="https://spendlook.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="spendlook" />
+    <meta property="og:title" content="spendlook — spending dashboard for your bank and e-wallet CSVs" />
+    <meta property="og:description" content="Turn your PayPay transaction history CSV, MUFG or any bank CSV export into monthly spending charts and categories. Your data stays in your browser." />
+    <meta property="og:url" content="https://spendlook.app/" />
+    <meta property="og:image" content="https://spendlook.app/og.png" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ja_JP" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "spendlook",
+        "url": "https://spendlook.app/",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any (web browser)",
+        "inLanguage": ["en", "ja"],
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    </script>
+    <script src="/theme.js"></script>
+    <!-- crawler copy in #root: readable by crawlers, never painted (no flash before React mounts) -->
+    <style>
+      [data-crawler] {
+        visibility: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <!-- crawler copy; React replaces it on mount. Keep in step with Intro in src/routes/accounts.tsx -->
+      <main data-crawler style="max-width: 72rem; margin: 0 auto; padding: 2rem 1rem">
+        <h1>Your bank CSVs, as a spending dashboard</h1>
+        <p>spendlook turns the CSV exports from your bank and e-wallet into monthly spending charts and categories. Everything runs in your browser.</p>
+        <ul>
+          <li>Private: transactions stay in this browser. No sign-up, no server.</li>
+          <li>PayPay transaction history CSV and MUFG built in. Any other bank or e-wallet CSV works with a column mapping.</li>
+        </ul>
+        <p><a href="/paypay-csv" hreflang="ja">How to download your PayPay transaction history CSV (Japanese)</a></p>
+      </main>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

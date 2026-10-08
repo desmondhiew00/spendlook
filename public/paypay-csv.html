@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PayPayの取引履歴をCSVでダウンロードして家計簿にする方法 · spendlook</title>
+    <meta name="description" content="PayPayアプリから取引履歴CSVをダウンロードする手順と、そのCSVを無料・登録不要の家計簿ダッシュボード spendlook に読み込んで月ごとの支出をグラフ化する方法。" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://spendlook.app/paypay-csv" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spendlook" />
+    <meta property="og:title" content="PayPayの取引履歴をCSVでダウンロードして家計簿にする方法" />
+    <meta property="og:description" content="PayPayの取引履歴CSVを読み込むだけで、月ごとの支出をカテゴリ別にグラフ化。無料・登録不要。" />
+    <meta property="og:url" content="https://spendlook.app/paypay-csv" />
+    <meta property="og:image" content="https://spendlook.app/og.png" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/legal.css" />
+    <script src="/theme.js"></script>
+  </head>
+  <body>
+    <main>
+      <nav><a class="home" href="/ja">spendlook</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav>
+
+      <section>
+        <h1>PayPayの取引履歴をCSVでダウンロードして家計簿にする方法</h1>
+        <p class="meta">更新日 2026-10-08</p>
+        <div class="summary">
+          <strong>まとめ:</strong> PayPayアプリの「取引履歴」から直近2年分の履歴をCSVでダウンロードできます。
+          そのCSVを <a href="/ja">spendlook</a> に読み込むだけで、月ごとの支出がカテゴリ別のグラフになります。無料・登録不要で、データはブラウザの外に出ません。
+        </div>
+
+        <h2>1. PayPayアプリで取引履歴CSVをダウンロードする</h2>
+        <ol>
+          <li>PayPayアプリを開き、「取引履歴」をタップします。</li>
+          <li>画面右上のダウンロードアイコンをタップします。</li>
+          <li>「開始日」と「終了日」を指定してダウンロードします。期間は直近2年以内で指定できます。</li>
+          <li>CSVファイルを「ファイル」アプリなどに保存します。</li>
+        </ol>
+        <p>画面や表記はアプリのバージョンによって異なる場合があります。</p>
+
+        <h2>2. CSVに含まれる項目</h2>
+        <p>PayPayの取引履歴CSVには、次のような列が含まれます。spendlook はこの形式をそのまま読み込めるので、列の指定は不要です。</p>
+        <ul>
+          <li>取引日</li>
+          <li>出金金額（円）・入金金額（円）</li>
+          <li>取引内容（支払い、チャージ、送金、請求書払いなど）</li>
+          <li>取引先（お店や支払先の名前）</li>
+          <li>取引方法（PayPay残高、クレジットなど）</li>
+        </ul>
+
+        <h2>3. spendlook に読み込んで家計簿にする</h2>
+        <ol>
+          <li><a href="/ja">spendlook.app/ja</a> を開きます。アカウント登録はありません。</li>
+          <li>口座の種類で「PayPay」を選んで口座を追加します。</li>
+          <li>ダウンロードしたCSVファイルをアップロードします。</li>
+        </ol>
+        <p>月ごとの支出合計とカテゴリ別の内訳がグラフで表示されます。同じ期間のCSVを重ねて読み込んでも、取引番号で重複を除きます。三菱UFJ銀行など銀行のCSVも追加すれば、PayPayと銀行の支出をまとめて見られます。</p>
+
+        <h2>よくある質問</h2>
+        <h3>料金はかかりますか？</h3>
+        <p>無料です。会員登録もありません。</p>
+        <h3>取引データはどこかに送信されますか？</h3>
+        <p>されません。CSVの読み込みも集計もブラウザ内で行い、データはお使いの端末のブラウザにだけ保存されます。任意のAI自動分類をオンにした場合のみ、お店の名前だけがご自身のAPIキーで選んだAIプロバイダに直接送られます。金額や日付は送信されません。詳しくは<a href="/privacy">プライバシーポリシー</a>をご覧ください。</p>
+        <h3>スマホでも使えますか？</h3>
+        <p>はい。ブラウザで spendlook を開き、スマホに保存したCSVファイルを選択して読み込めます。</p>
+        <h3>PayPay以外の電子マネーや銀行にも対応していますか？</h3>
+        <p>PayPayと三菱UFJ銀行は標準対応です。そのほかの銀行・電子マネーのCSVも、日付・金額・取引先の列を指定すれば読み込めます。</p>
+
+        <p><a href="/ja">spendlook でPayPayの家計簿をはじめる →</a></p>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,1565 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-10-07 21:52+0900\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+
+#. placeholder {0}: all.length
+#: src/components/mapping-dialog.tsx:280
+msgid "· {0} transactions"
+msgstr "· {0} transactions"
+
+#. placeholder {0}: rows.length
+#: src/components/dashboard.tsx:174
+msgid "{0, plural, one {# transaction} other {# transactions}}"
+msgstr "{0, plural, one {# transaction} other {# transactions}}"
+
+#. placeholder {0}: u.added
+#. placeholder {1}: u.skipped
+#: src/components/upload-panel.tsx:227
+msgid "{0} added, {1} skipped"
+msgstr "{0} added, {1} skipped"
+
+#. placeholder {0}: u.added
+#. placeholder {1}: u.skipped
+#: src/components/upload-panel.tsx:151
+msgid "{0} added, {1} skipped."
+msgstr "{0} added, {1} skipped."
+
+#. placeholder {0}: n.merchants
+#. placeholder {1}: n.txns
+#: src/components/categories-card.tsx:231
+msgid "{0} merchants and {1} transactions in it move to {fold}. Categories the AI picked are flagged for review."
+msgstr "{0} merchants and {1} transactions in it move to {fold}. Categories the AI picked are flagged for review."
+
+#. placeholder {0}: r.failed
+#: src/components/upload-panel.tsx:100
+msgid "{0} merchants could not be categorized. Retry below."
+msgstr "{0} merchants could not be categorized. Retry below."
+
+#. placeholder {0}: r.done
+#: src/routes/settings.tsx:665
+msgid "{0} merchants re-categorized."
+msgstr "{0} merchants re-categorized."
+
+#. placeholder {0}: r.done
+#. placeholder {1}: r.failed
+#: src/routes/settings.tsx:665
+msgid "{0} re-categorized. {1} failed and kept their previous category, flagged for review."
+msgstr "{0} re-categorized. {1} failed and kept their previous category, flagged for review."
+
+#: src/routes/settings.tsx:718
+msgid "{count} merchant names will be sent to {providerLabel}"
+msgstr "{count} merchant names will be sent to {providerLabel}"
+
+#: src/routes/settings.tsx:520
+msgid "{m} min"
+msgstr "{m} min"
+
+#: src/routes/settings.tsx:721
+msgid "{requests, plural, one {about # request} other {about # requests}}"
+msgstr "{requests, plural, one {about # request} other {about # requests}}"
+
+#: src/components/dashboard.tsx:178
+msgid "{shownExcluded} not counted in total"
+msgstr "{shownExcluded} not counted in total"
+
+#: src/routes/settings.tsx:839
+msgid "{unpriced} requests used a model with no price set and are not in the cost."
+msgstr "{unpriced} requests used a model with no price set and are not in the cost."
+
+#: src/routes/accounts.tsx:296
+msgid "1. Where is the CSV from?"
+msgstr "1. Where is the CSV from?"
+
+#: src/routes/accounts.tsx:345
+msgid "2. Name it (optional)"
+msgstr "2. Name it (optional)"
+
+#: src/components/categories-card.tsx:26
+msgid "A category with this name already exists."
+msgstr "A category with this name already exists."
+
+#: src/routes/settings.tsx:395
+msgid "A new recovery key replaces the old one, which stops working. Do this if you lost it or think someone else has seen it."
+msgstr "A new recovery key replaces the old one, which stops working. Do this if you lost it or think someone else has seen it."
+
+#: src/components/mapping-dialog.tsx:286
+msgid "A row could not be read with these settings: {parseError}"
+msgstr "A row could not be read with these settings: {parseError}"
+
+#: src/routes/account.tsx:86
+msgid "Account name"
+msgstr "Account name"
+
+#: src/routes/account.tsx:38
+msgid "Account not found."
+msgstr "Account not found."
+
+#: src/routes/accounts.tsx:64
+msgid "Accounts"
+msgstr "Accounts"
+
+#: src/components/categories-card.tsx:298
+msgid "Add"
+msgstr "Add"
+
+#: src/components/encryption-setup.tsx:145
+#: src/routes/settings.tsx:503
+msgid "Add a passkey"
+msgstr "Add a passkey"
+
+#: src/routes/accounts.tsx:67
+#: src/routes/accounts.tsx:67
+#: src/routes/accounts.tsx:286
+msgid "Add account"
+msgstr "Add account"
+
+#: src/components/categories-card.tsx:264
+msgid "Add category"
+msgstr "Add category"
+
+#: src/components/dashboard.tsx:630
+#: src/components/dashboard.tsx:631
+msgid "Add note"
+msgstr "Add note"
+
+#: src/components/categories-card.tsx:35
+msgid "Add your own categories, rename any category, or hide ones you never use. Hidden categories keep the transactions already in them."
+msgstr "Add your own categories, rename any category, or hide ones you never use. Hidden categories keep the transactions already in them."
+
+#: src/routes/settings.tsx:103
+msgid "AI categorization"
+msgstr "AI categorization"
+
+#: src/components/mapping-dialog.tsx:152
+msgid "AI could not suggest a mapping. Map the columns yourself, or try again."
+msgstr "AI could not suggest a mapping. Map the columns yourself, or try again."
+
+#: src/components/categories-card.tsx:148
+msgid "AI hint for {shown}"
+msgstr "AI hint for {shown}"
+
+#: src/components/categories-card.tsx:281
+msgid "AI hint for the new category"
+msgstr "AI hint for the new category"
+
+#: src/components/upload-panel.tsx:303
+msgid "AI is categorizing new merchants — you can keep browsing."
+msgstr "AI is categorizing new merchants — you can keep browsing."
+
+#: src/routes/settings.tsx:782
+msgid "AI usage"
+msgstr "AI usage"
+
+#: src/components/dashboard.tsx:422
+msgid "All categories"
+msgstr "All categories"
+
+#: src/components/upload-panel.tsx:176
+msgid "All merchants categorized."
+msgstr "All merchants categorized."
+
+#: src/components/dashboard.tsx:426
+msgid "All methods"
+msgstr "All methods"
+
+#: src/routes/settings.tsx:618
+msgid "All spendlook data in this browser will be erased, including your AI keys. Export a backup first if you might need it."
+msgstr "All spendlook data in this browser will be erased, including your AI keys. Export a backup first if you might need it."
+
+#: src/components/dashboard.tsx:692
+#: src/routes/settings.tsx:767
+msgid "All time"
+msgstr "All time"
+
+#: src/components/dashboard.tsx:504
+#: src/components/mapping-dialog.tsx:190
+#: src/components/mapping-dialog.tsx:308
+msgid "Amount"
+msgstr "Amount"
+
+#: src/components/mapping-dialog.tsx:222
+#: src/components/mapping-dialog.tsx:224
+msgid "Amount column"
+msgstr "Amount column"
+
+#: src/components/mapping-dialog.tsx:192
+msgid "Amount layout"
+msgstr "Amount layout"
+
+#: src/routes/settings.tsx:722
+msgid "Amounts and dates are never sent. Categories you picked yourself won't change."
+msgstr "Amounts and dates are never sent. Categories you picked yourself won't change."
+
+#: src/routes/accounts.tsx:233
+msgid "Any CSV · columns mapped on first upload"
+msgstr "Any CSV · columns mapped on first upload"
+
+#: src/routes/settings.tsx:145
+msgid "API key"
+msgstr "API key"
+
+#: src/components/encryption-setup.tsx:56
+msgid "At least 12 characters. A short sentence is easy to remember and hard to guess."
+msgstr "At least 12 characters. A short sentence is easy to remember and hard to guess."
+
+#. placeholder {0}: yen(total / months.length)
+#: src/components/dashboard.tsx:328
+msgid "Avg {0} / month"
+msgstr "Avg {0} / month"
+
+#: src/routes/settings.tsx:249
+msgid "Backup"
+msgstr "Backup"
+
+#: src/routes/settings.tsx:275
+#: src/routes/settings.tsx:275
+msgid "Backup passphrase"
+msgstr "Backup passphrase"
+
+#: src/routes/settings.tsx:85
+msgid "Backup restored."
+msgstr "Backup restored."
+
+#: src/components/mapping-dialog.tsx:243
+msgid "Balance (optional)"
+msgstr "Balance (optional)"
+
+#: src/components/mapping-dialog.tsx:244
+msgid "Balance column"
+msgstr "Balance column"
+
+#: src/routes/accounts.tsx:232
+msgid "Bank account · 入出金明細 CSV"
+msgstr "Bank account · 入出金明細 CSV"
+
+#: src/components/category-label.ts:31
+msgid "Bonus"
+msgstr "Bonus"
+
+#: src/components/dashboard.tsx:272
+msgid "By category per month"
+msgstr "By category per month"
+
+#: src/components/categories-card.tsx:295
+#: src/components/confirm-delete.tsx:57
+#: src/components/mapping-dialog.tsx:337
+#: src/routes/accounts.tsx:289
+#: src/routes/settings.tsx:343
+#: src/routes/settings.tsx:421
+#: src/routes/settings.tsx:735
+msgid "Cancel"
+msgstr "Cancel"
+
+#: src/components/unlock-screen.tsx:33
+msgid "Cancelled."
+msgstr "Cancelled."
+
+#: src/components/category-label.ts:10
+msgid "Car"
+msgstr "Car"
+
+#: src/components/category-label.ts:26
+msgid "Card payment"
+msgstr "Card payment"
+
+#: src/components/dashboard.tsx:277
+msgid "Cash flow"
+msgstr "Cash flow"
+
+#: src/components/dashboard.tsx:272
+msgid "Cash flow per month"
+msgstr "Cash flow per month"
+
+#: src/components/category-label.ts:27
+msgid "Cash withdrawal"
+msgstr "Cash withdrawal"
+
+#: src/components/category-label.ts:35
+msgid "Cashback & points"
+msgstr "Cashback & points"
+
+#: src/routes/settings.tsx:288
+msgid "Categories"
+msgstr "Categories"
+
+#. placeholder {0}: formatMonth(month!, locale)
+#: src/components/dashboard.tsx:311
+msgid "Categories — {0}"
+msgstr "Categories — {0}"
+
+#: src/components/dashboard.tsx:311
+msgid "Categories — All time"
+msgstr "Categories — All time"
+
+#. placeholder {0}: work.done
+#. placeholder {1}: work.total
+#: src/components/upload-panel.tsx:270
+msgid "Categorizing {0}/{1}…"
+msgstr "Categorizing {0}/{1}…"
+
+#: src/components/upload-panel.tsx:103
+msgid "Categorizing failed. Check your AI key in Settings, then retry."
+msgstr "Categorizing failed. Check your AI key in Settings, then retry."
+
+#: src/components/dashboard.tsx:359
+#: src/components/dashboard.tsx:501
+msgid "Category"
+msgstr "Category"
+
+#: src/components/dashboard.tsx:418
+msgid "Category filter"
+msgstr "Category filter"
+
+#. placeholder {0}: m.name
+#: src/components/dashboard.tsx:384
+msgid "Category for {0}"
+msgstr "Category for {0}"
+
+#: src/components/dashboard.tsx:472
+#: src/components/dashboard.tsx:526
+msgid "Category for this transaction"
+msgstr "Category for this transaction"
+
+#: src/routes/settings.tsx:459
+msgid "Change"
+msgstr "Change"
+
+#: src/routes/settings.tsx:376
+msgid "Change passphrase"
+msgstr "Change passphrase"
+
+#: src/components/mapping-dialog.tsx:106
+msgid "Check this column"
+msgstr "Check this column"
+
+#: src/components/mapping-dialog.tsx:110
+msgid "Choose the header row"
+msgstr "Choose the header row"
+
+#: src/components/category-label.ts:15
+msgid "Clothing & beauty"
+msgstr "Clothing & beauty"
+
+#. placeholder {0}: i + 1
+#: src/components/mapping-dialog.tsx:100
+msgid "Column {0}"
+msgstr "Column {0}"
+
+#: src/components/mapping-dialog.tsx:174
+msgid "Columns"
+msgstr "Columns"
+
+#: src/components/mapping-dialog.tsx:114
+msgid "Comma"
+msgstr "Comma"
+
+#: src/components/encryption-setup.tsx:109
+msgid "Continue"
+msgstr "Continue"
+
+#: src/routes/accounts.tsx:277
+msgid "Continue without encryption"
+msgstr "Continue without encryption"
+
+#: src/components/encryption-setup.tsx:97
+msgid "Copied"
+msgstr "Copied"
+
+#: src/components/encryption-setup.tsx:97
+msgid "Copy"
+msgstr "Copy"
+
+#: src/components/unlock-screen.tsx:55
+msgid "Could not save the new passphrase."
+msgstr "Could not save the new passphrase."
+
+#: src/components/dashboard.tsx:362
+msgid "Count"
+msgstr "Count"
+
+#: src/routes/settings.tsx:713
+msgid "Counting merchants…"
+msgstr "Counting merchants…"
+
+#: src/components/categories-card.tsx:229
+msgid "Counting…"
+msgstr "Counting…"
+
+#: src/routes/settings.tsx:474
+msgid "Create"
+msgstr "Create"
+
+#: src/routes/accounts.tsx:350
+msgid "Create and upload CSV"
+msgstr "Create and upload CSV"
+
+#: src/routes/settings.tsx:411
+msgid "Create new recovery key"
+msgstr "Create new recovery key"
+
+#: src/routes/accounts.tsx:319
+#: src/routes/accounts.tsx:329
+msgid "Currency"
+msgstr "Currency"
+
+#: src/routes/settings.tsx:336
+msgid "Current passphrase"
+msgstr "Current passphrase"
+
+#. placeholder {0}: a.currency
+#: src/routes/accounts.tsx:160
+msgid "Custom CSV · {0}"
+msgstr "Custom CSV · {0}"
+
+#: src/components/category-label.ts:8
+msgid "Daily goods"
+msgstr "Daily goods"
+
+#: src/components/dashboard.tsx:490
+#: src/components/mapping-dialog.tsx:176
+#: src/components/mapping-dialog.tsx:302
+msgid "Date"
+msgstr "Date"
+
+#: src/components/mapping-dialog.tsx:177
+msgid "Date column"
+msgstr "Date column"
+
+#: src/components/mapping-dialog.tsx:179
+#: src/components/mapping-dialog.tsx:180
+msgid "Date format"
+msgstr "Date format"
+
+#: src/routes/settings.tsx:579
+msgid "delete"
+msgstr "delete"
+
+#. placeholder {0}: a.name
+#: src/routes/accounts.tsx:199
+msgid "Delete “{0}”?"
+msgstr "Delete “{0}”?"
+
+#: src/components/categories-card.tsx:216
+msgid "Delete “{shown}”?"
+msgstr "Delete “{shown}”?"
+
+#. placeholder {0}: a.name
+#: src/routes/accounts.tsx:192
+#: src/routes/accounts.tsx:193
+msgid "Delete {0}"
+msgstr "Delete {0}"
+
+#: src/components/categories-card.tsx:212
+#: src/components/categories-card.tsx:212
+msgid "Delete {shown}"
+msgstr "Delete {shown}"
+
+#: src/routes/accounts.tsx:201
+msgid "Delete account"
+msgstr "Delete account"
+
+#: src/components/unlock-screen.tsx:150
+#: src/routes/settings.tsx:597
+#: src/routes/settings.tsx:631
+msgid "Delete all data"
+msgstr "Delete all data"
+
+#: src/components/unlock-screen.tsx:143
+msgid "Delete all data?"
+msgstr "Delete all data?"
+
+#: src/routes/settings.tsx:608
+msgid "Delete all data…"
+msgstr "Delete all data…"
+
+#: src/components/categories-card.tsx:218
+msgid "Delete category"
+msgstr "Delete category"
+
+#: src/routes/settings.tsx:615
+msgid "Delete everything?"
+msgstr "Delete everything?"
+
+#: src/components/upload-panel.tsx:237
+#: src/components/upload-panel.tsx:238
+msgid "Delete the transactions from this upload"
+msgstr "Delete the transactions from this upload"
+
+#: src/components/upload-panel.tsx:244
+msgid "Delete this upload?"
+msgstr "Delete this upload?"
+
+#: src/components/upload-panel.tsx:250
+msgid "Delete upload"
+msgstr "Delete upload"
+
+#: src/components/mapping-dialog.tsx:142
+msgid "Detect with AI"
+msgstr "Detect with AI"
+
+#: src/components/category-label.ts:7
+msgid "Dining"
+msgstr "Dining"
+
+#: src/components/categories-card.tsx:143
+msgid "Done"
+msgstr "Done"
+
+#. placeholder {0}: account.name
+#: src/components/upload-panel.tsx:282
+msgid "Drop to upload to {0}"
+msgstr "Drop to upload to {0}"
+
+#: src/components/categories-card.tsx:193
+msgid "Edit"
+msgstr "Edit"
+
+#: src/components/categories-card.tsx:193
+msgid "Edit {shown}"
+msgstr "Edit {shown}"
+
+#: src/components/dashboard.tsx:661
+msgid "Edit note"
+msgstr "Edit note"
+
+#: src/components/category-label.ts:18
+msgid "Education"
+msgstr "Education"
+
+#: src/components/mapping-dialog.tsx:161
+#: src/components/mapping-dialog.tsx:162
+msgid "Encoding"
+msgstr "Encoding"
+
+#: src/components/encryption-setup.tsx:219
+msgid "Encrypting…"
+msgstr "Encrypting…"
+
+#: src/routes/settings.tsx:545
+msgid "Encryption"
+msgstr "Encryption"
+
+#: src/routes/settings.tsx:430
+msgid "Encryption is off."
+msgstr "Encryption is off."
+
+#: src/routes/settings.tsx:354
+msgid "Encryption is on."
+msgstr "Encryption is on."
+
+#: src/components/categories-card.tsx:26
+msgid "Enter a name."
+msgstr "Enter a name."
+
+#: src/components/category-label.ts:19
+msgid "Entertainment"
+msgstr "Entertainment"
+
+#: src/routes/settings.tsx:803
+msgid "Est. cost"
+msgstr "Est. cost"
+
+#. placeholder {0}: usd(est, i18n.locale)
+#: src/routes/settings.tsx:726
+msgid "Estimated cost: {0}."
+msgstr "Estimated cost: {0}."
+
+#: src/components/category-label.ts:29
+msgid "Excluded"
+msgstr "Excluded"
+
+#: src/routes/settings.tsx:260
+msgid "Export backup"
+msgstr "Export backup"
+
+#: src/routes/settings.tsx:622
+msgid "Export backup first"
+msgstr "Export backup first"
+
+#: src/components/mapping-dialog.tsx:159
+msgid "File"
+msgstr "File"
+
+#: src/components/mapping-dialog.tsx:147
+msgid "First choose which row holds the column names below; nothing is sent until then."
+msgstr "First choose which row holds the column names below; nothing is sent until then."
+
+#: src/components/mapping-dialog.tsx:290
+msgid "Fix the highlighted columns to see a preview."
+msgstr "Fix the highlighted columns to see a preview."
+
+#: src/components/dashboard.tsx:390
+msgid "Fixed"
+msgstr "Fixed"
+
+#: src/routes/settings.tsx:180
+msgid "For a custom CSV: the column names and the shape of 3 rows (every digit becomes 0, every word x)."
+msgstr "For a custom CSV: the column names and the shape of 3 rows (every digit becomes 0, every word x)."
+
+#: src/components/unlock-screen.tsx:134
+msgid "Forgot it? Use your recovery key"
+msgstr "Forgot it? Use your recovery key"
+
+#: src/routes/settings.tsx:188
+msgid "Gemini free tier: Google may use what you send to improve its products, and people may review it. Use a key from a billed project to avoid this. <0>Gemini API terms</0>"
+msgstr "Gemini free tier: Google may use what you send to improve its products, and people may review it. Use a key from a billed project to avoid this. <0>Gemini API terms</0>"
+
+#: src/components/category-label.ts:22
+msgid "Gifts & social"
+msgstr "Gifts & social"
+
+#: src/components/category-label.ts:6
+msgid "Groceries"
+msgstr "Groceries"
+
+#: src/components/mapping-dialog.tsx:167
+#: src/components/mapping-dialog.tsx:168
+msgid "Header row"
+msgstr "Header row"
+
+#: src/components/category-label.ts:16
+msgid "Health"
+msgstr "Health"
+
+#: src/components/categories-card.tsx:190
+msgid "Hidden"
+msgstr "Hidden"
+
+#: src/components/categories-card.tsx:202
+msgid "Hide"
+msgstr "Hide"
+
+#: src/components/categories-card.tsx:201
+msgid "Hide {shown}"
+msgstr "Hide {shown}"
+
+#: src/components/dashboard.tsx:447
+msgid "Highest amount"
+msgstr "Highest amount"
+
+#. placeholder {0}: uploads.length
+#: src/components/upload-panel.tsx:208
+msgid "History ({0})"
+msgstr "History ({0})"
+
+#. placeholder {0}: PROVIDER_LABEL[provider]
+#: src/routes/settings.tsx:205
+msgid "I agree to send this to {0}."
+msgstr "I agree to send this to {0}."
+
+#: src/components/encryption-setup.tsx:106
+msgid "I saved my recovery key"
+msgstr "I saved my recovery key"
+
+#: src/routes/settings.tsx:263
+msgid "Import backup"
+msgstr "Import backup"
+
+#: src/components/upload-panel.tsx:268
+msgid "Importing…"
+msgstr "Importing…"
+
+#: src/components/categories-card.tsx:45
+#: src/components/dashboard.tsx:245
+#: src/components/dashboard.tsx:289
+#: src/routes/account.tsx:59
+msgid "Income"
+msgstr "Income"
+
+#: src/routes/settings.tsx:826
+msgid "Input"
+msgstr "Input"
+
+#: src/routes/settings.tsx:797
+msgid "Input tokens"
+msgstr "Input tokens"
+
+#: src/components/category-label.ts:17
+msgid "Insurance"
+msgstr "Insurance"
+
+#: src/components/category-label.ts:37
+msgid "Interest"
+msgstr "Interest"
+
+#: src/components/category-label.ts:33
+msgid "Investment"
+msgstr "Investment"
+
+#: src/routes/settings.tsx:490
+msgid "It will no longer unlock spendlook. Your passphrase and recovery key still work."
+msgstr "It will no longer unlock spendlook. Your passphrase and recovery key still work."
+
+#: src/routes/settings.tsx:218
+msgid "Key test failed: {error}"
+msgstr "Key test failed: {error}"
+
+#: src/routes/settings.tsx:213
+msgid "Key works."
+msgstr "Key works."
+
+#: src/routes/accounts.tsx:181
+msgid "Last upload"
+msgstr "Last upload"
+
+#. placeholder {0}: PROVIDER_LABEL[settings.provider]
+#: src/components/mapping-dialog.tsx:134
+msgid "Let AI suggest the columns. Only the header and the first 3 rows are sent to {0}."
+msgstr "Let AI suggest the columns. Only the header and the first 3 rows are sent to {0}."
+
+#: src/routes/settings.tsx:510
+#: src/routes/settings.tsx:513
+msgid "Lock after inactivity"
+msgstr "Lock after inactivity"
+
+#: src/routes/settings.tsx:531
+msgid "Lock now"
+msgstr "Lock now"
+
+#: src/components/unlock-screen.tsx:140
+msgid "Lost both? Start over"
+msgstr "Lost both? Start over"
+
+#: src/components/dashboard.tsx:448
+msgid "Lowest amount"
+msgstr "Lowest amount"
+
+#: src/components/categories-card.tsx:32
+msgid "Manage categories"
+msgstr "Manage categories"
+
+#: src/components/mapping-dialog.tsx:121
+msgid "Map the columns"
+msgstr "Map the columns"
+
+#: src/components/dashboard.tsx:356
+#: src/components/dashboard.tsx:493
+#: src/components/mapping-dialog.tsx:305
+msgid "Merchant"
+msgstr "Merchant"
+
+#: src/components/mapping-dialog.tsx:253
+msgid "Merchant / description"
+msgstr "Merchant / description"
+
+#: src/components/dashboard.tsx:449
+msgid "Merchant A→Z"
+msgstr "Merchant A→Z"
+
+#: src/components/dashboard.tsx:574
+msgid "Merchant name"
+msgstr "Merchant name"
+
+#: src/routes/settings.tsx:174
+msgid "Merchant names and whether each is spending or income. Never amounts, dates, balances or account numbers."
+msgstr "Merchant names and whether each is spending or income. Never amounts, dates, balances or account numbers."
+
+#: src/components/categories-card.tsx:72
+msgid "Merchants already categorized keep their category. Use Re-categorize all to let the AI use your changes."
+msgstr "Merchants already categorized keep their category. Use Re-categorize all to let the AI use your changes."
+
+#: src/components/dashboard.tsx:497
+msgid "Method"
+msgstr "Method"
+
+#: src/routes/settings.tsx:131
+msgid "Model"
+msgstr "Model"
+
+#: src/components/mapping-dialog.tsx:237
+msgid "Money in (card statements)"
+msgstr "Money in (card statements)"
+
+#: src/components/mapping-dialog.tsx:211
+msgid "Money in (credit)"
+msgstr "Money in (credit)"
+
+#: src/components/mapping-dialog.tsx:213
+msgid "Money in column"
+msgstr "Money in column"
+
+#: src/components/mapping-dialog.tsx:236
+msgid "Money out"
+msgstr "Money out"
+
+#: src/components/mapping-dialog.tsx:203
+msgid "Money out (debit)"
+msgstr "Money out (debit)"
+
+#: src/components/mapping-dialog.tsx:205
+msgid "Money out column"
+msgstr "Money out column"
+
+#: src/components/dashboard.tsx:193
+msgid "Month"
+msgstr "Month"
+
+#: src/routes/accounts.tsx:120
+msgid "MUFG and PayPay built in. Any other bank or e-wallet CSV works with a column mapping."
+msgstr "MUFG and PayPay built in. Any other bank or e-wallet CSV works with a column mapping."
+
+#: src/routes/accounts.tsx:235
+msgid "My account"
+msgstr "My account"
+
+#: src/components/categories-card.tsx:133
+msgid "Name for {shown}"
+msgstr "Name for {shown}"
+
+#: src/components/dashboard.tsx:430
+msgid "Needs review only"
+msgstr "Needs review only"
+
+#: src/components/mapping-dialog.tsx:230
+#: src/components/mapping-dialog.tsx:232
+msgid "Negative amounts are"
+msgstr "Negative amounts are"
+
+#: src/components/dashboard.tsx:289
+msgid "Net"
+msgstr "Net"
+
+#: src/components/categories-card.tsx:273
+msgid "New category"
+msgstr "New category"
+
+#: src/components/categories-card.tsx:272
+msgid "New category name"
+msgstr "New category name"
+
+#: src/components/upload-panel.tsx:95
+msgid "New merchants are marked for review: pick their categories below."
+msgstr "New merchants are marked for review: pick their categories below."
+
+#: src/routes/settings.tsx:389
+msgid "New recovery key saved. The old one no longer works."
+msgstr "New recovery key saved. The old one no longer works."
+
+#: src/components/dashboard.tsx:445
+msgid "Newest first"
+msgstr "Newest first"
+
+#: src/components/dashboard.tsx:229
+msgid "Next month"
+msgstr "Next month"
+
+#: src/components/category-select.tsx:73
+msgid "No matching category"
+msgstr "No matching category"
+
+#: src/routes/accounts.tsx:331
+msgid "No matching currency"
+msgstr "No matching currency"
+
+#: src/components/encryption-setup.tsx:132
+msgid "No passkey was added."
+msgstr "No passkey was added."
+
+#: src/components/mapping-dialog.tsx:294
+msgid "No transactions found below the header row."
+msgstr "No transactions found below the header row."
+
+#: src/components/dashboard.tsx:84
+msgid "No transactions yet. Upload a CSV above."
+msgstr "No transactions yet. Upload a CSV above."
+
+#: src/components/encryption-setup.tsx:215
+msgid "Nobody, including us, can reset it. You'll get a recovery key next."
+msgstr "Nobody, including us, can reset it. You'll get a recovery key next."
+
+#: src/components/mapping-dialog.tsx:101
+msgid "None"
+msgstr "None"
+
+#: src/components/mapping-dialog.tsx:187
+msgid "None, or inside the date"
+msgstr "None, or inside the date"
+
+#: src/components/encryption-setup.tsx:148
+msgid "Not now"
+msgstr "Not now"
+
+#: src/routes/settings.tsx:469
+msgid "not set"
+msgstr "not set"
+
+#: src/components/dashboard.tsx:645
+msgid "Note"
+msgstr "Note"
+
+#: src/components/dashboard.tsx:646
+msgid "Note for this transaction"
+msgstr "Note for this transaction"
+
+#: src/routes/settings.tsx:715
+msgid "Nothing to re-categorize yet. Upload a CSV first."
+msgstr "Nothing to re-categorize yet. Upload a CSV first."
+
+#: src/routes/settings.tsx:560
+msgid "Off. Anyone with access to this device or a copy of this browser's files can read your transactions and AI keys. Turn it on to lock them with a passphrase."
+msgstr "Off. Anyone with access to this device or a copy of this browser's files can read your transactions and AI keys. Turn it on to lock them with a passphrase."
+
+#: src/components/dashboard.tsx:446
+msgid "Oldest first"
+msgstr "Oldest first"
+
+#: src/routes/settings.tsx:558
+msgid "On. Everything in this browser, including your AI keys, is encrypted. It locks when you close the tab or after inactivity."
+msgstr "On. Everything in this browser, including your AI keys, is encrypted. It locks when you close the tab or after inactivity."
+
+#: src/components/mapping-dialog.tsx:197
+msgid "One column with + / −"
+msgstr "One column with + / −"
+
+#: src/routes/accounts.tsx:123
+msgid "Optional AI categorization with your own Anthropic, Gemini or OpenAI key. Only merchant names are sent, never amounts or dates. Optional passphrase encryption."
+msgstr "Optional AI categorization with your own Anthropic, Gemini or OpenAI key. Only merchant names are sent, never amounts or dates. Optional passphrase encryption."
+
+#: src/components/categories-card.tsx:151
+#: src/components/categories-card.tsx:282
+msgid "Optional hint for the AI, e.g. cafes and coffee chains"
+msgstr "Optional hint for the AI, e.g. cafes and coffee chains"
+
+#: src/routes/accounts.tsx:47
+msgid "Optional: add an AI key in <0>Settings</0> to auto-categorize merchants. Without one, nothing leaves this browser and you pick categories yourself."
+msgstr "Optional: add an AI key in <0>Settings</0> to auto-categorize merchants. Without one, nothing leaves this browser and you pick categories yourself."
+
+#. placeholder {0}: PROVIDER_LABEL[provider]
+#: src/routes/settings.tsx:164
+msgid "Optional. Without a key nothing leaves this browser and you pick categories yourself. With a key, it is stored only in this browser and sent only to {0}."
+msgstr "Optional. Without a key nothing leaves this browser and you pick categories yourself. With a key, it is stored only in this browser and sent only to {0}."
+
+#: src/components/unlock-screen.tsx:97
+msgid "or"
+msgstr "or"
+
+#: src/components/upload-panel.tsx:311
+msgid "Or add an AI key in <0>Settings</0> to categorize them automatically."
+msgstr "Or add an AI key in <0>Settings</0> to categorize them automatically."
+
+#: src/components/category-label.ts:28
+msgid "Other"
+msgstr "Other"
+
+#: src/routes/accounts.tsx:233
+msgid "Other bank or wallet"
+msgstr "Other bank or wallet"
+
+#: src/components/category-label.ts:38
+msgid "Other income"
+msgstr "Other income"
+
+#: src/routes/settings.tsx:832
+msgid "Output"
+msgstr "Output"
+
+#: src/routes/settings.tsx:800
+msgid "Output tokens"
+msgstr "Output tokens"
+
+#: src/components/encryption-setup.tsx:44
+#: src/components/unlock-screen.tsx:102
+#: src/routes/settings.tsx:456
+msgid "Passphrase"
+msgstr "Passphrase"
+
+#: src/routes/settings.tsx:369
+msgid "Passphrase changed."
+msgstr "Passphrase changed."
+
+#: src/components/dashboard.tsx:426
+msgid "Payment method"
+msgstr "Payment method"
+
+#: src/components/category-label.ts:24
+msgid "PayPay"
+msgstr "PayPay"
+
+#: src/components/category-label.ts:13
+msgid "Phone & Internet"
+msgstr "Phone & Internet"
+
+#: src/components/mapping-dialog.tsx:256
+msgid "Pick every column that names the shop or person. Banks often put it in a reference column."
+msgstr "Pick every column that names the shop or person. Banks often put it in a reference column."
+
+#: src/components/model-input.tsx:32
+msgid "Pick or type a model ID"
+msgstr "Pick or type a model ID"
+
+#: src/components/mapping-dialog.tsx:277
+msgid "Preview"
+msgstr "Preview"
+
+#: src/components/dashboard.tsx:187
+#: src/components/dashboard.tsx:252
+msgid "Previous month"
+msgstr "Previous month"
+
+#: src/routes/settings.tsx:821
+msgid "Price for {model} (USD per 1M tokens)"
+msgstr "Price for {model} (USD per 1M tokens)"
+
+#: src/router.tsx:69
+msgid "Privacy"
+msgstr "Privacy"
+
+#: src/routes/accounts.tsx:119
+msgid "Private: transactions stay in this browser. No sign-up, no server."
+msgstr "Private: transactions stay in this browser. No sign-up, no server."
+
+#: src/routes/accounts.tsx:259
+msgid "Protect your data first"
+msgstr "Protect your data first"
+
+#: src/routes/settings.tsx:114
+#: src/routes/settings.tsx:117
+msgid "Provider"
+msgstr "Provider"
+
+#: src/routes/settings.tsx:108
+msgid "Provider and key"
+msgstr "Provider and key"
+
+#: src/routes/settings.tsx:675
+#: src/routes/settings.tsx:738
+msgid "Re-categorize"
+msgstr "Re-categorize"
+
+#: src/routes/settings.tsx:691
+msgid "Re-categorize all"
+msgstr "Re-categorize all"
+
+#: src/routes/settings.tsx:709
+msgid "Re-categorize all merchants?"
+msgstr "Re-categorize all merchants?"
+
+#. placeholder {0}: progress.done
+#. placeholder {1}: progress.total
+#: src/routes/settings.tsx:686
+msgid "Re-categorizing {0}/{1}…"
+msgstr "Re-categorizing {0}/{1}…"
+
+#: src/components/category-label.ts:36
+msgid "Received from others"
+msgstr "Received from others"
+
+#: src/components/unlock-screen.tsx:102
+#: src/routes/settings.tsx:465
+msgid "Recovery key"
+msgstr "Recovery key"
+
+#: src/components/mapping-dialog.tsx:247
+msgid "Reference column"
+msgstr "Reference column"
+
+#: src/components/mapping-dialog.tsx:246
+msgid "Reference no. (optional)"
+msgstr "Reference no. (optional)"
+
+#: src/components/category-label.ts:34
+msgid "Refunds"
+msgstr "Refunds"
+
+#: src/routes/settings.tsx:486
+msgid "Remove"
+msgstr "Remove"
+
+#: src/routes/settings.tsx:491
+msgid "Remove passkey"
+msgstr "Remove passkey"
+
+#: src/routes/settings.tsx:489
+msgid "Remove this passkey?"
+msgstr "Remove this passkey?"
+
+#: src/routes/settings.tsx:600
+msgid "Removes every account, transaction, merchant, category choice, AI usage log, and your saved AI keys and settings from this browser. This cannot be undone."
+msgstr "Removes every account, transaction, merchant, category choice, AI usage log, and your saved AI keys and settings from this browser. This cannot be undone."
+
+#: src/components/dashboard.tsx:594
+msgid "Rename (applies to all its transactions)"
+msgstr "Rename (applies to all its transactions)"
+
+#: src/components/dashboard.tsx:593
+msgid "Rename {name}"
+msgstr "Rename {name}"
+
+#: src/routes/account.tsx:113
+#: src/routes/account.tsx:114
+msgid "Rename account"
+msgstr "Rename account"
+
+#: src/components/categories-card.tsx:181
+msgid "Renamed from {original}"
+msgstr "Renamed from {original}"
+
+#: src/components/category-label.ts:11
+msgid "Rent"
+msgstr "Rent"
+
+#: src/components/encryption-setup.tsx:61
+msgid "Repeat passphrase"
+msgstr "Repeat passphrase"
+
+#: src/routes/settings.tsx:474
+msgid "Replace"
+msgstr "Replace"
+
+#: src/routes/settings.tsx:794
+msgid "Requests"
+msgstr "Requests"
+
+#: src/components/upload-panel.tsx:194
+#: src/components/upload-panel.tsx:199
+msgid "Reset columns"
+msgstr "Reset columns"
+
+#: src/components/upload-panel.tsx:197
+msgid "Reset the column mapping?"
+msgstr "Reset the column mapping?"
+
+#: src/components/categories-card.tsx:168
+msgid "Reset to “{original}”"
+msgstr "Reset to “{original}”"
+
+#: src/routes/settings.tsx:277
+msgid "Restore"
+msgstr "Restore"
+
+#: src/components/upload-panel.tsx:186
+msgid "Retry categorize ({pending})"
+msgstr "Retry categorize ({pending})"
+
+#: src/components/dashboard.tsx:679
+msgid "Review"
+msgstr "Review"
+
+#: src/routes/settings.tsx:678
+msgid "Run the AI again on every merchant, for example after new categories are added. Categories you picked yourself are never changed."
+msgstr "Run the AI again on every merchant, for example after new categories are added. Categories you picked yourself are never changed."
+
+#: src/components/category-label.ts:30
+msgid "Salary"
+msgstr "Salary"
+
+#: src/routes/settings.tsx:209
+msgid "Save & test key"
+msgstr "Save & test key"
+
+#: src/routes/settings.tsx:696
+msgid "Save and test a key first."
+msgstr "Save and test a key first."
+
+#: src/components/encryption-setup.tsx:101
+msgid "Save as file"
+msgstr "Save as file"
+
+#. placeholder {0}: all.length
+#: src/components/mapping-dialog.tsx:340
+msgid "Save mapping and import {0}"
+msgstr "Save mapping and import {0}"
+
+#: src/components/unlock-screen.tsx:78
+msgid "Save passphrase"
+msgstr "Save passphrase"
+
+#: src/components/category-select.tsx:72
+#: src/components/category-select.tsx:72
+msgid "Search categories"
+msgstr "Search categories"
+
+#: src/routes/accounts.tsx:329
+msgid "Search currencies"
+msgstr "Search currencies"
+
+#: src/components/dashboard.tsx:414
+msgid "Search merchant or note"
+msgstr "Search merchant or note"
+
+#: src/components/mapping-dialog.tsx:114
+msgid "Semicolon"
+msgstr "Semicolon"
+
+#: src/components/category-label.ts:25
+msgid "Sent to others"
+msgstr "Sent to others"
+
+#: src/components/mapping-dialog.tsx:196
+msgid "Separate money out / in columns"
+msgstr "Separate money out / in columns"
+
+#: src/components/mapping-dialog.tsx:164
+#: src/components/mapping-dialog.tsx:165
+msgid "Separator"
+msgstr "Separator"
+
+#: src/components/mapping-dialog.tsx:136
+msgid "Set an AI key in Settings to get column suggestions, or map them yourself below."
+msgstr "Set an AI key in Settings to get column suggestions, or map them yourself below."
+
+#: src/router.tsx:48
+#: src/router.tsx:49
+#: src/routes/settings.tsx:97
+msgid "Settings"
+msgstr "Settings"
+
+#: src/components/category-label.ts:14
+msgid "Shopping"
+msgstr "Shopping"
+
+#: src/components/categories-card.tsx:202
+msgid "Show"
+msgstr "Show"
+
+#: src/components/categories-card.tsx:201
+msgid "Show {shown}"
+msgstr "Show {shown}"
+
+#: src/components/stacked-bar-chart.tsx:164
+msgid "Show all"
+msgstr "Show all"
+
+#: src/components/model-input.tsx:33
+msgid "Show models"
+msgstr "Show models"
+
+#: src/components/dashboard.tsx:548
+msgid "Show more ({hiddenCount} left)"
+msgstr "Show more ({hiddenCount} left)"
+
+#: src/components/category-label.ts:32
+msgid "Side income"
+msgstr "Side income"
+
+#: src/components/dashboard.tsx:437
+msgid "Sort by"
+msgstr "Sort by"
+
+#: src/components/categories-card.tsx:42
+#: src/components/dashboard.tsx:245
+#: src/components/dashboard.tsx:289
+#: src/routes/account.tsx:56
+msgid "Spending"
+msgstr "Spending"
+
+#: src/routes/accounts.tsx:114
+msgid "spendlook dashboard with a year of sample spending by category"
+msgstr "spendlook dashboard with a year of sample spending by category"
+
+#: src/routes/accounts.tsx:105
+msgid "spendlook turns the CSV exports from your bank and e-wallet into monthly spending charts and categories. Everything runs in your browser."
+msgstr "spendlook turns the CSV exports from your bank and e-wallet into monthly spending charts and categories. Everything runs in your browser."
+
+#: src/components/encryption-setup.tsx:56
+msgid "Strong enough."
+msgstr "Strong enough."
+
+#: src/components/category-label.ts:21
+msgid "Subscriptions"
+msgstr "Subscriptions"
+
+#: src/components/theme-toggle.tsx:43
+msgid "Switch to dark mode"
+msgstr "Switch to dark mode"
+
+#: src/components/theme-toggle.tsx:43
+msgid "Switch to light mode"
+msgstr "Switch to light mode"
+
+#: src/components/mapping-dialog.tsx:114
+msgid "Tab"
+msgstr "Tab"
+
+#: src/components/category-label.ts:23
+msgid "Taxes & social insurance"
+msgstr "Taxes & social insurance"
+
+#. placeholder {0}: account.name
+#: src/components/mapping-dialog.tsx:124
+msgid "Tell spendlook how to read “{fileName}”. This is saved for {0} and reused while the bank’s format stays the same."
+msgstr "Tell spendlook how to read “{fileName}”. This is saved for {0} and reused while the bank’s format stays the same."
+
+#: src/router.tsx:72
+msgid "Terms"
+msgstr "Terms"
+
+#: src/routes/settings.tsx:209
+msgid "Testing…"
+msgstr "Testing…"
+
+#: src/components/unlock-screen.tsx:49
+msgid "That recovery key doesn't match."
+msgstr "That recovery key doesn't match."
+
+#. placeholder {0}: u.added
+#. placeholder {1}: u.fileName
+#: src/components/upload-panel.tsx:246
+msgid "The {0} transactions imported from “{1}” will be removed. Other uploads are not affected, and you can re-upload the file later."
+msgstr "The {0} transactions imported from “{1}” will be removed. Other uploads are not affected, and you can re-upload the file later."
+
+#: src/components/upload-panel.tsx:88
+msgid "The file has a row that could not be read. Re-export the CSV and try again."
+msgstr "The file has a row that could not be read. Re-export the CSV and try again."
+
+#: src/components/encryption-setup.tsx:66
+msgid "The passphrases don't match."
+msgstr "The passphrases don't match."
+
+#: src/routes/settings.tsx:184
+msgid "The provider's own terms decide how long it keeps requests."
+msgstr "The provider's own terms decide how long it keeps requests."
+
+#: src/routes/settings.tsx:89
+msgid "This backup is encrypted. Enter its passphrase."
+msgstr "This backup is encrypted. Enter its passphrase."
+
+#. placeholder {0}: PROVIDER_LABEL[provider]
+#: src/routes/settings.tsx:159
+msgid "This doesn't look like a {0} key, so it won't be sent."
+msgstr "This doesn't look like a {0} key, so it won't be sent."
+
+#: src/components/encryption-setup.tsx:17
+msgid "This is a commonly used password. Pick something only you would think of."
+msgstr "This is a commonly used password. Pick something only you would think of."
+
+#: src/components/upload-panel.tsx:86
+msgid "This looks like a MUFG file, not PayPay."
+msgstr "This looks like a MUFG file, not PayPay."
+
+#: src/components/upload-panel.tsx:85
+msgid "This looks like a PayPay file, not MUFG."
+msgstr "This looks like a PayPay file, not MUFG."
+
+#: src/components/dashboard.tsx:262
+msgid "this month"
+msgstr "this month"
+
+#: src/components/dashboard.tsx:239
+#: src/components/dashboard.tsx:689
+#: src/routes/settings.tsx:761
+msgid "This month"
+msgstr "This month"
+
+#: src/components/unlock-screen.tsx:92
+msgid "This passkey couldn't unlock spendlook."
+msgstr "This passkey couldn't unlock spendlook."
+
+#. placeholder {0}: count ?? 0
+#: src/routes/accounts.tsx:200
+msgid "This permanently removes the account and its {0} transactions from this browser. Export a backup in Settings first if you might need them."
+msgstr "This permanently removes the account and its {0} transactions from this browser. Export a backup in Settings first if you might need them."
+
+#: src/components/encryption-setup.tsx:91
+msgid "This recovery key unlocks your data if you forget your passphrase. It is shown only now. Save it somewhere safe and offline, like a password manager or on paper."
+msgstr "This recovery key unlocks your data if you forget your passphrase. It is shown only now. Save it somewhere safe and offline, like a password manager or on paper."
+
+#: src/components/mapping-dialog.tsx:182
+msgid "Time (optional)"
+msgstr "Time (optional)"
+
+#: src/components/mapping-dialog.tsx:184
+msgid "Time column"
+msgstr "Time column"
+
+#: src/routes/settings.tsx:785
+msgid "Token counts are reported by the provider. Cost is an estimate from the prices below; your provider's billing page is the source of truth."
+msgstr "Token counts are reported by the provider. Cost is an estimate from the prices below; your provider's billing page is the source of truth."
+
+#: src/components/encryption-setup.tsx:19
+msgid "Too easy to guess. Try a few unrelated words, like a short sentence."
+msgstr "Too easy to guess. Try a few unrelated words, like a short sentence."
+
+#. placeholder {0}: formatMonth(month!, locale)
+#: src/components/dashboard.tsx:346
+msgid "Top merchants — {0}"
+msgstr "Top merchants — {0}"
+
+#: src/components/dashboard.tsx:346
+msgid "Top merchants — All time"
+msgstr "Top merchants — All time"
+
+#: src/components/dashboard.tsx:302
+#: src/components/dashboard.tsx:365
+msgid "Total"
+msgstr "Total"
+
+#: src/routes/account.tsx:145
+msgid "Total income"
+msgstr "Total income"
+
+#: src/routes/account.tsx:140
+msgid "Total spending"
+msgstr "Total spending"
+
+#: src/routes/accounts.tsx:166
+msgid "Transactions"
+msgstr "Transactions"
+
+#. placeholder {0}: formatMonth(month!, locale)
+#: src/components/dashboard.tsx:407
+msgid "Transactions — {0}"
+msgstr "Transactions — {0}"
+
+#: src/components/dashboard.tsx:407
+msgid "Transactions — All time"
+msgstr "Transactions — All time"
+
+#: src/routes/settings.tsx:177
+msgid "Transfers to or from people are never sent, so their names stay here."
+msgstr "Transfers to or from people are never sent, so their names stay here."
+
+#: src/components/category-label.ts:9
+msgid "Transport"
+msgstr "Transport"
+
+#: src/components/category-label.ts:20
+msgid "Travel"
+msgstr "Travel"
+
+#: src/routes/settings.tsx:232
+msgid "Turn off AI"
+msgstr "Turn off AI"
+
+#: src/routes/settings.tsx:439
+msgid "Turn off encryption"
+msgstr "Turn off encryption"
+
+#: src/routes/settings.tsx:534
+msgid "Turn off…"
+msgstr "Turn off…"
+
+#: src/components/encryption-setup.tsx:219
+#: src/routes/settings.tsx:360
+msgid "Turn on encryption"
+msgstr "Turn on encryption"
+
+#: src/routes/settings.tsx:625
+msgid "Type “{word}” to confirm"
+msgstr "Type “{word}” to confirm"
+
+#: src/components/unlock-screen.tsx:118
+msgid "Unlock"
+msgstr "Unlock"
+
+#: src/components/unlock-screen.tsx:94
+msgid "Unlock with passkey"
+msgstr "Unlock with passkey"
+
+#: src/components/encryption-setup.tsx:140
+msgid "Unlock with your fingerprint, face or device PIN instead of typing your passphrase. The key comes from your device's secure chip, so there is nothing to guess."
+msgstr "Unlock with your fingerprint, face or device PIN instead of typing your passphrase. The key comes from your device's secure chip, so there is nothing to guess."
+
+#: src/components/unlock-screen.tsx:73
+msgid "Unlocked with your recovery key. Set a new passphrase to continue."
+msgstr "Unlocked with your recovery key. Set a new passphrase to continue."
+
+#: src/components/upload-panel.tsx:87
+msgid "Unrecognized file. Upload the CSV exported from MUFG or PayPay."
+msgstr "Unrecognized file. Upload the CSV exported from MUFG or PayPay."
+
+#: src/components/upload-panel.tsx:263
+msgid "Upload {sourceLabel} CSV"
+msgstr "Upload {sourceLabel} CSV"
+
+#: src/components/upload-panel.tsx:294
+msgid "Upload cancelled."
+msgstr "Upload cancelled."
+
+#: src/components/upload-panel.tsx:265
+#: src/routes/accounts.tsx:172
+msgid "Upload CSV"
+msgstr "Upload CSV"
+
+#: src/components/upload-panel.tsx:215
+msgid "Upload history"
+msgstr "Upload history"
+
+#: src/components/categories-card.tsx:26
+msgid "Use {MAX_NAME} characters or fewer."
+msgstr "Use {MAX_NAME} characters or fewer."
+
+#: src/components/encryption-setup.tsx:15
+msgid "Use at least 12 characters."
+msgstr "Use at least 12 characters."
+
+#: src/components/unlock-screen.tsx:134
+msgid "Use passphrase instead"
+msgstr "Use passphrase instead"
+
+#: src/components/category-label.ts:12
+msgid "Utilities"
+msgstr "Utilities"
+
+#: src/routes/accounts.tsx:231
+msgid "Wallet · payment history CSV"
+msgstr "Wallet · payment history CSV"
+
+#: src/routes/settings.tsx:450
+msgid "Ways to unlock"
+msgstr "Ways to unlock"
+
+#. placeholder {0}: PROVIDER_LABEL[provider]
+#: src/routes/settings.tsx:170
+msgid "What is sent to {0}"
+msgstr "What is sent to {0}"
+
+#: src/components/unlock-screen.tsx:145
+msgid "Without the passphrase or recovery key the data cannot be decrypted by anyone, including us. Starting over erases every account, transaction and setting in this browser. A backup can be restored later only with its own passphrase."
+msgstr "Without the passphrase or recovery key the data cannot be decrypted by anyone, including us. Starting over erases every account, transaction and setting in this browser. A backup can be restored later only with its own passphrase."
+
+#: src/routes/settings.tsx:89
+msgid "Wrong passphrase for this backup."
+msgstr "Wrong passphrase for this backup."
+
+#: src/components/encryption-setup.tsx:132
+#: src/components/unlock-screen.tsx:45
+#: src/routes/settings.tsx:327
+#: src/routes/settings.tsx:407
+msgid "Wrong passphrase."
+msgstr "Wrong passphrase."
+
+#: src/components/categories-card.tsx:67
+msgid "You can add up to {MAX_CUSTOM} categories here."
+msgstr "You can add up to {MAX_CUSTOM} categories here."
+
+#: src/routes/accounts.tsx:102
+msgid "Your bank CSVs, as a spending dashboard"
+msgstr "Your bank CSVs, as a spending dashboard"
+
+#: src/routes/settings.tsx:243
+msgid "Your data"
+msgstr "Your data"
+
+#: src/routes/settings.tsx:434
+msgid "Your data and AI keys will be stored in this browser unencrypted, readable by anyone with access to this device."
+msgstr "Your data and AI keys will be stored in this browser unencrypted, readable by anyone with access to this device."
+
+#: src/components/unlock-screen.tsx:88
+msgid "Your data is encrypted. Unlock it to continue."
+msgstr "Your data is encrypted. Unlock it to continue."
+
+#: src/routes/accounts.tsx:36
+msgid "Your data isn't encrypted. Anyone with access to this device can read it. <0>Turn on encryption</0>"
+msgstr "Your data isn't encrypted. Anyone with access to this device can read it. <0>Turn on encryption</0>"
+
+#: src/routes/settings.tsx:252
+msgid "Your data lives only in this browser. Clearing site data or switching devices loses it, so export a backup regularly. With encryption on, the backup file is encrypted with your passphrase; otherwise it is plain text, so keep it somewhere safe."
+msgstr "Your data lives only in this browser. Clearing site data or switching devices loses it, so export a backup regularly. With encryption on, the backup file is encrypted with your passphrase; otherwise it is plain text, so keep it somewhere safe."
+
+#: src/router.tsx:65
+msgid "Your data stays in this browser only. Clearing site data deletes it, so export a backup in Settings."
+msgstr "Your data stays in this browser only. Clearing site data deletes it, so export a backup in Settings."
+
+#: src/components/upload-panel.tsx:198
+msgid "Your next upload will ask you to map the columns again. Imported transactions are kept."
+msgstr "Your next upload will ask you to map the columns again. Imported transactions are kept."
+
+#: src/routes/accounts.tsx:262
+msgid "Your transactions will be encrypted in this browser with a passphrase only you know. Without it, anyone with access to this device can read them."
+msgstr "Your transactions will be encrypted in this browser with a passphrase only you know. Without it, anyone with access to this device can read them."

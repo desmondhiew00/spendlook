@@ -1,0 +1,22 @@
+/* Shared by terms.html, privacy.html and paypay-csv.html: static pages, no scripts. Colours mirror src/index.css. */
+:root { --bg: #f2f2f7; --fg: #000; --card: #fff; --muted: #6e6e73; --border: #e5e5ea; --accent: #007aff; color-scheme: light dark; }
+@media (prefers-color-scheme: dark) { :root { --bg: #000; --fg: #fff; --card: #1c1c1e; --muted: #98989f; --border: #38383a; --accent: #0a84ff; } }
+:root.dark { --bg: #000; --fg: #fff; --card: #1c1c1e; --muted: #98989f; --border: #38383a; --accent: #0a84ff; }
+:root:not(.dark) { --bg: #f2f2f7; --fg: #000; --card: #fff; --muted: #6e6e73; --border: #e5e5ea; --accent: #007aff; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.65 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+main { max-width: 44rem; margin: 0 auto; padding: 1.25rem 1rem 4rem; }
+nav { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; padding-bottom: 1.25rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); font-size: .9rem; }
+nav a { color: var(--muted); text-decoration: none; } nav a:hover { color: var(--fg); }
+nav a.home { display: inline-flex; align-items: center; gap: .4rem; color: var(--fg); font-weight: 600; font-size: 1.0625rem; letter-spacing: -.01em; margin-right: auto; }
+nav a.home::before { content: ""; width: 1.5rem; height: 1.5rem; background: url(/favicon.svg) center / contain no-repeat; }
+a { color: var(--accent); text-underline-offset: .15em; }
+h1 { font-size: 2.125rem; letter-spacing: -.02em; line-height: 1.15; margin: 0 0 .25rem; }
+h2 { font-size: 1.2rem; letter-spacing: -.01em; margin: 2rem 0 .5rem; }
+h3 { font-size: 1rem; margin: 1.5rem 0 .25rem; }
+.meta { color: var(--muted); font-size: .9rem; margin-top: 0; }
+.summary { background: var(--card); border-radius: 16px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+.summary > :first-child { margin-top: 0; } .summary > :last-child { margin-bottom: 0; }
+section + section { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+li { margin: .25rem 0; }
+code { font: .9em ui-monospace, "SF Mono", Menlo, monospace; background: var(--card); border-radius: 6px; padding: .1em .35em; }

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy · spendlook</title>
+    <meta name="description" content="spendlook keeps your transactions in your browser. What is processed, where, and your choices." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://spendlook.app/privacy" />
+    <link rel="stylesheet" href="/legal.css" />
+    <script src="/theme.js"></script>
+  </head>
+  <body>
+    <main>
+      <nav><a class="home" href="/">spendlook</a><a href="/terms">Terms</a><a href="#ja" lang="ja">日本語</a></nav>
+
+      <section>
+        <h1>Privacy Policy</h1>
+        <p class="meta">Effective 2026-10-08</p>
+        <div class="summary">
+          <strong>In short:</strong> spendlook has no server that receives your data. Your CSV files, transactions and settings stay in your browser.
+          Nothing is sent anywhere unless you turn on AI categorization with your own key. Then only merchant names go directly from your browser to the AI provider you chose.
+        </div>
+
+        <h2>1. Who we are</h2>
+        <p>spendlook (“we”) is operated by Desmond Hiew, Tokyo, Japan. Contact: <a href="mailto:contact@spendlook.app">contact@spendlook.app</a>.</p>
+
+        <h2>2. Data stored on your device</h2>
+        <p>When you upload a CSV, spendlook reads it in your browser and stores accounts, transactions, merchant names, your category choices and an AI usage log in your browser's IndexedDB. Your AI provider key, AI settings, theme and language are stored in localStorage. We have no copy and cannot access, recover or delete this data for you.</p>
+        <ul>
+          <li><strong>Encryption:</strong> before your first data is stored, spendlook asks for a passphrase and encrypts all of it (AES-256-GCM; key derived with Argon2id). You can also unlock with a passkey (fingerprint, face or device PIN) and a one-time recovery key. It locks automatically after inactivity. We never see your passphrase, recovery key or passkey; if you lose all of them, the data cannot be recovered by anyone. You may choose to continue without encryption.</li>
+          <li><strong>Deletion:</strong> Settings → Delete all data, or clear this site's data in your browser.</li>
+          <li><strong>Backups</strong> you export are files on your device. They are encrypted only if encryption is on.</li>
+        </ul>
+
+        <h2>3. Data sent to an AI provider (only if you enable it)</h2>
+        <p>AI categorization is optional and off until you add your own API key and agree in Settings. Requests go directly from your browser to the provider you pick: Anthropic, Google (Gemini) or OpenAI. They are made under your own account with that provider, and that provider's terms and privacy policy apply.</p>
+        <ul>
+          <li><strong>Sent:</strong> merchant names, and whether each is spending or income.</li>
+          <li><strong>Sent for custom CSV column mapping:</strong> the column names and the shape of up to 3 rows. Every digit is replaced by 0 and every word by x.</li>
+          <li><strong>Never sent:</strong> amounts, dates, balances, account numbers, file names, or the names of people you transfer money to or from.</li>
+          <li>OpenAI requests are sent with <code>store: false</code>. On the Gemini free tier, Google may use submitted content to improve its products, and people may review it. A billed project avoids this.</li>
+        </ul>
+
+        <h2>4. Data our hosting sees</h2>
+        <p>The app's files are served by Cloudflare. Like any website, Cloudflare processes your IP address, browser user agent and the requested URL to deliver the files and protect against abuse, under the <a href="https://www.cloudflare.com/privacypolicy/" rel="noreferrer">Cloudflare Privacy Policy</a>. These requests never contain your financial data. We do not use analytics, advertising, tracking pixels or cookies.</p>
+
+        <h2>5. Legal basis and your rights</h2>
+        <p>We do not collect or hold personal data about you, so there is nothing for us to access, correct, export or delete on request: you control all of it in your browser. Data you choose to send to an AI provider is handled by that provider as an independent controller under your agreement with them. Questions go to the contact above. You may also complain to your local data protection authority (for example, Japan's Personal Information Protection Commission or an EU/UK supervisory authority).</p>
+
+        <h2>6. Other people's data</h2>
+        <p>Bank exports can contain names of people you pay or receive money from. spendlook keeps those on your device and does not send them to AI providers. Please make sure you have a right to process this information.</p>
+
+        <h2>7. Children</h2>
+        <p>spendlook is not directed at children under 16.</p>
+
+        <h2>8. Security</h2>
+        <p>To report a vulnerability, see our <a href="/.well-known/security.txt">security.txt</a>.</p>
+
+        <h2>9. Changes</h2>
+        <p>We will update this page and its effective date when the policy changes. If the change is material, for example new data leaving your device, the app will say so before it happens.</p>
+      </section>
+
+      <section id="ja" lang="ja">
+        <h1>プライバシーポリシー</h1>
+        <p class="meta">施行日：2026年10月8日</p>
+        <div class="summary">
+          <strong>要約：</strong>spendlook にはデータを受け取るサーバーがありません。CSV、取引、設定はすべてお使いのブラウザ内に保存されます。
+          ご自身のキーでAI分類を有効にした場合のみ、店舗名がブラウザから選択したAIプロバイダへ直接送信されます。
+        </div>
+
+        <h2>1. 運営者</h2>
+        <p>spendlook は Desmond Hiew（東京都）が運営しています。お問い合わせ：<a href="mailto:contact@spendlook.app">contact@spendlook.app</a></p>
+
+        <h2>2. 端末内に保存されるデータ</h2>
+        <p>アップロードした CSV はブラウザ内で読み込まれ、口座・取引・店舗名・カテゴリ設定・AI利用ログがブラウザの IndexedDB に保存されます。AIキーや設定、テーマ、言語は localStorage に保存されます。運営者はこれらのデータを保持しておらず、閲覧・復元・削除することはできません。</p>
+        <ul>
+          <li><strong>暗号化：</strong>最初のデータを保存する前にパスフレーズを設定し、すべてを暗号化します（AES-256-GCM、Argon2id による鍵導出）。パスキー（指紋・顔・端末PIN）や一度だけ表示される復旧キーでもロック解除でき、一定時間操作がないと自動でロックされます。パスフレーズ・復旧キー・パスキーを運営者が知ることはなく、すべて失うと誰もデータを復元できません。暗号化せずに使うこともできます。</li>
+          <li><strong>削除：</strong>設定 → すべてのデータを削除、またはブラウザでこのサイトのデータを消去してください。</li>
+          <li><strong>バックアップ</strong>は端末上のファイルです。暗号化がオンの場合のみ暗号化されます。</li>
+        </ul>
+
+        <h2>3. AIプロバイダへの送信（有効にした場合のみ）</h2>
+        <p>AI分類は任意で、設定画面でご自身のAPIキーを登録し同意するまでオフです。通信はブラウザから選択したプロバイダ（Anthropic、Google Gemini、OpenAI）へ直接、お客様ご自身のアカウントで行われ、各社の規約とプライバシーポリシーが適用されます。</p>
+        <ul>
+          <li><strong>送信するもの：</strong>店舗名と、支出か収入かの区別。</li>
+          <li><strong>カスタムCSVの列設定時：</strong>列名と最大3行分の形式（数字はすべて0、単語はxに置換）。</li>
+          <li><strong>送信しないもの：</strong>金額、日付、残高、口座番号、ファイル名、個人間の振込相手の名前。</li>
+          <li>OpenAI へは <code>store: false</code> で送信します。Gemini 無料枠では、送信内容が Google の製品改善に利用され、人が確認する場合があります。課金プロジェクトのキーを使えば回避できます。</li>
+        </ul>
+
+        <h2>4. ホスティング</h2>
+        <p>アプリのファイルは Cloudflare から配信されます。配信と不正防止のため、IPアドレス、ユーザーエージェント、URL が <a href="https://www.cloudflare.com/ja-jp/privacypolicy/" rel="noreferrer">Cloudflare のプライバシーポリシー</a>に基づき処理されますが、家計データは含まれません。アクセス解析、広告、トラッキング、Cookie は使用していません。</p>
+
+        <h2>5. お客様の権利</h2>
+        <p>運営者はお客様の個人情報を取得・保有していないため、開示・訂正・削除などの対象となるデータはありません。データはすべてお客様のブラウザで管理できます。AIプロバイダへ送信したデータは、各社がお客様との契約に基づき管理します。ご質問は上記までご連絡ください。個人情報保護委員会などの監督機関に申し立てることもできます。</p>
+
+        <h2>6. 第三者の情報</h2>
+        <p>銀行の明細には振込相手などの氏名が含まれることがあります。これらは端末内にのみ保存され、AIプロバイダには送信されません。</p>
+
+        <h2>7. 子ども</h2>
+        <p>16歳未満の方を対象としたサービスではありません。</p>
+
+        <h2>8. セキュリティ</h2>
+        <p>脆弱性の報告は <a href="/.well-known/security.txt">security.txt</a> をご覧ください。</p>
+
+        <h2>9. 改定</h2>
+        <p>本ポリシーを変更する場合は本ページと施行日を更新します。端末外へ送信するデータが増えるなどの重要な変更は、実施前にアプリ内でお知らせします。</p>
+      </section>
+    </main>
+  </body>
+</html>
