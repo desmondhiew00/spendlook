@@ -11,7 +11,7 @@ import { StackedBarChart } from '@/components/stacked-bar-chart'
 import { useCategories } from '@/components/use-categories'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -98,6 +98,13 @@ export function Dashboard({
   const showCashFlow = cashFlow && hasCashFlow
   const flowMonths = monthOptions(bothFlows)
   const monthIdx = months.indexOf(month!)
+  // shown under an All time card title: first – last month with data
+  const span = (
+    <CardDescription>
+      {formatMonth(months[0], locale)}
+      {months.length > 1 && ` – ${formatMonth(months.at(-1)!, locale)}`}
+    </CardDescription>
+  )
   // calendar month before; undefined only before the first month with data
   const prev = previousMonth(month!)
   const previous = prev >= months[0] ? (totalByMonth.get(prev) ?? 0) : undefined
@@ -129,7 +136,17 @@ export function Dashboard({
   const nameOf = (x: Txn) => merchantName(merchants.get(merchantId(flow, x.merchantKey)), x.rawMerchant)
   // fixed-category rows have no merchant record, so nothing to rename; blank clears back to the AI name
   // a rename means the user looked at this merchant, so it also clears the review flag
-  const renamer = (id: string) => (merchants.has(id) ? (name: string) => db.merchants.update(id, { overrideName: name || undefined, needsReview: false }) : undefined)
+  // renaming onto another merchant's name merges them: the renamed ones take that merchant's category too
+  const renamer = (ids: string[]) => {
+    const own = ids.filter((id) => merchants.has(id))
+    if (!own.length) return undefined
+    return (name: string) => {
+      const twin = name && merchantList.find((m) => m.kind === flow && !own.includes(m.id) && merchantName(m, '').toLowerCase() === name.toLowerCase())
+      const category = twin ? (twin.overrideCategory ?? twin.aiCategory) : undefined
+      const changes = { overrideName: name || undefined, needsReview: false, ...(category && { overrideCategory: category }) }
+      return db.transaction('rw', db.merchants, () => Promise.all(own.map((id) => db.merchants.update(id, changes))))
+    }
+  }
   const txKey = {
     date: (x: Txn) => `${x.date} ${x.time ?? ''}`,
     merchant: nameOf,
@@ -142,12 +159,14 @@ export function Dashboard({
     return rec ? (rec.overrideCategory ?? rec.aiCategory ?? fold) : undefined
   }
   type MerchantRow = ReturnType<typeof merchantTotals>[number]
+  // a merged row's category comes from its first merchant that has a record
+  const recordOf = (m: MerchantRow) => m.ids.find((id) => merchants.has(id)) ?? m.id
   const mKey = {
     name: (m: MerchantRow) => m.name,
     count: (m: MerchantRow) => m.count,
     total: (m: MerchantRow) => m.total,
     category: (m: MerchantRow) => {
-      const c = merchantCategory(m.id)
+      const c = merchantCategory(recordOf(m))
       return c ? cats.label(c) : ''
     },
   }[mSort.key]
@@ -309,6 +328,7 @@ export function Dashboard({
         <Card>
           <CardHeader>
             <CardTitle>{allTime ? <Trans>Categories — All time</Trans> : <Trans>Categories — {formatMonth(month!, locale)}</Trans>}</CardTitle>
+            {allTime && span}
             <CardAction>
               <PeriodSwitch allTime={allTime} onChange={setAllTime} />
             </CardAction>
@@ -344,6 +364,7 @@ export function Dashboard({
         <Card className="pb-0">
           <CardHeader>
             <CardTitle>{mAllTime ? <Trans>Top merchants — All time</Trans> : <Trans>Top merchants — {formatMonth(month!, locale)}</Trans>}</CardTitle>
+            {mAllTime && span}
             <CardAction>
               <PeriodSwitch allTime={mAllTime} onChange={setMAllTime} />
             </CardAction>
@@ -368,12 +389,12 @@ export function Dashboard({
               </TableHeader>
               <TableBody>
                 {topMerchants.map((m) => {
-                  const rec = merchants.get(m.id)
-                  const c = merchantCategory(m.id)
+                  const rec = merchants.get(recordOf(m))
+                  const c = merchantCategory(recordOf(m))
                   return (
                     <TableRow key={m.id}>
                       <TableCell className="max-w-48">
-                        <MerchantName name={m.name} raw={m.raw} onRename={renamer(m.id)} />
+                        <MerchantName name={m.name} raw={m.raw} onRename={renamer(m.ids)} />
                       </TableCell>
                       <TableCell>
                         {rec && c ? (
@@ -383,7 +404,11 @@ export function Dashboard({
                             flow={flow}
                             label={t`Category for ${m.name}`}
                             value={c}
-                            onChange={(c) => db.merchants.update(m.id, { overrideCategory: c, needsReview: false })}
+                            onChange={(c) =>
+                              db.transaction('rw', db.merchants, () =>
+                                Promise.all(m.ids.filter((id) => merchants.has(id)).map((id) => db.merchants.update(id, { overrideCategory: c, needsReview: false }))),
+                              )
+                            }
                           />
                         ) : (
                           <span className="text-sm text-muted-foreground">
@@ -405,6 +430,7 @@ export function Dashboard({
       <Card className="pb-0">
         <CardHeader>
           <CardTitle>{txAllTime ? <Trans>Transactions — All time</Trans> : <Trans>Transactions — {formatMonth(month!, locale)}</Trans>}</CardTitle>
+          {txAllTime && span}
           <CardAction>
             <PeriodSwitch allTime={txAllTime} onChange={setTxAllTime} />
           </CardAction>
@@ -455,7 +481,7 @@ export function Dashboard({
               <li key={x.id} className={`group/row space-y-2 px-4 py-3 ${needsReview(x) ? 'bg-amber-500/5 shadow-[inset_2px_0_0_var(--color-amber-500)]' : ''}`}>
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <NotedMerchant tx={x} name={nameOf(x)} onRename={renamer(merchantId(flow, x.merchantKey))} />
+                    <NotedMerchant tx={x} name={nameOf(x)} onRename={renamer([merchantId(flow, x.merchantKey)])} />
                     <div className="mt-0.5 text-xs text-muted-foreground tabular-nums">
                       {x.date}
                       {x.time ? ` ${x.time}` : ''}
@@ -513,7 +539,7 @@ export function Dashboard({
                       {x.time && <span className="ml-1.5 text-muted-foreground">{x.time}</span>}
                     </TableCell>
                     <TableCell className="max-w-72">
-                      <NotedMerchant tx={x} name={nameOf(x)} onRename={renamer(merchantId(flow, x.merchantKey))}>
+                      <NotedMerchant tx={x} name={nameOf(x)} onRename={renamer([merchantId(flow, x.merchantKey)])}>
                         {needsReview(x) && <ReviewBadge />}
                       </NotedMerchant>
                     </TableCell>

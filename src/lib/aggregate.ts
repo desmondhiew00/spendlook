@@ -36,14 +36,22 @@ export function categoryTotals(txns: Txn[], resolve: Resolve) {
   return [...sumBy(txns, resolve)].map(([category, total]) => ({ category, total })).sort((a, b) => b.total - a.total)
 }
 
+// Grouped by shown name (case-insensitive), so merchants renamed to the same name share one row
 export function merchantTotals(txns: Txn[], merchants: Map<string, Merchant>) {
-  const out = new Map<string, { id: string; name: string; raw: string; total: number; count: number }>()
+  const out = new Map<string, { id: string; ids: string[]; name: string; raw: string; total: number; count: number }>()
   for (const t of txns) {
     const id = merchantId(t.kind as Flow, t.merchantKey)
-    const row = out.get(id) ?? { id, name: merchantName(merchants.get(id), t.rawMerchant), raw: t.rawMerchant.normalize('NFKC'), total: 0, count: 0 }
+    const name = merchantName(merchants.get(id), t.rawMerchant)
+    const key = `${t.kind}|${name.toLowerCase()}`
+    const raw = t.rawMerchant.normalize('NFKC')
+    const row = out.get(key) ?? { id, ids: [], name, raw, total: 0, count: 0 }
+    if (!row.ids.includes(id)) {
+      if (row.ids.length && !row.raw.split(' · ').includes(raw)) row.raw += ` · ${raw}`
+      row.ids.push(id)
+    }
     row.total += t.amount
     row.count++
-    out.set(id, row)
+    out.set(key, row)
   }
   return [...out.values()].sort((a, b) => b.total - a.total)
 }

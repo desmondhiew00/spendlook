@@ -49,8 +49,8 @@ test('categoryTotals and merchantTotals sort descending', () => {
   const txns = [tx('1', '2026-08', 100), tx('2', '2026-08', 300, { merchantKey: 'BIG', rawMerchant: 'Big' }), tx('3', '2026-08', 50)]
   expect(categoryTotals(txns, () => 'other')).toEqual([{ category: 'other', total: 450 }])
   expect(merchantTotals(txns, merchants)).toEqual([
-    { id: 'expense|BIG', name: 'Big', raw: 'Big', total: 300, count: 1 },
-    { id: 'expense|SHOP', name: 'Shop', raw: 'Shop', total: 150, count: 2 },
+    { id: 'expense|BIG', ids: ['expense|BIG'], name: 'Big', raw: 'Big', total: 300, count: 1 },
+    { id: 'expense|SHOP', ids: ['expense|SHOP'], name: 'Shop', raw: 'Shop', total: 150, count: 2 },
   ])
 })
 
@@ -81,4 +81,12 @@ test('merchantTotals: user rename wins over AI name', () => {
   const rows = [tx('1', '2026-09', 5, { rawMerchant: 'ＳＨＯＰ' })]
   expect(merchantTotals(rows, new Map([[m.id, m]]))[0]).toMatchObject({ name: 'Shop', raw: 'SHOP' })
   expect(merchantTotals(rows, new Map([[m.id, { ...m, overrideName: 'My shop' }]]))[0].name).toBe('My shop')
+})
+
+test('merchantTotals merges merchants renamed to the same name (case-insensitive) into one row', () => {
+  const other: Merchant = { id: 'expense|SHOP2', kind: 'expense', merchantKey: 'SHOP2', displayName: 'Shop 2', overrideName: 'shop', needsReview: false }
+  const rows = [tx('1', '2026-09', 100), tx('2', '2026-09', 50, { merchantKey: 'SHOP2', rawMerchant: 'SHOP#2' })]
+  expect(merchantTotals(rows, new Map([[m.id, m], [other.id, other]]))).toEqual([
+    { id: 'expense|SHOP', ids: ['expense|SHOP', 'expense|SHOP2'], name: 'Shop', raw: 'Shop · SHOP#2', total: 150, count: 2 },
+  ])
 })
